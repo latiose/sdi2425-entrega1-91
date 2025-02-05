@@ -1,7 +1,13 @@
 package com.uniovi.notaneitor.entities;
 
-public class Mark {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
+@Entity
+public class Mark {
+    @Id
+    @GeneratedValue
     private Long id;
 
     public Mark(Long id, String description, Double score) {
