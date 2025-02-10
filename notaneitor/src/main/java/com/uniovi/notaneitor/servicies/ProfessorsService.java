@@ -2,9 +2,13 @@ package com.uniovi.notaneitor.servicies;
 
 
 import com.uniovi.notaneitor.entities.Category;
+import com.uniovi.notaneitor.entities.Mark;
 import com.uniovi.notaneitor.entities.Professor;
+import com.uniovi.notaneitor.repositories.MarksRepository;
+import com.uniovi.notaneitor.repositories.ProfessorsRepository;
 import jakarta.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,28 +17,32 @@ import java.util.List;
 
 @Service
 public class ProfessorsService {
-    private final List<Professor> professorList =new LinkedList<Professor>();
+    @Autowired
+    private ProfessorsRepository professorsRepository;
+   // private final List<Professor> professorList =new LinkedList<Professor>();
 
-   @PostConstruct
+  /* @PostConstruct
     public void init() {
        professorList.add(new Professor(1L, "Catedratico","Perez","Pablo","123A"));
        professorList.add(new Professor(2L, "Catedratico","Alvarez","Pablo","321A"));
     }
-
+*/
     public List<Professor> getProfessors() {
-        return professorList;
+        List<Professor> professors = new ArrayList<>();
+        professorsRepository.findAll().forEach(professors::add);
+        return professors;
     }
 
     public Professor getProfessor(Long id) {
-        return professorList.stream() .filter(professor -> professor.getId().equals(id)).findFirst().get();
+        return professorsRepository.findById(id).get();
     }
 
     public void addProfessor(Professor professor) {
-       professor.setId(professorList.getLast().getId()+1);
-        professorList.add(professor);
+        professorsRepository.save(professor);
+
     }
 
     public void deleteProfessor(Long id) {
-        professorList.remove(getProfessor(id));
+        professorsRepository.deleteById(id);
     }
 }
