@@ -70,4 +70,10 @@ public class MarksController {
         return "mark/edit";
     }
 
+    @RequestMapping("/mark/list/update")
+    public String updateList(Model model){
+        model.addAttribute("markList", marksService.getMarks() );
+        return "mark/list :: marksTable";
+    }
+
 }
