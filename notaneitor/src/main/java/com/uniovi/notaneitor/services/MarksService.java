@@ -1,13 +1,11 @@
-package com.uniovi.notaneitor.servicies;
+package com.uniovi.notaneitor.services;
 
 import com.uniovi.notaneitor.entities.Mark;
 import com.uniovi.notaneitor.repositories.MarksRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service

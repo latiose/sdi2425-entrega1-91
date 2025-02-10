@@ -1,8 +1,6 @@
 package com.uniovi.notaneitor.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Mark {
@@ -10,11 +8,30 @@ public class Mark {
     @GeneratedValue
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Mark(Long id, String description, Double score) {
         this.id = id;
         this.description = description;
         this.score = score;
     }
+
+    public Mark(String description, Double score,User user) {
+        this.description = description;
+        this.score = score;
+        this.user = user;
+    }
+
 
 
     public Mark(){
@@ -51,5 +68,7 @@ public class Mark {
     public void setScore(Double score) {
         this.score = score;
     }
+
+
 
 }
