@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-@RestController
+@Controller
 public class ProfessorsController {
 
     @Autowired //Inyectar el servicio
@@ -21,21 +21,21 @@ public class ProfessorsController {
 
     @RequestMapping("/professor/list")
     public String getList(Model model) {
-        //model.addAttribute("professorsList", professorsService.getProfessors());
-        List<Professor> professorList =new LinkedList<Professor>();
-        professorList = professorsService.getProfessors();
-        String result = "";
-        for(Professor p: professorList){
-            result+=p.toString()+"\n";
-        }
-        return result;
+        model.addAttribute("professorsList", professorsService.getProfessors());
+        //List<Professor> professorList =new LinkedList<Professor>();
+        //professorList = professorsService.getProfessors();
+        //String result = "";
+        //for(Professor p: professorList){
+          //  result+=p.toString()+"\n";
+        //}
+        return "professor/list";
     }
 
 
     @RequestMapping(value = "/professor/add", method = RequestMethod.POST)
     public String setProfessor(@ModelAttribute Professor professor) {
         professorsService.addProfessor(professor);
-        return "professor/list";
+        return "redirect:/professor/list";
     }
 
     @RequestMapping(value = "/professor/add")
@@ -47,7 +47,7 @@ public class ProfessorsController {
     public String setEdit(@ModelAttribute Professor professor, @PathVariable Long id){
         professor.setId(id);
         professorsService.addProfessor(professor);
-        return "editado";
+        return "redirect:/professor/details/"+id;
     }
 
     @RequestMapping("/professor/details/{id}")
@@ -60,7 +60,7 @@ public class ProfessorsController {
     @RequestMapping("/professor/delete/{id}")
     public String deleteMark(@PathVariable Long id) {
         professorsService.deleteProfessor(id);
-        return "Borrado";
+        return "redirect:/professor/list";
 
     }
 

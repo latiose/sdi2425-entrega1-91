@@ -17,8 +17,8 @@ public class ProfessorsService {
 
    @PostConstruct
     public void init() {
-       professorList.add(new Professor(1L, Category.CATEDRATICO,"Perez","Pablo","123A"));
-       professorList.add(new Professor(2L, Category.CATEDRATICO,"Alvarez","Pablo","321A"));
+       professorList.add(new Professor(1L, "Catedratico","Perez","Pablo","123A"));
+       professorList.add(new Professor(2L, "Catedratico","Alvarez","Pablo","321A"));
     }
 
     public List<Professor> getProfessors() {
@@ -30,6 +30,7 @@ public class ProfessorsService {
     }
 
     public void addProfessor(Professor professor) {
+       professor.setId(professorList.getLast().getId()+1);
         professorList.add(professor);
     }
 

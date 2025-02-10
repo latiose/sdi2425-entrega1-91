@@ -12,9 +12,9 @@ public class Professor {
     private String DNI;
     private String name;
     private String surname;
-    private Category category;
+    private String category;
 
-    public Professor(Long id, Category category, String surname, String name, String DNI) {
+    public Professor(Long id, String category, String surname, String name, String DNI) {
         this.id = id;
         this.category = category;
         this.surname = surname;
@@ -54,11 +54,11 @@ public class Professor {
         this.surname = surname;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
