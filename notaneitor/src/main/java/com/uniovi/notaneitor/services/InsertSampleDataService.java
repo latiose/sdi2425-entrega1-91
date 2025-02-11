@@ -1,12 +1,12 @@
 package com.uniovi.notaneitor.services;
 import java.util.HashSet;
 import java.util.Set;
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.uniovi.notaneitor.entities.Mark;
 import com.uniovi.notaneitor.entities.User;
-//@Service
+@Service
 public class InsertSampleDataService {
     private final UsersService usersService;
     public InsertSampleDataService(UsersService usersService) {
@@ -14,13 +14,22 @@ public class InsertSampleDataService {
     }
     @PostConstruct
     public void init() {
-        User user1 = new User("99999990A", "Pedro", "Díaz");
-        User user2 = new User("99999991B", "Lucas", "Núñez");
-        User user3 = new User("99999992C", "María", "Rodríguez");
-        User user4 = new User("99999993D", "Marta", "Almonte");
-        User user5 = new User("99999977E", "Pelayo", "Valdes");
-        User user6 = new User("99999988F", "Edward", "Núñez");
-        Set user1Marks = new HashSet<Mark>() {
+
+
+            User user1 = new User("99999990A", "Pedro", "Díaz");
+            user1.setPassword("123456");
+            User user2 = new User("99999991B", "Lucas", "Núñez");
+            user2.setPassword("123456");
+            User user3 = new User("99999992C", "María", "Rodríguez");
+            user3.setPassword("123456");
+            User user4 = new User("99999993D", "Marta", "Almonte");
+            user4.setPassword("123456");
+            User user5 = new User("99999977E", "Pelayo", "Valdes");
+            user5.setPassword("123456");
+            User user6 = new User("99999988F", "Edward", "Núñez");
+            user6.setPassword("123456");
+
+            Set user1Marks = new HashSet<Mark>() {
             {
                 add(new Mark("Nota A1", 10.0, user1));
                 add(new Mark("Nota A2", 9.0, user1));
