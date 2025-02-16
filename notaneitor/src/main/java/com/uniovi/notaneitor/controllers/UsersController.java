@@ -58,12 +58,12 @@ public class UsersController {
         usersService.addUser(user);
         return "redirect:/user/details/" + id;
     }
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(@ModelAttribute("user") User user, Model model) {
-        usersService.addUser(user);
-        securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
-        return "redirect:home";
-    }
+//    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+//    public String signup(@ModelAttribute("user") User user, Model model) {
+//        usersService.addUser(user);
+//        securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
+//        return "redirect:home";
+//    }
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         return "login";
@@ -84,17 +84,17 @@ public class UsersController {
         return "signup";
     }
 
-//    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-//    public String signup(@Validated User user, BindingResult result) {
-//        signUpFormValidator.validate(user, result);
-//        if (result.hasErrors()) {
-//            return "signup";
-//        }
-//
-//        usersService.addUser(user);
-//        securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
-//        return "redirect:home";
-//    }
-//
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public String signup(@Validated User user, BindingResult result) {
+        signUpFormValidator.validate(user, result);
+        if (result.hasErrors()) {
+            return "signup";
+        }
+
+        usersService.addUser(user);
+        securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
+        return "redirect:home";
+    }
+
 
 }
