@@ -84,17 +84,17 @@ public class UsersController {
         return "signup";
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(@Validated User user, BindingResult result) {
-        signUpFormValidator.validate(user, result);
-        if (result.hasErrors()) {
-            return "signup";
-        }
-
-        usersService.addUser(user);
-        securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
-        return "redirect:home";
-    }
-
+//    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+//    public String signup(@Validated User user, BindingResult result) {
+//        signUpFormValidator.validate(user, result);
+//        if (result.hasErrors()) {
+//            return "signup";
+//        }
+//
+//        usersService.addUser(user);
+//        securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
+//        return "redirect:home";
+//    }
+//
 
 }
