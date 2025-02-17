@@ -64,7 +64,12 @@ public class MarksController {
 
 
     @RequestMapping(value = "/mark/edit/{id}", method = RequestMethod.POST)
-    public String setEdit(@ModelAttribute Mark mark, @PathVariable Long id) {
+    public String setEdit(@Validated Mark mark, BindingResult result, @PathVariable Long id) {
+        validator.validate(mark, result);
+        if (result.hasErrors()) {
+            String resultado = "mark/edit";
+            return resultado;
+        }
         Mark originalMark = marksService.getMark(id);
         // modificar solo score y description
         originalMark.setScore(mark.getScore());
@@ -86,7 +91,7 @@ public class MarksController {
 
     }
 
-    @RequestMapping(value = "/mark/edit/{id}")
+    @RequestMapping(value = "/mark/edit/{id}",method = RequestMethod.GET)
     public String getEdit(Model model, @PathVariable Long id) {
         model.addAttribute("mark", marksService.getMark(id));
         model.addAttribute("usersList", usersService.getUsers());

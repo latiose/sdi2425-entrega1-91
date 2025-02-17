@@ -56,7 +56,11 @@ public class ProfessorsController {
     }
 
     @RequestMapping(value="/professor/edit/{id}", method=RequestMethod.POST)
-    public String setEdit(@ModelAttribute Professor professor, @PathVariable Long id){
+    public String setEdit(@Validated Professor professor, BindingResult result, @PathVariable Long id){
+        validator.validate(professor, result);
+        if (result.hasErrors()) {
+            return "professor/edit";
+        }
         professor.setId(id);
         professorsService.addProfessor(professor);
         return "redirect:/professor/details/"+id;
@@ -76,7 +80,7 @@ public class ProfessorsController {
 
     }
 
-    @RequestMapping(value = "/professor/edit/{id}")
+    @RequestMapping(value = "/professor/edit/{id}", method = RequestMethod.GET)
     public String getEdit(Model model, @PathVariable Long id) {
         model.addAttribute("professor", professorsService.getProfessor(id));
         return "professor/edit";
