@@ -53,10 +53,16 @@ public class UsersController {
         model.addAttribute("user", user);
         return "user/edit";
     }
+
     @RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
-    public String setEdit(@PathVariable Long id, @ModelAttribute User user) {
-        usersService.addUser(user);
+    public String setEdit(@ModelAttribute User user, @PathVariable Long id) {
+        User originalUser = usersService.getUser(id);
+        originalUser.setDni(user.getDni());
+        originalUser.setName(user.getName());
+        originalUser.setLastName(user.getLastName());
+        usersService.addUser(originalUser);
         return "redirect:/user/details/" + id;
+
     }
 //    @RequestMapping(value = "/signup", method = RequestMethod.POST)
 //    public String signup(@ModelAttribute("user") User user, Model model) {
@@ -94,6 +100,14 @@ public class UsersController {
         usersService.addUser(user);
         securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
         return "redirect:home";
+    }
+
+
+
+    @RequestMapping("/user/list/update")
+    public String updateList(Model model){
+        model.addAttribute("userList", usersService.getUsers() );
+        return "user/list :: userTable";
     }
 
 
