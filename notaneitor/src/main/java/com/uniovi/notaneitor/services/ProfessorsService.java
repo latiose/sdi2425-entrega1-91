@@ -2,6 +2,7 @@ package com.uniovi.notaneitor.services;
 
 
 import com.uniovi.notaneitor.entities.Professor;
+import com.uniovi.notaneitor.entities.User;
 import com.uniovi.notaneitor.repositories.ProfessorsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,9 @@ public class ProfessorsService {
 
     public void deleteProfessor(Long id) {
         professorsRepository.deleteById(id);
+    }
+
+    public Professor getProfessorByDni(String dni) {
+        return professorsRepository.findByDNI(dni);
     }
 }

@@ -1,11 +1,16 @@
 package com.uniovi.notaneitor.controllers;
 
 import com.uniovi.notaneitor.entities.Mark;
+import com.uniovi.notaneitor.entities.User;
 import com.uniovi.notaneitor.services.MarksService;
 import com.uniovi.notaneitor.services.UsersService;
+import com.uniovi.notaneitor.validators.AddMarkFormValidator;
+import com.uniovi.notaneitor.validators.AddProfessorFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -14,9 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class MarksController {
     private final MarksService marksService;
     private final UsersService usersService;
-    public MarksController(MarksService marksService, UsersService usersService) {
+    private final AddMarkFormValidator validator;
+    public MarksController(MarksService marksService, UsersService usersService, AddMarkFormValidator validator) {
         this.marksService = marksService;
         this.usersService = usersService;
+        this.validator = validator;
     }
 
     @RequestMapping("/mark/list")
@@ -36,15 +43,22 @@ public class MarksController {
 //        return "Getting Details =>" + id;
 //    }
 
-    @RequestMapping(value="/mark/add")
+    @RequestMapping(value="/mark/add", method = RequestMethod.GET)
     public String getMark(Model model){
+        model.addAttribute("mark", new Mark());
         model.addAttribute("usersList", usersService.getUsers());
         return "mark/add";
     }
 
     @RequestMapping(value = "/mark/add", method = RequestMethod.POST)
-    public String setMark(@ModelAttribute Mark mark) {
+    public String setMark(@Validated Mark mark, BindingResult result) {
+
+        validator.validate(mark, result);
+        if (result.hasErrors()) {
+            return "mark/add";
+        }
         marksService.addMark(mark);
+
         return "redirect:/mark/list";
     }
 
