@@ -31,6 +31,7 @@ public class MarksController {
         this.validator = validator;
         this.httpSession = httpSession;
     }
+
     @RequestMapping("/mark/list")
     public String getList(Model model, Pageable pageable, Principal principal,
                           @RequestParam(value = "", required = false) String searchText) {
@@ -47,7 +48,6 @@ public class MarksController {
         model.addAttribute("page", marks);
         return "mark/list";
     }
-
 
 
 //    @RequestMapping(value = "/mark/add", method = RequestMethod.POST)
