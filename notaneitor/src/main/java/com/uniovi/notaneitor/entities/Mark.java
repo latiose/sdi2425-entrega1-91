@@ -8,7 +8,7 @@ public class Mark {
     @Id
     @GeneratedValue
     private Long id;
-
+    private boolean resend = false;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -77,6 +77,12 @@ public class Mark {
     }
     public void setScore(Double score) {
         this.score = score;
+    }
+    public Boolean getResend() {
+        return resend;
+    }
+    public void setResend(Boolean resend) {
+        this.resend = resend;
     }
 
 
