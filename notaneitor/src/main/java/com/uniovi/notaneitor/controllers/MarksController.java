@@ -29,6 +29,7 @@ public class MarksController {
         this.validator = validator;
         this.httpSession = httpSession;
     }
+
     @RequestMapping("/mark/list")
     public String getList(Model model, Principal principal,
                           @RequestParam(value = "", required = false) String searchText) {
@@ -42,10 +43,7 @@ public class MarksController {
         } else {
             model.addAttribute("marksList", marksService.getMarksForUser(user));
         }
-
-        return "mark/list";
     }
-
 
 
 //    @RequestMapping(value = "/mark/add", method = RequestMethod.POST)

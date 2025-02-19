@@ -77,6 +77,7 @@ public class MarksService {
         return marks;
     }
 
+
     public List<Mark> searchMarksByDescriptionAndNameForUser(String searchText, User user) {
         List<Mark> marks = new ArrayList<>();
         searchText = "%"+searchText+"%";
@@ -88,5 +89,6 @@ public class MarksService {
         }
         return marks;
     }
+
 
 }
