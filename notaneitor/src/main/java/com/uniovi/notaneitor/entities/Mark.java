@@ -10,15 +10,15 @@ public class Mark {
     private Long id;
     private boolean resend = false;
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
-    public User getUser() {
-        return user;
+    public Employee getUser() {
+        return employee;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Employee employee) {
+        this.employee = employee;
     }
 
     public Mark(Long id, String description, Double score) {
@@ -27,10 +27,10 @@ public class Mark {
         this.score = score;
     }
 
-    public Mark(String description, Double score,User user) {
+    public Mark(String description, Double score, Employee employee) {
         this.description = description;
         this.score = score;
-        this.user = user;
+        this.employee = employee;
     }
 
 

@@ -1,7 +1,7 @@
 package com.uniovi.notaneitor.services;
 
+import com.uniovi.notaneitor.entities.Employee;
 import com.uniovi.notaneitor.entities.Mark;
-import com.uniovi.notaneitor.entities.User;
 import com.uniovi.notaneitor.repositories.MarksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -67,22 +67,22 @@ public class MarksService {
         }
     }
 
-    public Page<Mark> getMarksForUser(Pageable pageable,User user) {
+    public Page<Mark> getMarksForUser(Pageable pageable, Employee employee) {
         Page<Mark> marks = new PageImpl<Mark>(new LinkedList<>());
-        if (user.getRole().equals("ROLE_STUDENT")) {
-            marks = marksRepository.findAllByUser(pageable,user);}
-        if (user.getRole().equals("ROLE_PROFESSOR")) {
+        if (employee.getRole().equals("ROLE_STUDENT")) {
+            marks = marksRepository.findAllByUser(pageable, employee);}
+        if (employee.getRole().equals("ROLE_PROFESSOR")) {
             marks = getMarks(pageable); }
         return marks;
     }
 
-    public Page<Mark> searchMarksByDescriptionAndNameForUser(Pageable pageable,String searchText, User user) {
+    public Page<Mark> searchMarksByDescriptionAndNameForUser(Pageable pageable,String searchText, Employee employee) {
         Page<Mark> marks = new PageImpl<Mark>(new LinkedList<>());
         searchText = "%"+searchText+"%";
-        if (user.getRole().equals("ROLE_STUDENT")) {
-            marks = marksRepository.searchByDescriptionNameAndUser(pageable,searchText, user);
+        if (employee.getRole().equals("ROLE_STUDENT")) {
+            marks = marksRepository.searchByDescriptionNameAndUser(pageable,searchText, employee);
         }
-        if (user.getRole().equals("ROLE_PROFESSOR")) {
+        if (employee.getRole().equals("ROLE_PROFESSOR")) {
             marks = marksRepository.searchByDescriptionAndName(pageable,searchText);
         }
         return marks;

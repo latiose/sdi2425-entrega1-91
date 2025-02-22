@@ -17,7 +17,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/mark/list">Ver Notas</a>
-          <a class="dropdown-item" href="/mark/add" sec:authorize="hasRole('ROLE_PROFESSOR')">Agregar Nota</a>
+          <a class="dropdown-item" href="/mark/add" sec:authorize="hasRole('ROLE_ADMIN')">Agregar Nota</a>
         </div>
       </li>
       <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
@@ -25,18 +25,8 @@
            aria-haspopup="true" aria-expanded="false">Gestión de usuarios
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/user/add">Agregar usuario</a>
-          <a class="dropdown-item" href="/user/list">Ver usuarios</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
-        <a class="nav-link dropdown-toggle" href="#" id="profesorDropdown" role="button" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false"> Gestión de profesores
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/professor/list">Ver profesores</a>
-          <a class="dropdown-item" href="/professor/add">Agregar profesor</a>
-
+          <a class="dropdown-item" href="/employee/add">Agregar usuario</a>
+          <a class="dropdown-item" href="/employee/list">Ver usuarios</a>
         </div>
       </li>
     </ul>
@@ -59,7 +49,7 @@
     </li>
     <li sec:authorize="!isAuthenticated()" class="nav-item">
       <a class="nav-link" href="/signup" th:text="#{signup.message}">
-        <i class='fas fa-user-alt' style='font-size:16px'></i>
+        <i class='fas fa-employee-alt' style='font-size:16px'></i>
         <span>Registrate</span>
       </a>
     </li>

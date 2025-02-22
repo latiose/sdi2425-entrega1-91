@@ -1,9 +1,10 @@
 package com.uniovi.notaneitor.entities;
 import javax.persistence.*;
-import java.util.Set; //Colección que no admite duplicados
+import java.util.Set;
+
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "employee")
+public class Employee {
     @Id
     @GeneratedValue
     private long id;
@@ -11,21 +12,22 @@ public class User {
     private String dni;
     private String name;
     private String lastName;
-    private String role;
+
     private String password;
 
-    @Transient //propiedad que no se almacena en la tabla.
+    @Transient
     private String passwordConfirm;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Mark> marks;
-    public User(String dni, String name, String lastName) {
-        super();
+    private String role;
+
+    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    //private Set<Mark> marks;
+    public Employee(String dni, String name, String lastName) {
         this.dni = dni;
         this.name = name;
         this.lastName = lastName;
     }
-    public User() { }
+    public Employee() { }
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
     public String getDni() {return dni; }
@@ -42,12 +44,12 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    public Set<Mark> getMarks() {
-        return marks;
-    }
-    public void setMarks(Set<Mark> marks) {
-        this.marks = marks;
-    }
+//    public Set<Mark> getMarks() {
+//        return marks;
+//    }
+//    public void setMarks(Set<Mark> marks) {
+//        this.marks = marks;
+//    }
     public String getFullName() {
         return this.name + " " + this.lastName;
     }
@@ -63,11 +65,8 @@ public class User {
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
     }
-    public String getRole() {
-        return role;
-    }
-    public void setRole(String role) {
-        this.role = role;
-    }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
 }

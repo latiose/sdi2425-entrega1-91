@@ -1,12 +1,10 @@
 package com.uniovi.notaneitor.controllers;
 
+import com.uniovi.notaneitor.entities.Employee;
 import com.uniovi.notaneitor.entities.Mark;
-import com.uniovi.notaneitor.entities.User;
+import com.uniovi.notaneitor.services.EmployeesService;
 import com.uniovi.notaneitor.services.MarksService;
-import com.uniovi.notaneitor.services.UsersService;
 import com.uniovi.notaneitor.validators.AddMarkFormValidator;
-import com.uniovi.notaneitor.validators.AddProfessorFormValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -22,12 +20,12 @@ import java.security.Principal;
 @Controller
 public class MarksController {
     private final MarksService marksService;
-    private final UsersService usersService;
+    private final EmployeesService employeesService;
     private final AddMarkFormValidator validator;
     private final HttpSession httpSession;
-    public MarksController(MarksService marksService, UsersService usersService, AddMarkFormValidator validator, HttpSession httpSession) {
+    public MarksController(MarksService marksService, EmployeesService employeesService, AddMarkFormValidator validator, HttpSession httpSession) {
         this.marksService = marksService;
-        this.usersService = usersService;
+        this.employeesService = employeesService;
         this.validator = validator;
         this.httpSession = httpSession;
     }
@@ -37,12 +35,12 @@ public class MarksController {
                           @RequestParam(value = "", required = false) String searchText) {
         Page<Mark> marks;
         String dni = principal.getName(); // DNI es el name de la autenticación
-        User user = usersService.getUserByDni(dni);
+        Employee employee = employeesService.getEmployeeByDni(dni);
 
         if (searchText != null && !searchText.isEmpty()) {
-            marks = marksService.searchMarksByDescriptionAndNameForUser(pageable, searchText, user);
+            marks = marksService.searchMarksByDescriptionAndNameForUser(pageable, searchText, employee);
         } else {
-          marks = marksService.getMarksForUser(pageable, user);
+          marks = marksService.getMarksForUser(pageable, employee);
         }
         model.addAttribute("marksList", marks.getContent());
         model.addAttribute("page", marks);
@@ -63,7 +61,7 @@ public class MarksController {
     @RequestMapping(value="/mark/add", method = RequestMethod.GET)
     public String getMark(Model model){
         model.addAttribute("mark", new Mark());
-        model.addAttribute("usersList", usersService.getUsers());
+       // model.addAttribute("usersList", employeesService.getUsers());
         return "mark/add";
     }
 
@@ -111,7 +109,7 @@ public class MarksController {
     @RequestMapping(value = "/mark/edit/{id}",method = RequestMethod.GET)
     public String getEdit(Model model, @PathVariable Long id) {
         model.addAttribute("mark", marksService.getMark(id));
-        model.addAttribute("usersList", usersService.getUsers());
+        //model.addAttribute("usersList", employeesService.getUsers());
         return "mark/edit";
     }
 
@@ -119,8 +117,8 @@ public class MarksController {
     @RequestMapping("/mark/list/update")
     public String updateList(Model model, Pageable pageable,Principal principal) {
         String dni = principal.getName(); // DNI es el name de la autenticación
-        User user = usersService.getUserByDni(dni);
-        Page<Mark> marks = marksService.getMarksForUser(pageable, user);
+        Employee employee = employeesService.getEmployeeByDni(dni);
+        Page<Mark> marks = marksService.getMarksForUser(pageable, employee);
         model.addAttribute("marksList", marks.getContent());
         return "mark/list :: tableMarks";
     }
