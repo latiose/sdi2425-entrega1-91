@@ -1,12 +1,10 @@
 package com.uniovi.notaneitor.validators;
 
+import com.uniovi.notaneitor.entities.Employee;
 import com.uniovi.notaneitor.entities.Mark;
-import com.uniovi.notaneitor.entities.User;
 import com.uniovi.notaneitor.services.MarksService;
-import com.uniovi.notaneitor.services.UsersService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
@@ -17,7 +15,7 @@ public class AddMarkFormValidator implements Validator {
     }
     @Override
     public boolean supports(Class<?> aClass) {
-        return User.class.equals(aClass);
+        return Employee.class.equals(aClass);
     }
     @Override
     public void validate(Object target, Errors errors) {

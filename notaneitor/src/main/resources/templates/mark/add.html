@@ -9,12 +9,12 @@
   <h2>Agregar nota</h2>
   <form class="form-horizontal" method="post" action="/mark/add" th:object="${mark}">
     <div class="form-group">
-      <label class="control-label col-sm-2" for="user">Alumno:</label>
+      <label class="control-label col-sm-2" for="employee">Alumno:</label>
       <div class="col-sm-10" th:if="${usersList != null and not #lists.isEmpty(usersList)}">
-        <select id="user" class="form-control" name="user">
-          <option th:each="user : ${usersList}"
-                  th:value="${user.id}"
-                  th:text="${user.dni}+' - '+${user.name}+' ' +${user.lastName} ">
+        <select id="employee" class="form-control" name="employee">
+          <option th:each="employee : ${usersList}"
+                  th:value="${employee.id}"
+                  th:text="${employee.dni}+' - '+${employee.name}+' ' +${employee.lastName} ">
             Usuario
           </option>
         </select>

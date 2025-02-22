@@ -1,30 +1,29 @@
 package com.uniovi.notaneitor.services;
+import com.uniovi.notaneitor.entities.Employee;
 import org.springframework.stereotype.Service;
-import com.uniovi.notaneitor.entities.User;
-import com.uniovi.notaneitor.repositories.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.uniovi.notaneitor.repositories.EmployeesRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.*;
-@Service("userDetailsService")
+@Service("employeeDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UsersRepository usersRepository;
-    public UserDetailsServiceImpl(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
+    private final EmployeesRepository employeesRepository;
+    public UserDetailsServiceImpl(EmployeesRepository employeesRepository) {
+        this.employeesRepository = employeesRepository;
     }
     @Override
     public UserDetails loadUserByUsername(String dni) throws UsernameNotFoundException {
-        User user = usersRepository.findByDni(dni);
+        Employee employee = employeesRepository.findByDni(dni);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         //grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
-        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
-        if (user == null) {
+        grantedAuthorities.add(new SimpleGrantedAuthority(employee.getRole()));
+        if (employee == null) {
             throw new UsernameNotFoundException(dni);
         }
         return new org.springframework.security.core.userdetails.User(
-                user.getDni(), user.getPassword(), grantedAuthorities);
+                employee.getDni(), employee.getPassword(), grantedAuthorities);
     }
 }

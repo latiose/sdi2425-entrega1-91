@@ -9,7 +9,7 @@
     <p>Los usuarios que actualmente figuran en el sistema son los
         siguientes:</p>
     <div class="table-responsive">
-        <table class="table table-hover" th:fragment="userTable" id="userTable">
+        <table class="table table-hover" th:fragment="employeeTable" id="employeeTable">
             <thead>
             <tr>
                 <th scope="col">DNI</th>
@@ -23,13 +23,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${usersList}">
-                <td th:text="${user.dni}">71888888X</td>
-                <td th:text="${user.name}">Nombre del alumno</td>
-                <td th:text="${user.lastName}">Apellidos del alumno</td>
-                <td><a th:href="${'/user/details/' + user.id}">detalles</a></td>
-                <td><a th:href="${'/user/edit/' + user.id}">modificar</a></td>
-                <td><a th:href="${'/user/delete/' + user.id}">eliminar</a></td>
+            <tr th:each="employee : ${employeesList}">
+                <td th:text="${employee.dni}">71888888X</td>
+                <td th:text="${employee.name}">Nombre del alumno</td>
+                <td th:text="${employee.lastName}">Apellidos del alumno</td>
+                <td><a th:href="${'/employee/details/' + employee.id}">detalles</a></td>
+                <td><a th:href="${'/employee/edit/' + employee.id}">modificar</a></td>
+                <td><a th:href="${'/employee/delete/' + employee.id}">eliminar</a></td>
             </tr>
             </tbody>
         </table>
