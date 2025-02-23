@@ -1,8 +1,9 @@
-package com.uniovi.notaneitor.controllers;
-import com.uniovi.notaneitor.services.EmployeesService;
-import com.uniovi.notaneitor.services.RolesService;
-import com.uniovi.notaneitor.services.SecurityService;
-import com.uniovi.notaneitor.validators.SignUpFormValidator;
+package com.uniovi.gestor.controllers;
+import com.uniovi.gestor.PasswordGenerator;
+import com.uniovi.gestor.services.EmployeesService;
+import com.uniovi.gestor.services.RolesService;
+import com.uniovi.gestor.services.SecurityService;
+import com.uniovi.gestor.validators.AddEmployeeFormValidator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -10,36 +11,53 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.uniovi.notaneitor.entities.*;
+import com.uniovi.gestor.entities.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class EmployeesController {
     private final EmployeesService employeesService;
     private final SecurityService securityService;
-    private final SignUpFormValidator signUpFormValidator;
+    private final AddEmployeeFormValidator addEmployeeFormValidator;
     private final RolesService rolesService;
 
-    public EmployeesController(EmployeesService employeesService, SecurityService securityService, SignUpFormValidator
-            signUpFormValidator, RolesService rolesService) {
+    public EmployeesController(EmployeesService employeesService, SecurityService securityService, AddEmployeeFormValidator
+            addEmployeeFormValidator, RolesService rolesService) {
         this.employeesService = employeesService;
         this.securityService = securityService;
-        this.signUpFormValidator = signUpFormValidator;
+        this.addEmployeeFormValidator = addEmployeeFormValidator;
         this.rolesService = rolesService;
     }
     @RequestMapping("/employee/list")
-    public String getListado(Model model) {
+    public String getListado(Model model,HttpSession session) {
         model.addAttribute("employeesList", employeesService.getEmployees());
+        String password = (String) session.getAttribute("generatedPassword");
+        if (password != null) {
+            model.addAttribute("generatedPassword", password);
+           session.removeAttribute("generatedPassword");
+        }
         return "employee/list";
     }
     @RequestMapping(value = "/employee/add")
     public String getEmployee(Model model) {
-        model.addAttribute("rolesList", rolesService.getRoles());
-        model.addAttribute("employeesList", employeesService.getEmployees());
+        model.addAttribute("employee", new Employee());
         return "employee/add";
     }
+
     @RequestMapping(value = "/employee/add", method = RequestMethod.POST)
-    public String setEmployee(@ModelAttribute Employee employee) {
+    public String signup(@Validated Employee employee, BindingResult result, Model model, HttpSession session) {
+        addEmployeeFormValidator.validate(employee, result);
+        model.addAttribute("employee", employee);
+        if (result.hasErrors()) {
+            return "/employee/add";
+        }
+        String generatedPassword = PasswordGenerator.generateSecurePassword();
+        employee.setPassword(generatedPassword);
+
+        employee.setRole(rolesService.getRoles()[0]);
         employeesService.addEmployee(employee);
+        session.setAttribute("generatedPassword", generatedPassword);
         return "redirect:/employee/list";
     }
     @RequestMapping("/employee/details/{id}")
@@ -84,23 +102,9 @@ public class EmployeesController {
         return "home";
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public String signup(Model model) {
-        model.addAttribute("employee", new Employee());
-        return "signup";
-    }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(@Validated Employee employee, BindingResult result) {
-        signUpFormValidator.validate(employee, result);
-        if (result.hasErrors()) {
-            return "signup";
-        }
-        employee.setRole(rolesService.getRoles()[0]);
-        employeesService.addEmployee(employee);
-        securityService.autoLogin(employee.getDni(), employee.getPasswordConfirm());
-        return "redirect:home";
-    }
+
+
 
 
 

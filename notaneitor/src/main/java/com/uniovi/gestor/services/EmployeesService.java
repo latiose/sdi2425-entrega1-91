@@ -1,12 +1,12 @@
-package com.uniovi.notaneitor.services;
+package com.uniovi.gestor.services;
 import java.util.*;
 
-import com.uniovi.notaneitor.repositories.EmployeesRepository;
+import com.uniovi.gestor.repositories.EmployeesRepository;
 import javax.annotation.PostConstruct;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.uniovi.notaneitor.entities.*;
+import com.uniovi.gestor.entities.*;
 
 @Service
 public class EmployeesService {

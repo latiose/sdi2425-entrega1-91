@@ -1,7 +1,7 @@
-package com.uniovi.notaneitor.validators;
+package com.uniovi.gestor.validators;
 
-import com.uniovi.notaneitor.entities.Employee;
-import com.uniovi.notaneitor.services.EmployeesService;
+import com.uniovi.gestor.entities.Employee;
+import com.uniovi.gestor.services.EmployeesService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -23,15 +23,23 @@ public class AddEmployeeFormValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Employee employee = (Employee) target;
-        char lastChar = employee.getDni().charAt(employee.getDni().length() - 1);
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "surname", "Error.empty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "Error.empty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "Error.empty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dni", "Error.empty");
+        if (employee.getLastName() != null && !employee.getLastName().trim().equals(employee.getLastName())) {
+            errors.rejectValue("lastName", "Error.space");
+        }
+        if (employee.getName() != null && !employee.getName().trim().equals(employee.getName())) {
+            errors.rejectValue("name", "Error.space");
+        }
+
+        char lastChar = employee.getDni().charAt(employee.getDni().length() - 1);
         if (employee.getDni().length() != 9 || Character.isDigit(lastChar)) {
-            errors.rejectValue("DNI", "Error.professor");
+            errors.rejectValue("dni", "Error.signup.dni.invalid");
         }
 
         if (employeesService.getEmployeeByDni(employee.getDni()) != null) {
-            errors.rejectValue("DNI", "Error.professor");
+            errors.rejectValue("dni", "Error.dni.duplicate");
         }
 
 

@@ -1,7 +1,7 @@
-package com.uniovi.notaneitor.services;
+package com.uniovi.gestor.services;
 import javax.annotation.PostConstruct;
 
-import com.uniovi.notaneitor.entities.Employee;
+import com.uniovi.gestor.entities.Employee;
 import org.springframework.stereotype.Service;
 
 @Service

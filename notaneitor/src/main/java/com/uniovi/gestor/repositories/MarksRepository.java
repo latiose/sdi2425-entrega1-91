@@ -1,7 +1,7 @@
-package com.uniovi.notaneitor.repositories;
+package com.uniovi.gestor.repositories;
 
-import com.uniovi.notaneitor.entities.Employee;
-import com.uniovi.notaneitor.entities.Mark;
+import com.uniovi.gestor.entities.Employee;
+import com.uniovi.gestor.entities.Mark;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;

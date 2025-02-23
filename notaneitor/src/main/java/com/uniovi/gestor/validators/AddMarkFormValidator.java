@@ -1,8 +1,8 @@
-package com.uniovi.notaneitor.validators;
+package com.uniovi.gestor.validators;
 
-import com.uniovi.notaneitor.entities.Employee;
-import com.uniovi.notaneitor.entities.Mark;
-import com.uniovi.notaneitor.services.MarksService;
+import com.uniovi.gestor.entities.Employee;
+import com.uniovi.gestor.entities.Mark;
+import com.uniovi.gestor.services.MarksService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

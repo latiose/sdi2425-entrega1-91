@@ -6,6 +6,7 @@
 <nav th:replace="fragments/nav"/>
 <div class="container">
     <h2>Usuarios</h2>
+    <p th:if="${generatedPassword}">La contraseña del nuevo empleado es: <b th:text="${generatedPassword}"></b></p>
     <p>Los usuarios que actualmente figuran en el sistema son los
         siguientes:</p>
     <div class="table-responsive">

@@ -1,7 +1,7 @@
-package com.uniovi.notaneitor.services;
-import com.uniovi.notaneitor.entities.Employee;
+package com.uniovi.gestor.services;
+import com.uniovi.gestor.entities.Employee;
 import org.springframework.stereotype.Service;
-import com.uniovi.notaneitor.repositories.EmployeesRepository;
+import com.uniovi.gestor.repositories.EmployeesRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +18,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String dni) throws UsernameNotFoundException {
         Employee employee = employeesRepository.findByDni(dni);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        //grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
         grantedAuthorities.add(new SimpleGrantedAuthority(employee.getRole()));
         if (employee == null) {
             throw new UsernameNotFoundException(dni);
