@@ -1,10 +1,10 @@
-package com.uniovi.notaneitor.controllers;
+package com.uniovi.gestor.controllers;
 
-import com.uniovi.notaneitor.entities.Employee;
-import com.uniovi.notaneitor.entities.Mark;
-import com.uniovi.notaneitor.services.EmployeesService;
-import com.uniovi.notaneitor.services.MarksService;
-import com.uniovi.notaneitor.validators.AddMarkFormValidator;
+import com.uniovi.gestor.entities.Employee;
+import com.uniovi.gestor.entities.Mark;
+import com.uniovi.gestor.services.EmployeesService;
+import com.uniovi.gestor.services.MarksService;
+import com.uniovi.gestor.validators.AddMarkFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;

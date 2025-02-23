@@ -1,8 +1,8 @@
-package com.uniovi.notaneitor.services;
+package com.uniovi.gestor.services;
 
-import com.uniovi.notaneitor.entities.Employee;
-import com.uniovi.notaneitor.entities.Mark;
-import com.uniovi.notaneitor.repositories.MarksRepository;
+import com.uniovi.gestor.entities.Employee;
+import com.uniovi.gestor.entities.Mark;
+import com.uniovi.gestor.repositories.MarksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

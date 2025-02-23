@@ -1,6 +1,5 @@
-package com.uniovi.notaneitor.entities;
+package com.uniovi.gestor.entities;
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "employee")

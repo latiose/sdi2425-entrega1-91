@@ -1,4 +1,4 @@
-package com.uniovi.notaneitor;
+package com.uniovi.gestor;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.context.annotation.Bean;
