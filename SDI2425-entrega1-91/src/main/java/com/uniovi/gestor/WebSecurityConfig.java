@@ -26,12 +26,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/css/**", "/images/**", "/script/**", "/", "/login/**").permitAll()
+                .antMatchers("/css/**", "/images/**", "/script/**", "/", "/login/error","/login").permitAll()
                 .antMatchers("/mark/add").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/mark/edit/*").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/mark/delete/*").hasAuthority("ROLE_ADMIN")
@@ -41,10 +43,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .failureUrl("/login/error")
                 .permitAll()
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/login/success")
                 .and()
                 .logout()
+                .logoutSuccessUrl("/login?logout=true")
                 .permitAll();
     }
 }

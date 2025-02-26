@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.uniovi.gestor.entities.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -74,7 +75,7 @@ public class EmployeesController {
     public String getEdit(Model model, @PathVariable Long id) {
         Employee employee = employeesService.getEmployee(id);
         model.addAttribute("employee", employee);
-        return "empleado/edit";
+        return "employee/edit";
     }
 
     @RequestMapping(value = "/employee/edit/{id}", method = RequestMethod.POST)
@@ -89,9 +90,33 @@ public class EmployeesController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
+    public String login(Model model, @RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
+        if (logout != null) {
+            Object logoutAttribute = request.getSession().getAttribute("SPRING_SECURITY_LOGOUT");
+
+            if (logoutAttribute != null || request.getAuthType() == null) { //para que no se muestre el mensaje si se añade el atributo sin estar loggeado
+                model.addAttribute("logout", true);
+                request.getSession().removeAttribute("SPRING_SECURITY_LOGOUT");
+            }
+        }
         return "login";
     }
+
+    @RequestMapping(value = "/login/success", method = RequestMethod.GET)
+    public String loginSuccess() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String dni = auth.getName();
+        Employee activeEmployee = employeesService.getEmployeeByDni(dni);
+        if (activeEmployee.getRole().equals(rolesService.getRoles()[1])) {
+            return "redirect:/employee/list"; // esto hay que actualizarlo cuando se haga lo de los trayectos
+        }
+        return "redirect:/home";
+    }
+@RequestMapping(value = "/login/error", method = RequestMethod.GET)
+public String loginError(Model model) {
+    model.addAttribute("error", true);
+    return "login";
+}
 
     @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
     public String home(Model model) {
