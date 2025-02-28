@@ -19,8 +19,9 @@ public class VehiclesService {
     @PostConstruct
     public void init() {
     }
-    public List<Vehicle> getEmployees() {
-        List<Vehicle> vehicles = new ArrayList<Vehicle>();
+
+    public List<Vehicle> getVehicles() {
+        List<Vehicle> vehicles = new ArrayList<>();
         vehiclesRepository.findAll().forEach(vehicles::add);
         return vehicles;
     }

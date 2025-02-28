@@ -2,6 +2,7 @@ package com.uniovi.gestor.controllers;
 
 import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.services.VehiclesService;
+import com.uniovi.gestor.validators.AddVehicleFormValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class VehiclesController {
 
     private final VehiclesService vehiclesService;
-    // añadir un validador para los formularios
+    private final AddVehicleFormValidator addVehicleFormValidator;
 
-    public VehiclesController(VehiclesService vehiclesService) {
+    public VehiclesController(VehiclesService vehiclesService, AddVehicleFormValidator addVehicleFormValidator) {
         this.vehiclesService = vehiclesService;
+        this.addVehicleFormValidator = addVehicleFormValidator;
     }
 
     @RequestMapping(value = "/vehicle/add")
@@ -28,8 +30,24 @@ public class VehiclesController {
 
     @RequestMapping(value="/vehicle/add", method = RequestMethod.POST)
     public String addVehicle(@Validated Vehicle vehicle, BindingResult result, Model model){
-
+        addVehicleFormValidator.validate(vehicle, result);
+        model.addAttribute("vehicle", vehicle);
+        if(result.hasErrors()){
+            return "vehicle/add";
+        }
         vehiclesService.addVehicle(vehicle);
         return "redirect:/vehicle/list";
+    }
+
+    @RequestMapping("/vehicle/list")
+    public String getVehicleList(Model model){
+        model.addAttribute("vehiclesList", vehiclesService.getVehicles());
+        return "vehicle/list";
+    }
+
+    @RequestMapping("/vehicle/list/update")
+    public String updateList(Model model){
+        model.addAttribute("vehicleTable", vehiclesService.getVehicles() );
+        return "vehicle/list :: vehicleTable";
     }
 }
