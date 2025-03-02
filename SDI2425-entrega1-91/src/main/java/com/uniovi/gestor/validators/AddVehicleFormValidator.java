@@ -34,9 +34,8 @@ public class AddVehicleFormValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "brand", "Error.empty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "model", "Error.empty");
 
-        if (vehicle.getFuel() == null) // esto quizás no debería de estar aquí, sería un error de programación
-                                       // lo cambiaré más adelante
-            errors.rejectValue("fuelType", "Error.empty");
+        if (vehicle.getFuel() == null)
+            errors.rejectValue("fuel", "Error.empty");
 
         if(vehicle.getNumberPlate() != null && !vehicle.getNumberPlate().trim().equals(vehicle.getNumberPlate()))
             errors.rejectValue("numberPlate", "Error.space");
@@ -62,7 +61,7 @@ public class AddVehicleFormValidator implements Validator {
             errors.rejectValue("vin", "Error.vin.duplicate");
         }
 
-        if (vehiclesService.getVehicleByVin(vehicle.getVin()) != null && vehicle.getVin().length() < 17) {
+        if (vehicle.getVin().length() < 17) {
             errors.rejectValue("vin", "Error.vin.length");
         }
 

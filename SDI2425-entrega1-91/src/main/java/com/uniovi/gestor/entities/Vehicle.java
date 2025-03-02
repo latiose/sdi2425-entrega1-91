@@ -5,17 +5,6 @@ import javax.persistence.*;
 @Entity
 @Table(name="vehicle")
 public class Vehicle {
-
-    public enum FuelType{
-        GASOLINA,
-        DIESEL,
-        MICROHIBRIDO,
-        HIBRIDO,
-        ELECTRICO,
-        GLP,
-        GNL
-    }
-
     @Id
     @GeneratedValue
     private long id;
@@ -25,18 +14,34 @@ public class Vehicle {
     private String vin; // número de bastidor
     private String brand;
     private String model;
+    private float mileage;
+    private String status;
 
-    @Enumerated(EnumType.STRING)
-    private FuelType fuel;
+    private String fuel;
 
     public Vehicle(){}
 
-    public Vehicle(String numberPlate, String vin, String brand, String model, FuelType fuel) {
+    public Vehicle(String numberPlate, String vin, String brand, String model, String fuel,
+                   float mileage, String status) {
         this.numberPlate = numberPlate;
         this.vin = vin;
         this.brand = brand;
         this.model = model;
         this.fuel = fuel;
+        this.mileage = mileage;
+        this.status = status;
+    }
+
+    // Constructor para vehículos añadidos por primera vez
+    public Vehicle(String numberPlate, String vin, String brand, String model, String fuel) {
+        this.numberPlate = numberPlate;
+        this.vin = vin;
+        this.brand = brand;
+        this.model = model;
+        this.fuel = fuel;
+        this.mileage = 0;
+        this.status = "LIBRE"; // aquí habrá que inyectar el valor del .properties
+                            // al hacer la internacionalización
     }
 
     public long getId() {
@@ -79,11 +84,11 @@ public class Vehicle {
         this.model = model;
     }
 
-    public FuelType getFuel() {
+    public String getFuel() {
         return fuel;
     }
 
-    public void setFuel(FuelType fuel) {
+    public void setFuel(String fuel) {
         this.fuel = fuel;
     }
 }

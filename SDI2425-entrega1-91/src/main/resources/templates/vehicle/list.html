@@ -9,7 +9,7 @@
     <p>Los usuarios que actualmente figuran en el sistema son los
         siguientes:</p>
     <div class="table-responsive">
-        <table class="table table-hover" th:fragment="vehicleTable" id="employeeTable">
+        <table class="table table-hover" th:fragment="vehicleTable" id="vehicleTable">
             <thead>
             <tr>
                 <th scope="col">Matrícula</th>
@@ -29,6 +29,8 @@
                 <td th:text="${vehicle.brand}">Marca</td>
                 <td th:text="${vehicle.model}">Modelo</td>
                 <td th:text="${vehicle.fuel}">Combustible</td>
+                <td th:text="${vehicle.mileage}">100 km</td>
+                <td th:text="${vehicle.status}">LIBRE</td>
             </tr>
             </tbody>
         </table>

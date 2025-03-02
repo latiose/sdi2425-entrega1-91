@@ -1,6 +1,7 @@
 package com.uniovi.gestor.controllers;
 
 import com.uniovi.gestor.entities.Vehicle;
+import com.uniovi.gestor.services.FuelTypesService;
 import com.uniovi.gestor.services.VehiclesService;
 import com.uniovi.gestor.validators.AddVehicleFormValidator;
 import org.springframework.stereotype.Controller;
@@ -16,15 +17,18 @@ public class VehiclesController {
 
     private final VehiclesService vehiclesService;
     private final AddVehicleFormValidator addVehicleFormValidator;
+    private final FuelTypesService fuelTypesService;
 
-    public VehiclesController(VehiclesService vehiclesService, AddVehicleFormValidator addVehicleFormValidator) {
+    public VehiclesController(VehiclesService vehiclesService, AddVehicleFormValidator addVehicleFormValidator, FuelTypesService fuelTypesService) {
         this.vehiclesService = vehiclesService;
         this.addVehicleFormValidator = addVehicleFormValidator;
+        this.fuelTypesService = fuelTypesService;
     }
 
     @RequestMapping(value = "/vehicle/add")
     public String getVehicle(Model model){
         model.addAttribute("vehicle", new Vehicle());
+        model.addAttribute("fuelTypesList", fuelTypesService.getFuelTypes());
         return "vehicle/add";
     }
 
@@ -33,6 +37,7 @@ public class VehiclesController {
         addVehicleFormValidator.validate(vehicle, result);
         model.addAttribute("vehicle", vehicle);
         if(result.hasErrors()){
+            model.addAttribute("fuelTypesList", fuelTypesService.getFuelTypes());
             return "vehicle/add";
         }
         vehiclesService.addVehicle(vehicle);
