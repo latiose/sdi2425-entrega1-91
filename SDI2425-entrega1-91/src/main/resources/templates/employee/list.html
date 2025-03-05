@@ -5,9 +5,9 @@
 <!-- Barra de Navegación superior -->
 <nav th:replace="fragments/nav"/>
 <div class="container">
-    <h2>Usuarios</h2>
+    <h2 th:text="#{employees.title}"></h2>
     <p th:if="${generatedPassword}">La contraseña del nuevo empleado es: <b th:text="${generatedPassword}"></b></p>
-    <p>Los usuarios que actualmente figuran en el sistema son los
+    <p>Los empleados que actualmente figuran en el sistema son los
         siguientes:</p>
     <div class="table-responsive">
         <table class="table table-hover" th:fragment="employeeTable" id="employeeTable">
