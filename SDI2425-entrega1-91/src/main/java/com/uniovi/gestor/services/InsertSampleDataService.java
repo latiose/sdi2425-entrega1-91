@@ -17,48 +17,34 @@ public class InsertSampleDataService {
         Employee employee1 = new Employee("12345678Z", "Pedro", "Díaz");
         employee1.setPassword("@Dm1n1str@D0r");
         employee1.setRole(rolesService.getRoles()[1]);
-        Employee employee2 = new Employee("99999991B", "Lucas", "Núñez");
-        employee2.setPassword("123456");
-        employee2.setRole(rolesService.getRoles()[0]);
-
-
-
-//            Set user1Marks = new HashSet<Mark>() {
-//            {
-//                add(new Mark("Nota A1", 10.0, employee1));
-//                add(new Mark("Nota A2", 9.0, employee1));
-//                add(new Mark("Nota A3", 7.0, employee1));
-//                add(new Mark("Nota A4", 6.5, employee1));
-//            }
-//        };
-//        employee1.setMarks(user1Marks);
-//        Set user2Marks = new HashSet<Mark>() {
-//            {
-//                add(new Mark("Nota B1", 5.0, employee2));
-//                add(new Mark("Nota B2", 4.3, employee2));
-//                add(new Mark("Nota B3", 8.0, employee2));
-//                add(new Mark("Nota B4", 3.5, employee2));
-//            }
-//        };
-//        employee2.setMarks(user2Marks);
-//        Set user3Marks = new HashSet<Mark>() {
-//            {
-//                add(new Mark("Nota C1", 5.5, empleado3));
-//                add(new Mark("Nota C2", 6.6, empleado3));
-//                add(new Mark("Nota C3", 7.0, empleado3));
-//            }
-//        };
-//        empleado3.setMarks(user3Marks);
-//        Set user4Marks = new HashSet<Mark>() {
-//            {
-//                add(new Mark("Nota D1", 10.0, empleado4));
-//                add(new Mark("Nota D2", 8.0, empleado4));
-//                add(new Mark("Nota D3", 9.0, empleado4));
-//            }
-//        };
-//        empleado4.setMarks(user4Marks);
         employeesService.addEmployee(employee1);
-        employeesService.addEmployee(employee2);
+//        10000001S Usuario1 Us3r@1-PASSW
+//        10000002Q Usuario2 Us3r@2-PASSW
+//        10000003S Usuario3 Us3r@3-PASSW
+//        10000004Q Usuario4 Us3r@4-PASSW
+//        10000005S Usuario5 Us3r@5-PASSW
+//        10000006Q Usuario6 Us3r@6-PASSW
+//        10000007S Usuario7 Us3r@7-PASSW
+//        10000008Q Usuario8 Us3r@8-PASSW
+//        10000009S Usuario9 Us3r@9-PASSW
+//        100000010Q Usuario10 Us3r@10-PASSW
+//        100000011S Usuario11 Us3r@11-PASSW
+//        100000012Q Usuario12 Us3r@12-PASSW
+//        100000013S Usuario13 Us3r@13-PASSW
+//        100000014Q Usuario14 Us3r@14-PASSW
+//        100000015S Usuario15 Us3r@15-PASSW
+        for (int i = 1; i <= 15; i++) {
+            String dni = String.format("1000000%d%s", i, (i % 2 == 0) ? "Q" : "S");
+            String nombre = "Usuario" + i;
+            String password = "Us3r@"+i+"-PASSW";
+
+
+            Employee employee = new Employee(dni, nombre, "Apellido" + i);
+            employee.setPassword(password);
+            employee.setRole(rolesService.getRoles()[0]);
+
+            employeesService.addEmployee(employee);
+        }
 
     }
 }
