@@ -32,18 +32,6 @@ public class Vehicle {
         this.status = status;
     }
 
-    // Constructor para vehículos añadidos por primera vez
-    public Vehicle(String numberPlate, String vin, String brand, String model, String fuel) {
-        this.numberPlate = numberPlate;
-        this.vin = vin;
-        this.brand = brand;
-        this.model = model;
-        this.fuel = fuel;
-        this.mileage = 0;
-        this.status = "LIBRE"; // aquí habrá que inyectar el valor del .properties
-                            // al hacer la internacionalización
-    }
-
     public long getId() {
         return id;
     }
@@ -90,5 +78,22 @@ public class Vehicle {
 
     public void setFuel(String fuel) {
         this.fuel = fuel;
+    }
+
+    public float getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(float mileage) {
+        this.mileage = mileage;
+    }
+
+    public String getStatus() {
+        System.out.println(status);
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

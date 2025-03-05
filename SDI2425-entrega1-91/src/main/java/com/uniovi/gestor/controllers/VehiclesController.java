@@ -52,7 +52,7 @@ public class VehiclesController {
 
     @RequestMapping("/vehicle/list/update")
     public String updateList(Model model){
-        model.addAttribute("vehicleTable", vehiclesService.getVehicles() );
+        model.addAttribute("vehiclesList", vehiclesService.getVehicles() );
         return "vehicle/list :: vehicleTable";
     }
 }
