@@ -14,11 +14,11 @@
         var numberPage = /*[[${param.page}]]*/ null;
         $(document).ready(function() {
             $("#updateButton").click(function() {
-                let urlUpdate = '/professor/list/update';
+                let urlUpdate = '/vehicle/list/update';
                 if (numberPage != null) {
                     urlUpdate += "?page=" + numberPage;
                 }
-                $("#professorsTable").load(urlUpdate);
+                $("#vehicleTable").load(urlUpdate);
             });
         });
         /*]]>*/

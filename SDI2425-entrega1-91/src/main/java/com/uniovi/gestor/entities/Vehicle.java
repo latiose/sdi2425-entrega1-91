@@ -89,7 +89,6 @@ public class Vehicle {
     }
 
     public String getStatus() {
-        System.out.println(status);
         return status;
     }
 
