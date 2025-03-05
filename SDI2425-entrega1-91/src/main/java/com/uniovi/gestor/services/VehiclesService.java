@@ -2,6 +2,8 @@ package com.uniovi.gestor.services;
 
 import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.repositories.VehiclesRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -20,10 +22,8 @@ public class VehiclesService {
     public void init() {
     }
 
-    public List<Vehicle> getVehicles() {
-        List<Vehicle> vehicles = new ArrayList<>();
-        vehiclesRepository.findAll().forEach(vehicles::add);
-        return vehicles;
+    public Page<Vehicle> getVehicles(Pageable pageable) {
+        return vehiclesRepository.findAll(pageable);
     }
 
     public Vehicle getVehicle(int id) {

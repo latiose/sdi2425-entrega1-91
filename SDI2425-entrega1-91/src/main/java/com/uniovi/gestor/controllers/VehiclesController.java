@@ -4,6 +4,8 @@ import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.services.FuelTypesService;
 import com.uniovi.gestor.services.VehiclesService;
 import com.uniovi.gestor.validators.AddVehicleFormValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,14 +47,16 @@ public class VehiclesController {
     }
 
     @RequestMapping("/vehicle/list")
-    public String getVehicleList(Model model){
-        model.addAttribute("vehiclesList", vehiclesService.getVehicles());
+    public String getVehicleList(Model model, Pageable pageable){
+        Page<Vehicle> vehicles = vehiclesService.getVehicles(pageable);
+        model.addAttribute("vehiclesList",vehicles);
+        model.addAttribute("page", vehicles);
         return "vehicle/list";
     }
 
     @RequestMapping("/vehicle/list/update")
-    public String updateList(Model model){
-        model.addAttribute("vehiclesList", vehiclesService.getVehicles() );
+    public String updateList(Model model, Pageable pageable){
+        model.addAttribute("vehiclesList", vehiclesService.getVehicles(pageable) );
         return "vehicle/list :: vehicleTable";
     }
 }
