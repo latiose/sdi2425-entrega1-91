@@ -2,15 +2,18 @@ package com.uniovi.gestor.services;
 import javax.annotation.PostConstruct;
 
 import com.uniovi.gestor.entities.Employee;
+import com.uniovi.gestor.entities.Vehicle;
 import org.springframework.stereotype.Service;
 
 @Service
 public class InsertSampleDataService {
     private final EmployeesService employeesService;
     private final RolesService rolesService;
-    public InsertSampleDataService(EmployeesService employeesService, RolesService rolesService) {
+    private final VehiclesService vehiclesService;
+    public InsertSampleDataService(EmployeesService employeesService, RolesService rolesService, VehiclesService vehiclesService) {
         this.employeesService = employeesService;
         this.rolesService = rolesService;
+        this.vehiclesService = vehiclesService;
     }
     @PostConstruct
     public void init() {
@@ -46,5 +49,26 @@ public class InsertSampleDataService {
             employeesService.addEmployee(employee);
         }
 
+        addVehicles();
+
+    }
+
+    private void addVehicles() {
+        String[] fuelTypes = {"GASOLINA", "DIESEL", "MICROHIBRIDO", "HIBRIDO", "ELECTRICO", "GLP", "GNL"};
+        Vehicle[] vehicles = {
+                new Vehicle("1234ABC", "1HGCM82633A123456", "Toyota", "Corolla", fuelTypes[0], 15234.5f, "LIBRE"),
+                new Vehicle("5678DEF", "2HGFA16578H123456", "Ford", "Focus", fuelTypes[1], 78345.2f, "OCUPADO"),
+                new Vehicle("9101GHI", "3FAFP08192R123456", "Volkswagen", "Golf", fuelTypes[2], 21567.8f, "LIBRE"),
+                new Vehicle("1121JKL", "4T1BF22K12U123456", "Honda", "Civic", fuelTypes[3], 9876.3f, "OCUPADO"),
+                new Vehicle("3141MNO", "5NPEB4AC2BH123456", "Nissan", "Leaf", fuelTypes[4], 5432.1f, "LIBRE"),
+                new Vehicle("5161PQR", "6G2EC57Y08L123456", "BMW", "X5", fuelTypes[5], 34567.9f, "OCUPADO"),
+                new Vehicle("7181STU", "7FARW1H54HE123456", "Mercedes", "C-Class", fuelTypes[6], 67890.4f, "LIBRE"),
+                new Vehicle("9202VWX", "8HGCM82633A123456", "Peugeot", "208", fuelTypes[0], 23456.7f, "OCUPADO"),
+                new Vehicle("1323YZA", "9HGFA16578H123456", "Renault", "Clio", fuelTypes[1], 7890.2f, "LIBRE"),
+                new Vehicle("3545BCD", "0FAFP08192R123456", "Tesla", "Model 3", fuelTypes[4], 1234.5f, "OCUPADO")
+        };
+        for (Vehicle v : vehicles){
+            vehiclesService.addVehicle(v);
+        }
     }
 }
