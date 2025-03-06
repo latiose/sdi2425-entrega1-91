@@ -182,5 +182,182 @@ class GestorApplicationTests {
         PO_LoginView.logOut(driver);
     }
 
+    @Test
+    @Order(11)
+    // Registro de un vehículo con datos válidos
+    public void PR011() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
+
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
+        PO_PrivateView.goToPage(driver, 3);
+        String checkText = "1234BCD";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    @Test
+    @Order(12)
+    // Registro de un vehículo con datos inválidos: matrícula vacía
+    public void PR012A() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
+
+        PO_PrivateView.fillFormAddVehicle(driver, "", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
+
+        List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
+        Assertions.assertFalse(requiredFieldErrors.isEmpty());
+        String currentUrl = driver.getCurrentUrl();
+        Assertions.assertTrue(currentUrl.contains("/vehicle/add"));
+    }
+
+    @Test
+    @Order(13)
+    // Registro de un vehículo con datos inválidos: número de bastidor vacío
+    public void PR012B() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
+
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "", "Toyota", "Corolla", "DIESEL");
+
+        List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
+        Assertions.assertFalse(requiredFieldErrors.isEmpty());
+        String currentUrl = driver.getCurrentUrl();
+        Assertions.assertTrue(currentUrl.contains("/vehicle/add"));
+    }
+    @Test
+    @Order(14)
+    // Registro de un vehículo con datos inválidos: marca vacía
+    public void PR012C() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
+
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "", "Corolla", "DIESEL");
+
+        List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
+        Assertions.assertFalse(requiredFieldErrors.isEmpty());
+        String currentUrl = driver.getCurrentUrl();
+        Assertions.assertTrue(currentUrl.contains("/vehicle/add"));
+    }
+    @Test
+    @Order(15)
+    // Registro de un vehículo con datos inválidos: matrícula vacía
+    public void PR012D() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
+
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "Toyota", "", "DIESEL");
+
+        List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
+        Assertions.assertFalse(requiredFieldErrors.isEmpty());
+        String currentUrl = driver.getCurrentUrl();
+        Assertions.assertTrue(currentUrl.contains("/vehicle/add"));
+    }
+
+    @Test
+    @Order(16)
+    // Registro de un vehículo con datos inválidos: formato de matrícula inválido
+    public void PR013() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
+
+        PO_PrivateView.fillFormAddVehicle(driver, "123", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
+
+        List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.addvehicle.plate.invalid",
+                PO_Properties.getSPANISH());
+
+        String checkText = PO_HomeView.getP().getString("Error.addvehicle.plate.invalid",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    @Test
+    @Order(17)
+    // Registro de un vehículo con datos inválidos: longitud del número de bastidor inválido -> mayor de 17
+    public void PR014A() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
+
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCF", "ASDFGHJKLQWERTYUII", "Toyota", "Corolla", "DIESEL");
+
+        List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.vin.length",
+                PO_Properties.getSPANISH());
+
+        String checkText = PO_HomeView.getP().getString("Error.vin.length",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    @Test
+    @Order(18)
+    // Registro de un vehículo con datos inválidos: longitud del número de bastidor inválido -> menor de 17
+    public void PR014B() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
+
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCF", "ASDFGHJKLQWERTYU", "Toyota", "Corolla", "DIESEL");
+
+        List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.vin.length",
+                PO_Properties.getSPANISH());
+
+        String checkText = PO_HomeView.getP().getString("Error.vin.length",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    @Test
+    @Order(19)
+    // Registro de un vehículo con datos inválidos: matrícula existente
+    public void PR015() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
+
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
+
+        List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.plate.duplicate",
+                PO_Properties.getSPANISH());
+
+        String checkText = PO_HomeView.getP().getString("Error.plate.duplicate",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    @Test
+    @Order(20)
+    // Registro de un vehículo con datos inválidos: número de bastidor existente
+    public void PR016() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
+
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BGD", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
+
+        List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.vin.duplicate",
+                PO_Properties.getSPANISH());
+
+        String checkText = PO_HomeView.getP().getString("Error.vin.duplicate",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
 }
 

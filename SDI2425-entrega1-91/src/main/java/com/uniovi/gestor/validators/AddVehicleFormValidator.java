@@ -61,7 +61,7 @@ public class AddVehicleFormValidator implements Validator {
             errors.rejectValue("vin", "Error.vin.duplicate");
         }
 
-        if (vehicle.getVin().length() < 17) {
+        if (vehicle.getVin().length() != 17) {
             errors.rejectValue("vin", "Error.vin.length");
         }
 
