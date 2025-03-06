@@ -1,11 +1,16 @@
 package com.uniovi.gestor;
 
 import com.uniovi.gestor.pageobjects.*;
+import com.uniovi.gestor.repositories.VehiclesRepository;
+import com.uniovi.gestor.services.InsertSampleDataService;
+import com.uniovi.gestor.services.VehiclesService;
+import org.hibernate.sql.Insert;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -18,6 +23,9 @@ class GestorApplicationTests {
     static String Geckodriver = "geckodriver.exe";
     static WebDriver driver = getDriver(PathFirefox, Geckodriver);
     static String URL = "http://localhost:8090";
+
+    @Autowired
+    private InsertSampleDataService insertSampleDataService;
 
     public static WebDriver getDriver(String PathFirefox, String Geckodriver) {
         System.setProperty("webdriver.firefox.bin", PathFirefox);
@@ -191,9 +199,9 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
-        PO_PrivateView.goToPage(driver, 3);
-        String checkText = "1234BCD";
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCL", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
+        PO_PrivateView.goToLastPage(driver);
+        String checkText = "1234BCL";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
     }
@@ -233,7 +241,7 @@ class GestorApplicationTests {
     }
     @Test
     @Order(14)
-    // Registro de un vehículo con datos inválidos: marca vacía
+    // Registro de un vehículo con datos inválidos: Marca vacía
     public void PR012C() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
@@ -249,7 +257,7 @@ class GestorApplicationTests {
     }
     @Test
     @Order(15)
-    // Registro de un vehículo con datos inválidos: matrícula vacía
+    // Registro de un vehículo con datos inválidos: Modelo vacío
     public void PR012D() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
@@ -357,6 +365,27 @@ class GestorApplicationTests {
         String checkText = PO_HomeView.getP().getString("Error.vin.duplicate",
                 PO_Properties.getSPANISH());
         Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    @Test
+    @Order(21)
+    public void PR020() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Ver vehículos");
+
+        int numCars = insertSampleDataService.getNumCars() + 1; // el que se añade en uno de los tests anteriores
+
+        int totalCount = 0;
+        boolean next = true;
+        while (next) {
+            List<WebElement> vehicleRows = driver.findElements(By.xpath("//*[@id=\"vehicleTable\"]/tbody/tr"));
+            totalCount += vehicleRows.size();
+            next = PO_PrivateView.goToNextPage(driver);
+        }
+
+        Assertions.assertEquals(totalCount, numCars, "El número de vehículos no coincide.");
     }
 
 }

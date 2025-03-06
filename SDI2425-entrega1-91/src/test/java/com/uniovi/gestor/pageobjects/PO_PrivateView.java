@@ -77,8 +77,36 @@ public class PO_PrivateView extends PO_NavView {
         elements.get(index).click();
     }
 
-    static public void goToPage(WebDriver driver, int page) {
+    static public boolean goToNextPage(WebDriver driver) {
         List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
-        elements.get(page).click();
+
+        // Obtiene la página actual
+        int currentPageIndex = -1;
+        for (int i = 0; i < elements.size(); i++) {
+            WebElement parent = elements.get(i).findElement(By.xpath("./.."));
+            if (parent.getAttribute("class").contains("active")) {
+                currentPageIndex = i;
+                break;
+            }
+        }
+
+        if (currentPageIndex != -1 && currentPageIndex + 1 < elements.size()) {
+            String nextText = elements.get(currentPageIndex + 1).getText().trim();
+            // Comprueba si la siguiente página es un dígito (no "Última")
+            if (nextText.matches("\\d+")) {
+                elements.get(currentPageIndex + 1).click();
+                return true;
+            }
+        }
+        return false;
     }
+
+    static public void goToLastPage(WebDriver driver) {
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
+
+        if (!elements.isEmpty()) {
+            elements.get(elements.size() - 1).click(); // Click the last pagination button
+        }
+    }
+
 }
