@@ -42,6 +42,26 @@ public class PO_PrivateView extends PO_NavView {
         driver.findElement(By.className("btn-primary")).click();
     }
 
+    static public void fillFormAddVehicle(WebDriver driver, String numberPlatep, String vinp, String brandp,
+                                          String modelp, String fuelp)
+    {
+        WebElement numberPlate = driver.findElement(By.id("numberPlate"));
+        numberPlate.clear();
+        numberPlate.sendKeys(numberPlatep);
+        WebElement vin = driver.findElement(By.id("vin"));
+        vin.clear();
+        vin.sendKeys(vinp);
+        WebElement brand = driver.findElement(By.id("brand"));
+        brand.clear();
+        brand.sendKeys(brandp);
+        WebElement model = driver.findElement(By.id("model"));
+        model.clear();
+        model.sendKeys(modelp);
+        WebElement fuelDropdown = driver.findElement(By.id("fuel"));
+        Select fuelSelect = new Select(fuelDropdown);
+        fuelSelect.selectByVisibleText(fuelp);
+        driver.findElement(By.className("btn-primary")).click();
+    }
 
 
     static public void goThroughNav(WebDriver driver,String type1,String text1,String type2,String text2){
@@ -56,4 +76,37 @@ public class PO_PrivateView extends PO_NavView {
         List<WebElement> elements =SeleniumUtils.waitLoadElementsBy(driver, type, text, getTimeout());
         elements.get(index).click();
     }
+
+    static public boolean goToNextPage(WebDriver driver) {
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
+
+        // Obtiene la página actual
+        int currentPageIndex = -1;
+        for (int i = 0; i < elements.size(); i++) {
+            WebElement parent = elements.get(i).findElement(By.xpath("./.."));
+            if (parent.getAttribute("class").contains("active")) {
+                currentPageIndex = i;
+                break;
+            }
+        }
+
+        if (currentPageIndex != -1 && currentPageIndex + 1 < elements.size()) {
+            String nextText = elements.get(currentPageIndex + 1).getText().trim();
+            // Comprueba si la siguiente página es un dígito (no "Última")
+            if (nextText.matches("\\d+")) {
+                elements.get(currentPageIndex + 1).click();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static public void goToLastPage(WebDriver driver) {
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
+
+        if (!elements.isEmpty()) {
+            elements.get(elements.size() - 1).click(); // Click the last pagination button
+        }
+    }
+
 }
