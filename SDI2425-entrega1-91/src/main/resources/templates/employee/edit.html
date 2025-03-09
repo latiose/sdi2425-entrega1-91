@@ -1,10 +1,11 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head"><title>Notaneitor</title></head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario</title>
+</head>
 <body>
-
-<!-- Barra de Navegación superior -->
-<nav th:replace="fragments/nav"></nav>
 <div class="container" id="main-container">
     <h2>Editar Usuario</h2>
     <form class="form-horizontal" method="post" th:action="${'/employee/edit/' + employee.id}">
@@ -16,18 +17,26 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="name">name:</label>
+            <label class="control-label col-sm-2" for="name">Nombre:</label>
             <div class="col-sm-10">
-                <input input th:value="${employee.name}" id="name" type="text" class="form-control" name="name"
-                       placeholder="Pablo"
-                       required="true"/>
+                <input th:value="${employee.name}" id="name" type="text" class="form-control" name="name"
+                       placeholder="Pablo" required="true"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="lastName">apellido:</label>
+            <label class="control-label col-sm-2" for="lastName">Apellido:</label>
             <div class="col-sm-10">
                 <input th:value="${employee.lastName}" id="lastName" type="text" class="form-control" name="lastName"
                        placeholder="Perez" required="true"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="role">Rol:</label>
+            <div class="col-sm-10">
+                <select name="role" id="role" class="form-control" th:value="${employee.role}">
+                    <option value="empleado" th:selected="${employee.role == 'empleado'}">Empleado</option>
+                    <option value="administrador" th:selected="${employee.role == 'administrador'}">Administrador</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
@@ -37,7 +46,5 @@
         </div>
     </form>
 </div>
-<footer th:replace="fragments/footer"></footer>
-
 </body>
 </html>

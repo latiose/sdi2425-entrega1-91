@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">>
 <head th:replace="fragments/head"/>
 <body>
 <!-- Barra de Navegación superior -->
@@ -9,6 +9,7 @@
     <p th:if="${generatedPassword}">La contraseña del nuevo empleado es: <b th:text="${generatedPassword}"></b></p>
     <p>Los empleados que actualmente figuran en el sistema son los
         siguientes:</p>
+
     <div class="table-responsive">
         <table class="table table-hover" th:fragment="employeeTable" id="employeeTable">
             <thead>
@@ -26,15 +27,17 @@
             <tbody>
             <tr th:each="employee : ${employeesList}">
                 <td th:text="${employee.dni}">71888888X</td>
-                <td th:text="${employee.name}">Nombre del alumno</td>
-                <td th:text="${employee.lastName}">Apellidos del alumno</td>
-                <td><a th:href="${'/employee/details/' + employee.id}">detalles</a></td>
-                <td><a th:href="${'/employee/edit/' + employee.id}">modificar</a></td>
-                <td><a th:href="${'/employee/delete/' + employee.id}">eliminar</a></td>
+                <td th:text="${employee.name}">Nombre del empleado</td>
+                <td th:text="${employee.lastName}">Apellidos del empleado</td>
+                <td><a sec:authorize="hasTole('ROLE_ADMIN')" th:href="${'/employee/details/' + employee.id}">detalles</a></td>
+                <td><a sec:authorize="hasTole('ROLE_ADMIN')" th:href="${'/employee/edit/' + employee.id}">modificar</a></td>
+                <
             </tr>
             </tbody>
         </table>
     </div>
+    <div th:if="${#lists.isEmpty(employeesList)}"> No marks </div>
+    <footer th:replace="fragments/pagination"/>
 </div>
 <footer th:replace="fragments/footer"/>
 </body>

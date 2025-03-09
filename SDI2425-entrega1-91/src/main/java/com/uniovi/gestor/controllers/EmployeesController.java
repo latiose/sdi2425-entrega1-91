@@ -4,17 +4,21 @@ import com.uniovi.gestor.services.EmployeesService;
 import com.uniovi.gestor.services.RolesService;
 import com.uniovi.gestor.services.SecurityService;
 import com.uniovi.gestor.validators.AddEmployeeFormValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.uniovi.gestor.entities.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 
 @Controller
 public class EmployeesController {
@@ -29,11 +33,17 @@ public class EmployeesController {
         this.securityService = securityService;
         this.addEmployeeFormValidator = addEmployeeFormValidator;
         this.rolesService = rolesService;
+
     }
     @RequestMapping("/employee/list")
-    public String getListado(Model model,HttpSession session) {
-        model.addAttribute("employeesList", employeesService.getEmployees());
+    public String getListado(Model model, Pageable pageable, HttpSession session) {
+
+        Page<Employee> employees = employeesService.getEmployees(pageable);
+
+        model.addAttribute("employeesList", employees.getContent());
+        model.addAttribute("page", employees);
         String password = (String) session.getAttribute("generatedPassword");
+
         if (password != null) {
             model.addAttribute("generatedPassword", password);
            session.removeAttribute("generatedPassword");
@@ -79,7 +89,13 @@ public class EmployeesController {
     }
 
     @RequestMapping(value = "/employee/edit/{id}", method = RequestMethod.POST)
-    public String setEdit(@ModelAttribute Employee employee, @PathVariable Long id) {
+    public String setEdit(@Validated Employee employee, BindingResult result, @PathVariable Long id) {
+        addEmployeeFormValidator.validate(employee, result);
+
+        if (result.hasErrors()) {
+            return "employee/edit";
+        }
+
         Employee originalEmployee = employeesService.getEmployee(id);
         originalEmployee.setDni(employee.getDni());
         originalEmployee.setName(employee.getName());
@@ -128,14 +144,9 @@ public String loginError(Model model) {
     }
 
 
-
-
-
-
-
     @RequestMapping("/employee/list/update")
-    public String updateList(Model model){
-        model.addAttribute("employeesList", employeesService.getEmployees() );
+    public String updateList(Model model, Pageable pageable){
+        model.addAttribute("employeesList", employeesService.getEmployees(pageable) );
         return "employee/list :: employeeTable";
     }
 
