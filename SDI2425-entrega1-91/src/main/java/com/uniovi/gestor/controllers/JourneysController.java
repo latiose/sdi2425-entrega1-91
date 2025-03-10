@@ -39,8 +39,8 @@ public class JourneysController {
     }
 
     @RequestMapping(value="/journey/add", method = RequestMethod.POST)
-    public String addJourney(@ModelAttribute String plateNumber, BindingResult result, Model model){
-        Vehicle v = vehiclesService.getVehicleByNumberPlate(plateNumber);
+    public String addJourney( Model model){
+        Vehicle v = vehiclesService.getVehicleByNumberPlate(model.getAttribute("plateNumber").toString());
         Journey journey = new Journey(v);
         model.addAttribute("journey", journey);
         journeysService.addJourney(journey);
