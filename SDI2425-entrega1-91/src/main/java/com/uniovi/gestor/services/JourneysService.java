@@ -48,4 +48,8 @@ public class JourneysService {
     public List<Journey> findByDni(String dni) {
         return journeysRepository.findByDni(dni);
     }
+
+    public Journey findActiveJourneyByDni(String dni) {
+        return journeysRepository.findActiveJourneyByDni(dni);
+    }
 }
