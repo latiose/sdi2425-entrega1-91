@@ -29,6 +29,14 @@
           <a class="dropdown-item" href="/employee/list" sec:authorize="hasRole('ROLE_ADMIN')">Ver usuarios</a>
         </div>
       </li>
+      <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+        <a class="nav-link dropdown-toggle" href="#" id="journeyDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false" th:text="#{journey.dropdown}">
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/journey/add"  th:text="#{journey.add}"></a>
+          <a class="dropdown-item" href="/journey/list" th:text="#{journey.list}"></a>
+        </div>
       <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
         <a class="nav-link dropdown-toggle" href="#" id="vehicleDropdown" role="button" data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false">Gestión de vehículos
