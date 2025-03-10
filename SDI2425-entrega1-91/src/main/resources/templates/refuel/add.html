@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Barra de Navegación superior -->
+<nav th:replace="fragments/nav"/>
+<div class="container">
+    <h2>Agregar repostaje</h2>
+    <form class="form-horizontal" method="post" action="/refuel/add" th:object="${refuel}">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="station">Estación de servicio:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="station" name="station"
+                       placeholder="Gasolineras Manolo" required="true"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('station')}" th:errors="*{station}"></span>
+            </div>
+        </div>
+    </form>
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>
