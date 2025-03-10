@@ -9,6 +9,7 @@
     <p>Los usuarios que actualmente figuran en el sistema son los
         siguientes:</p>
     <button type="button" id="updateButton" class="btn btn-primary">Actualizar</button>
+    <button type="button" id="deleteButton" class="btn btn-primary">Eliminar</button>
     <script th:inline="javascript">
         /*<![CDATA[*/
         var numberPage = /*[[${param.page}]]*/ null;
@@ -19,6 +20,28 @@
                     urlUpdate += "?page=" + numberPage;
                 }
                 $("#vehicleTable").load(urlUpdate);
+            });
+            $("#deleteButton").click(function() {
+                let selectedIds = $(".vehicleCheckbox:checked").map(function() {
+                    return $(this).val();
+                }).get();
+
+                if (selectedIds.length > 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/vehicle/delete",
+                        contentType: "application/json",
+                        data: JSON.stringify(selectedIds),
+                        success: function() {
+                            location.reload();
+                        },
+                        error: function() {
+                            alert("Error al eliminar vehículos");
+                        }
+                    });
+                } else {
+                    alert("Seleccione al menos un vehículo para eliminar.");
+                }
             });
         });
         /*]]>*/
@@ -46,6 +69,9 @@
                 <td th:text="${vehicle.fuel}">Combustible</td>
                 <td th:text="${vehicle.mileage}">100 km</td>
                 <td th:text="${vehicle.status}">LIBRE</td>
+                <td><label>
+                    <input type="checkbox" class="vehicleCheckbox" th:value="${vehicle.id}"/>
+                </label></td>
             </tr>
             </tbody>
         </table>

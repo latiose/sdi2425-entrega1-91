@@ -10,9 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class VehiclesController {
@@ -58,5 +58,13 @@ public class VehiclesController {
     public String updateList(Model model, Pageable pageable){
         model.addAttribute("vehiclesList", vehiclesService.getVehicles(pageable) );
         return "vehicle/list :: vehicleTable";
+    }
+
+    @RequestMapping(value = "/vehicle/delete", method = RequestMethod.POST)
+    public String delete(@RequestBody List<Long> vehicleIds) {
+        if (vehicleIds != null && !vehicleIds.isEmpty()) {
+            vehicleIds.forEach(vehiclesService::deleteVehicle);
+        }
+        return "redirect:/vehicle/list";
     }
 }

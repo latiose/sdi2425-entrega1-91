@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface VehiclesRepository extends CrudRepository<Vehicle, Integer> {
+public interface VehiclesRepository extends CrudRepository<Vehicle, Long> {
     @Query("SELECT v FROM Vehicle v WHERE LOWER(v.numberPlate) = LOWER(?1)")
     Vehicle findByNumberPlate(String numberPlate);
 
