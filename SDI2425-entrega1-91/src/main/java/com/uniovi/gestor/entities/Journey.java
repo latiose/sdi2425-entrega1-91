@@ -15,13 +15,14 @@ public class Journey {
 
     public Journey(Vehicle v){
         this();
-        this.odometerStart=v.getMileage();
         this.vehicle=v;
     }
     @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     @ManyToOne
+    @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;
 
     @Id
@@ -54,7 +55,7 @@ public class Journey {
     }
 
     public double getDuration() {
-        return ChronoUnit.DAYS.between(endDate, startDate);
+        return ChronoUnit.HOURS.between(endDate, startDate);
     }
 
     public void setDuration(double duration) {

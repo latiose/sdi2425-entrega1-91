@@ -2,12 +2,14 @@ package com.uniovi.gestor.services;
 
 
 import com.uniovi.gestor.entities.Journey;
+import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.repositories.JourneysRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Service
 public class JourneysService {
@@ -35,4 +37,15 @@ public class JourneysService {
         journeysRepository.delete(journey);
     }
 
+    public Vehicle findVehicleByNumberPlate(String plateNumber) {
+        return journeysRepository.findByNumberPlate(plateNumber);
+    }
+
+    public List<Journey> findByVehicle(Vehicle v) {
+        return journeysRepository.findByVehicle(v);
+    }
+
+    public List<Journey> findByDni(String dni) {
+        return journeysRepository.findByDni(dni);
+    }
 }

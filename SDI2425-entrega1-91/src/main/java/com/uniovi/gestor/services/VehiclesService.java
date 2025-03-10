@@ -46,4 +46,15 @@ public class VehiclesService {
         vehiclesRepository.delete(vehicle);
     }
 
+    public List<String> findAllPlates() {
+        return vehiclesRepository.findAllPlates();
+    }
+
+
+    public Vehicle findVehicleByNumberPlate(String plate) {
+    return getVehicleByNumberPlate(plate);
+    }
+
+
+
 }

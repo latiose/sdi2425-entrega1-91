@@ -16,7 +16,9 @@
                             th:text="${plate}">
                     </option>
                 </select>
-                <input type="hidden" class="form-control" id="status" name="plateNumber" value="LIBRE"/> <!-- Cambiar por .messages al internacionalizar -->
+            </div>
+            <div th:if="${error}" class="alert alert-danger">
+                <span th:text="${error}"></span>
             </div>
         </div>
         <div class="form-group">
