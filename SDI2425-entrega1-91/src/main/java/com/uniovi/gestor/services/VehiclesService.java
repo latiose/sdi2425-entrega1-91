@@ -26,7 +26,7 @@ public class VehiclesService {
         return vehiclesRepository.findAll(pageable);
     }
 
-    public Vehicle getVehicle(int id) {
+    public Vehicle getVehicle(Long id) {
         return vehiclesRepository.findById(id).get();
     }
 
@@ -42,8 +42,8 @@ public class VehiclesService {
         return vehiclesRepository.findByVin(vin);
     }
 
-    public void deleteVehicle(Vehicle vehicle) {
-        vehiclesRepository.delete(vehicle);
+    public void deleteVehicle(Long id) {
+        vehiclesRepository.deleteById(id);
     }
 
 }
