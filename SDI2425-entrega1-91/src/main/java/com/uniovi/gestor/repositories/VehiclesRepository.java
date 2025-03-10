@@ -7,12 +7,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 public interface VehiclesRepository extends CrudRepository<Vehicle, Integer> {
     @Query("SELECT v FROM Vehicle v WHERE LOWER(v.numberPlate) = LOWER(?1)")
     Vehicle findByNumberPlate(String numberPlate);
 
     @Query("SELECT v FROM Vehicle v WHERE LOWER(v.vin) = LOWER(?1)")
     Vehicle findByVin(String vin);
+
+    @Query("SELECT v.numberPlate FROM Vehicle v")
+    List<String> findAllPlates();
 
     Page<Vehicle> findAll(Pageable pageable);
 }
