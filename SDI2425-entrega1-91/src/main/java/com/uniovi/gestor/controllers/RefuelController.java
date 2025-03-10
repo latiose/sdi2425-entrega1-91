@@ -5,6 +5,8 @@ import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.repositories.RefuelsRepository;
 import com.uniovi.gestor.services.RefuelsService;
 import com.uniovi.gestor.validators.AddRefuelFormValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +41,6 @@ public class RefuelController {
             return "refuel/add";
         }
         refuelsService.addRefuel(refuel);
-        return "redirect:/vehicle/list";
+        return "redirect:/refuel/list";
     }
 }
