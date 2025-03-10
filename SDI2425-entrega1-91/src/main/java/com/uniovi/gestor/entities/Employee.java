@@ -1,5 +1,7 @@
 package com.uniovi.gestor.entities;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "employee")
@@ -11,7 +13,8 @@ public class Employee {
     private String dni;
     private String name;
     private String lastName;
-
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private Set<Journey> journeys = new HashSet<Journey>(); ;
     private String password;
 
     @Transient
@@ -19,8 +22,7 @@ public class Employee {
 
     private String role;
 
-    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    //private Set<Mark> marks;
+
     public Employee(String dni, String name, String lastName) {
         this.dni = dni;
         this.name = name;

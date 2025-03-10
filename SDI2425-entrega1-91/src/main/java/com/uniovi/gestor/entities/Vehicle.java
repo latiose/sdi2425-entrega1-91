@@ -1,6 +1,8 @@
 package com.uniovi.gestor.entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="vehicle")
@@ -16,7 +18,8 @@ public class Vehicle {
     private String model;
     private float mileage;
     private String status;
-
+    @OneToMany(mappedBy = "vehicle",cascade = CascadeType.ALL)
+    private Set<Journey> journeys = new HashSet<Journey>(); ;
     private String fuel;
 
     public Vehicle(){}
