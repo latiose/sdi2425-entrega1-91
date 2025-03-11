@@ -5,9 +5,8 @@
 <!-- Barra de Navegación superior -->
 <nav th:replace="fragments/nav"/>
 <div class="container">
-    <h2>Vehículos</h2>
-    <p>Los usuarios que actualmente figuran en el sistema son los
-        siguientes:</p>
+    <h2 th:text = "#{journey.header}"></h2>
+    <p th:text = "#{journey.list.title}"></p>
     <button type="button" id="updateButton" class="btn btn-primary">Actualizar</button>
     <script th:inline="javascript">
         /*<![CDATA[*/
@@ -27,25 +26,21 @@
         <table class="table table-hover" th:fragment="journeyTable" id="journeyTable">
             <thead>
             <tr>
-                <th scope="col">Matrícula</th>
-                <th scope="col">Número de bastidor</th>
-                <th scope="col">Marca</th>
-                <th scope="col">Modelo</th>
-                <th scope="col">Combustible</th>
-                <th scope="col">Kilometraje</th>
-                <th scope="col">Estado</th>
+                <th th:text="${journeys.start.date}"></th>
+                <th th:text="${journeys.plate}"></th>
+                <th th:text="${journeys.length}"></th>
+                <th th:text="${journeys.odometer1}"></th>
+                <th th:text="${journeys.odometer2}"></th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="journey : ${journeysList}">
-                <td th:text="${journey.numberPlate}">1234BCD</td>
-                <td th:text="${journey.vin}">Número bastidor</td>
-                <td th:text="${journey.brand}">Marca</td>
-                <td th:text="${journey.model}">Modelo</td>
-                <td th:text="${journey.fuel}">Combustible</td>
-                <td th:text="${journey.mileage}">100 km</td>
-                <td th:text="${journey.status}">LIBRE</td>
+                <td th:text="${journey.startDate}"></td>
+                <td th:text="${journey.vehicle.numberPlate}"></td>
+                <td th:text="${journey.duration}"></td>
+                <td th:text="${journey.odometerStart}"></td>
+                <td th:text="${journey.odometerEnd}"></td>
             </tr>
             </tbody>
         </table>

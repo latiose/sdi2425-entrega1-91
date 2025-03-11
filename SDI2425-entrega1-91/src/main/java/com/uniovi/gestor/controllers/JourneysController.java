@@ -86,8 +86,10 @@ public class JourneysController {
 
     @RequestMapping("/journey/list")
     public String getJourneyList(Model model, Pageable pageable){
-        Page<Journey> journeys = journeysService.getJourneys(pageable);
-        model.addAttribute("journeyList",journeys);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String dni = auth.getName();
+        Page<Journey> journeys = journeysService.findFinishedForCurrentUser(dni,pageable);
+        model.addAttribute("journeyList",journeys.getContent());
         model.addAttribute("page", journeys);
         return "journey/list";
     }
