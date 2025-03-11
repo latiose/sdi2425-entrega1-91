@@ -22,4 +22,8 @@ public interface JourneysRepository extends CrudRepository<Journey, Long> {
     @Query("SELECT j FROM Journey j WHERE LOWER(j.employee.dni) = LOWER(?1)")
     List<Journey> findByDni(String dni);
 
+    @Query("SELECT j FROM Journey j WHERE LOWER(j.employee.dni) = LOWER(?1) and j.endDate is not null")
+    Page<Journey> findFinishedForCurrentUser(String dni, Pageable pageable);
+
+
 }

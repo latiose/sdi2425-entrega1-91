@@ -108,7 +108,7 @@ public class EmployeesController {
         String dni = auth.getName();
         Employee activeEmployee = employeesService.getEmployeeByDni(dni);
         if (activeEmployee.getRole().equals(rolesService.getRoles()[1])) {
-            return "redirect:/employee/list"; // esto hay que actualizarlo cuando se haga lo de los trayectos
+            return "redirect:/journey/list";
         }
         return "redirect:/home";
     }

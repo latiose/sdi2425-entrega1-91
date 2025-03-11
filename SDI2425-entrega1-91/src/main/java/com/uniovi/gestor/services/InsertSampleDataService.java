@@ -2,21 +2,26 @@ package com.uniovi.gestor.services;
 import javax.annotation.PostConstruct;
 
 import com.uniovi.gestor.entities.Employee;
+import com.uniovi.gestor.entities.Journey;
 import com.uniovi.gestor.entities.Vehicle;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class InsertSampleDataService {
     private final EmployeesService employeesService;
     private final RolesService rolesService;
     private final VehiclesService vehiclesService;
+    private final JourneysService journeysService;
 
     private int numCars; // esto lo utilizo en los tests para saber exactamente cuántos coches hay en el sistema
 
-    public InsertSampleDataService(EmployeesService employeesService, RolesService rolesService, VehiclesService vehiclesService) {
+    public InsertSampleDataService(EmployeesService employeesService, RolesService rolesService, VehiclesService vehiclesService, JourneysService journeysService) {
         this.employeesService = employeesService;
         this.rolesService = rolesService;
         this.vehiclesService = vehiclesService;
+        this.journeysService = journeysService;
     }
     @PostConstruct
     public void init() {
@@ -50,10 +55,11 @@ public class InsertSampleDataService {
             Employee employee = new Employee(dni, nombre, "Apellido" + i);
             employee.setPassword(password);
             employee.setRole(rolesService.getRoles()[0]);
-//            employeesService.addEmployee(employee);
+            employeesService.addEmployee(employee);
         }
 
         addVehicles();
+        createTestJourneys();
 
     }
 
@@ -92,5 +98,29 @@ public class InsertSampleDataService {
 
     public int getNumCars() {
         return numCars;
+    }
+
+
+    private void createTestJourneys() {
+        Employee employee = employeesService.getEmployeeByDni("12345678Z");
+        Vehicle vehicle = vehiclesService.getVehicleByNumberPlate("1234BCD");
+
+        Journey journey1 = new Journey(vehicle);
+        journey1.setEmployee(employee);
+        journey1.setOdometerStart(15234.5);
+        journey1.setOdometerEnd(15300.5);
+        journey1.setStartDate(LocalDateTime.now().minusHours(2));
+        journey1.setEndDate(LocalDateTime.now());
+        journey1.setDuration(journey1.getDuration());
+        journeysService.addJourney(journey1);
+        //System.out.println(journey1.toString());
+        Journey journey2 = new Journey(vehicle);
+        journey2.setEmployee(employee);
+        journey2.setOdometerStart(78345.2);
+        journey2.setOdometerEnd(78410.2);
+        journey2.setStartDate(LocalDateTime.now().minusHours(1));
+        journey2.setEndDate(LocalDateTime.now());
+        journey2.setDuration(journey2.getDuration());
+        journeysService.addJourney(journey2);
     }
 }

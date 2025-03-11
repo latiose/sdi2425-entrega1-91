@@ -48,4 +48,8 @@ public class JourneysService {
     public List<Journey> findByDni(String dni) {
         return journeysRepository.findByDni(dni);
     }
+
+    public Page<Journey> findFinishedForCurrentUser(String dni, Pageable pageable){
+        return journeysRepository.findFinishedForCurrentUser(dni, pageable);
+    }
 }
