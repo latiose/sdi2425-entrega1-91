@@ -96,7 +96,12 @@ public class JourneysController {
 
     @RequestMapping("/journey/list/update")
     public String updateList(Model model, Pageable pageable){
-        model.addAttribute("journeyList", journeysService.getJourneys(pageable) );
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String dni = auth.getName();
+        Page<Journey> journeys = journeysService.findFinishedForCurrentUser(dni,pageable);
+        model.addAttribute("journeyList",journeys.getContent());
         return "journey/list :: journeyTable";
     }
+
+
 }

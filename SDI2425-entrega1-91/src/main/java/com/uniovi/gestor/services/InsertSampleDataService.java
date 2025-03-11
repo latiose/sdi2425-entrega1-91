@@ -55,7 +55,7 @@ public class InsertSampleDataService {
             Employee employee = new Employee(dni, nombre, "Apellido" + i);
             employee.setPassword(password);
             employee.setRole(rolesService.getRoles()[0]);
-//            employeesService.addEmployee(employee);
+            employeesService.addEmployee(employee);
         }
 
         addVehicles();
@@ -102,8 +102,8 @@ public class InsertSampleDataService {
 
 
     private void createTestJourneys() {
-        Employee employee = employeesService.getEmployees().get(0);
-        Vehicle vehicle = vehiclesService.getVehicleByNumberPlate("1234BCE");
+        Employee employee = employeesService.getEmployeeByDni("12345678Z");
+        Vehicle vehicle = vehiclesService.getVehicleByNumberPlate("1234BCD");
 
         Journey journey1 = new Journey(vehicle);
         journey1.setEmployee(employee);
@@ -111,16 +111,16 @@ public class InsertSampleDataService {
         journey1.setOdometerEnd(15300.5);
         journey1.setStartDate(LocalDateTime.now().minusHours(2));
         journey1.setEndDate(LocalDateTime.now());
-        journey1.setDuration(2);
+        journey1.setDuration(journey1.getDuration());
         journeysService.addJourney(journey1);
-
+        //System.out.println(journey1.toString());
         Journey journey2 = new Journey(vehicle);
         journey2.setEmployee(employee);
         journey2.setOdometerStart(78345.2);
         journey2.setOdometerEnd(78410.2);
         journey2.setStartDate(LocalDateTime.now().minusHours(1));
         journey2.setEndDate(LocalDateTime.now());
-        journey2.setDuration(1);
+        journey2.setDuration(journey2.getDuration());
         journeysService.addJourney(journey2);
     }
 }

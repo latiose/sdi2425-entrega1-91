@@ -35,7 +35,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="journey : ${journeysList}">
+            <tr th:each="journey : ${journeyList}">
                 <td th:text="${journey.startDate}"></td>
                 <td th:text="${journey.vehicle.numberPlate}"></td>
                 <td th:text="${journey.duration}"></td>
@@ -45,7 +45,7 @@
             </tbody>
         </table>
     </div>
-    <div th:if="${#lists.isEmpty(journeysList)}"> No journeys </div>
+    <div th:if="${#lists.isEmpty(journeyList)}"> No journeys </div>
     <footer th:replace="fragments/pagination"></footer>
 </div>
 <footer th:replace="fragments/footer"/>
