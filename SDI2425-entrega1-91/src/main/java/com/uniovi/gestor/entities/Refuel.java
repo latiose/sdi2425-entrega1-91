@@ -1,9 +1,6 @@
 package com.uniovi.gestor.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -20,6 +17,8 @@ public class Refuel {
     private double odometer;
     private String comments;
     private LocalDateTime date;
+    @ManyToOne
+    private Vehicle vehicle;
 
     public Refuel() {}
 
