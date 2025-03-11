@@ -15,11 +15,9 @@ import java.util.List;
 
 @Component
 public class AddRefuelFormValidator implements Validator {
-    private final RefuelsService refuelsService;
     private final JourneysService journeysService;
 
-    public AddRefuelFormValidator(RefuelsService refuelsService, JourneysService journeysService) {
-        this.refuelsService = refuelsService;
+    public AddRefuelFormValidator(JourneysService journeysService) {
         this.journeysService = journeysService;
     }
 

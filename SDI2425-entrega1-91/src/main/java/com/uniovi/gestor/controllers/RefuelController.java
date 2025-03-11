@@ -2,7 +2,6 @@ package com.uniovi.gestor.controllers;
 
 import com.uniovi.gestor.entities.Refuel;
 import com.uniovi.gestor.entities.Vehicle;
-import com.uniovi.gestor.repositories.RefuelsRepository;
 import com.uniovi.gestor.services.RefuelsService;
 import com.uniovi.gestor.validators.AddRefuelFormValidator;
 import org.springframework.data.domain.Page;
@@ -18,12 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RefuelController {
 
     private final RefuelsService refuelsService;
-    private final RefuelsRepository refuelsRepository;
     private final AddRefuelFormValidator addRefuelFormValidator;
 
-    public RefuelController(RefuelsService refuelsService, RefuelsRepository refuelsRepository, AddRefuelFormValidator addRefuelFormValidator) {
+    public RefuelController(RefuelsService refuelsService, AddRefuelFormValidator addRefuelFormValidator) {
         this.refuelsService = refuelsService;
-        this.refuelsRepository = refuelsRepository;
         this.addRefuelFormValidator = addRefuelFormValidator;
     }
 
