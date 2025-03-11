@@ -20,4 +20,5 @@ public interface VehiclesRepository extends CrudRepository<Vehicle, Long> {
 
     @Query("SELECT v.numberPlate FROM Vehicle v")
     List<String> findAllPlates();
+
 }

@@ -13,6 +13,20 @@ public class Journey {
 
     }
 
+    @Override
+    public String toString() {
+        return "Journey{" +
+                "employee=" + employee +
+                ", vehicle=" + vehicle +
+                ", id=" + id +
+                ", duration=" + duration +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", odometerStart=" + odometerStart +
+                ", odometerEnd=" + odometerEnd +
+                '}';
+    }
+
     public Journey(Vehicle v){
         this();
         this.vehicle=v;
