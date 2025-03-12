@@ -16,9 +16,7 @@
     </select>
   </div>
   <script th:inline="javascript">
-    document.getElementById('plateNumber').addEventListener('change', function () {
-      let numberPlate = this.value;
-
+    function loadRefuelsForPlate(numberPlate) {
       fetch('/refuel/list/update?plateNumber=' + numberPlate, {
         method: 'GET',
         headers: {
@@ -30,6 +28,17 @@
                 document.getElementById('refuelsTable').innerHTML = html;
               })
               .catch(error => console.error('Error updating refuels list:', error));
+    }
+
+    document.getElementById('plateNumber').addEventListener('change', function() {
+      loadRefuelsForPlate(this.value);
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const plateSelect = document.getElementById('plateNumber');
+      if (plateSelect.options.length > 0) {
+        loadRefuelsForPlate(plateSelect.value);
+      }
     });
   </script>
   <div class="table-responsive">
@@ -59,9 +68,9 @@
       </tr>
       </tbody>
     </table>
-  </div>
-  <div th:if="${#lists.isEmpty(refuelsList)}">
-    <p th:text="#{refuels.emptylist}"></p>
+    <div th:if="${refuelsList.isEmpty()}">
+      <p th:text="#{refuels.emptylist}"></p>
+    </div>
   </div>
   <footer th:replace="fragments/pagination"></footer>
 </div>

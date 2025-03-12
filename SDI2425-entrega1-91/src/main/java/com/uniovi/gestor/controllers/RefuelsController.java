@@ -50,9 +50,10 @@ public class RefuelsController {
 
     @RequestMapping("/refuel/list")
     public String getVehicleList(Model model, Pageable pageable){
-        Page<Refuel> refuels = refuelsService.getAllRefuels(pageable);
+        String numberPlate = vehiclesService.findAllPlates().get(0);
+        Page<Refuel> refuels = refuelsService.getRefuelsByNumberPlate(numberPlate, pageable);
         model.addAttribute("plateList",vehiclesService.findAllPlates());
-        model.addAttribute("vehiclesList",refuels);
+        model.addAttribute("refuelsList",refuels);
         model.addAttribute("page", refuels);
         return "refuel/list";
     }
