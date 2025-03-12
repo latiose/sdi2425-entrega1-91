@@ -1,9 +1,6 @@
 package com.uniovi.gestor.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -21,6 +18,9 @@ public class Refuel {
     private String comments;
     private LocalDateTime date;
 
+    @ManyToOne
+    private Journey journey;
+
     public Refuel() {}
 
     public Refuel(String station, double price, double amount, boolean fullTank, double odometer, String comments) {
@@ -29,7 +29,6 @@ public class Refuel {
         this.amount = amount;
         this.fullTank = fullTank;
         this.comments = comments;
-        this.date = LocalDateTime.now();
     }
 
     public long getId() {
@@ -94,5 +93,29 @@ public class Refuel {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public Journey getJourney() {
+        return journey;
+    }
+
+    public void setJourney(Journey journey) {
+        this.journey = journey;
+    }
+
+    public String getDayMonthYear(){
+        return date.getDayOfMonth()+"/"+date.getMonthValue() + "/" + date.getYear();
+    }
+
+    public String getHoursMinutes(){
+        return date.getHour()+":"+date.getMinute();
+    }
+
+    public Vehicle getVehicle(){
+        return journey.getVehicle();
+    }
+
+    public double getTotalPrice(){
+        return price*amount;
     }
 }
