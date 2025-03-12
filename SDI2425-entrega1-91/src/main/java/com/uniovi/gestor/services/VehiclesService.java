@@ -1,7 +1,9 @@
 package com.uniovi.gestor.services;
 
+import com.uniovi.gestor.VehicleStatusConfig;
 import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.repositories.VehiclesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Service
 public class VehiclesService {
+    @Autowired
+    private VehicleStatusConfig statusConfig;
     private final VehiclesRepository vehiclesRepository;
 
     public VehiclesService(VehiclesRepository vehiclesRepository) {
@@ -54,6 +58,8 @@ public class VehiclesService {
     return getVehicleByNumberPlate(plate);
     }
 
-
+    public String getDisplayStatus(Vehicle vehicle) {
+        return statusConfig.getStatusDisplay(vehicle.getStatus());
+    }
 
 }

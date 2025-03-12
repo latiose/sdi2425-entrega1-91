@@ -1,5 +1,6 @@
 package com.uniovi.gestor.controllers;
 
+import com.uniovi.gestor.VehicleStatusConfig;
 import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.services.FuelTypesService;
 import com.uniovi.gestor.services.VehiclesService;
@@ -42,6 +43,7 @@ public class VehiclesController {
             model.addAttribute("fuelTypesList", fuelTypesService.getFuelTypes());
             return "vehicle/add";
         }
+        vehicle.setStatus(VehicleStatusConfig.VehicleStatus.AVAILABLE);
         vehiclesService.addVehicle(vehicle);
         return "redirect:/vehicle/list";
     }
