@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
-<head th:replace="fragments/head"></head>
+<head th:replace="fragments/head"><title>Add refuel</title></head>
 <body>
 <!-- Barra de Navegación superior -->
 <nav th:replace="fragments/nav"></nav>
 <div class="container">
-    <h2>Agregar repostaje</h2>
+    <h2 th:text="#{refuels.message}"></h2>
     <form class="form-horizontal" method="post" action="/refuel/add" th:object="${refuel}">
         <div class="alert alert-danger alert-dismissible fade show" th:each="err : ${#fields.globalErrors()}">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <span th:text="${err}"></span>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="station">Estación de servicio:</label>
+            <label class="control-label col-sm-2" for="station" th:text="#{refuels.station}:"></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="station" name="station"
                        placeholder="Gasolineras Manolo" required="required"/>
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="price">Precio combustible:</label>
+            <label class="control-label col-sm-2" for="price" th:text="#{refuels.fuel.price}:"></label>
             <div class="col-sm-10">
                 <input type="number" step="0.001" class="form-control" id="price" name="price"
                        placeholder="1.554" required="required"/>
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="amount">Cantidad de combustible:</label>
+            <label class="control-label col-sm-2" for="amount" th:text="#{refuels.fuel.quantity}:"></label>
             <div class="col-sm-10">
                 <input type="number" step="0.01" class="form-control" id="amount" name="amount"
                        placeholder="40.2" required="required"/>
@@ -36,13 +36,13 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="fullTank">¿Depósito lleno?</label>
+            <label class="control-label col-sm-2" for="fullTank" th:text="#{refuels.full.tank}"></label>
             <div class="col-sm-10">
                 <input type="checkbox" id="fullTank" name="fullTank"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="odometer">Odómetro en el momento del repostaje:</label>
+            <label class="control-label col-sm-2" for="odometer" th:text="#{refuels.odometer}:"></label>
             <div class="col-sm-10">
                 <input type="number" class="form-control" id="odometer" name="odometer"
                        placeholder="145" required="true"/>
@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="comments">Observacionese:</label>
+            <label class="control-label col-sm-2" for="comments" th:text="#{refuels.observations}:"></label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="comments" name="comments"></textarea>
             </div>
@@ -58,7 +58,7 @@
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="submit" class="btn btn-primary" th:text="#{button.send}"></button>
             </div>
         </div>
     </form>
