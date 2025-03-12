@@ -18,7 +18,7 @@ public interface VehiclesRepository extends CrudRepository<Vehicle, Long> {
 
     Page<Vehicle> findAll(Pageable pageable);
 
-    @Query("SELECT v.numberPlate FROM Vehicle v")
+    @Query("SELECT v.numberPlate FROM Vehicle v ORDER BY v.numberPlate ASC")
     List<String> findAllPlates();
 
 }

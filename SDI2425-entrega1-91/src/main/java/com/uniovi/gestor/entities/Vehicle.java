@@ -22,9 +22,6 @@ public class Vehicle {
     private Set<Journey> journeys = new HashSet<Journey>(); ;
     private String fuel;
 
-    @OneToMany(mappedBy = "vehicle",cascade = CascadeType.ALL)
-    private Set<Refuel> refuels = new HashSet<Refuel>();
-
     public Vehicle(){}
 
     public Vehicle(String numberPlate, String vin, String brand, String model, String fuel,

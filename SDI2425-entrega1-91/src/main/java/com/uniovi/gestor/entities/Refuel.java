@@ -17,8 +17,9 @@ public class Refuel {
     private double odometer;
     private String comments;
     private LocalDateTime date;
+
     @ManyToOne
-    private Vehicle vehicle;
+    private Journey journey;
 
     public Refuel() {}
 
@@ -28,7 +29,6 @@ public class Refuel {
         this.amount = amount;
         this.fullTank = fullTank;
         this.comments = comments;
-        this.date = LocalDateTime.now();
     }
 
     public long getId() {
@@ -93,5 +93,29 @@ public class Refuel {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public Journey getJourney() {
+        return journey;
+    }
+
+    public void setJourney(Journey journey) {
+        this.journey = journey;
+    }
+
+    public String getDayMonthYear(){
+        return date.getDayOfMonth()+"/"+date.getMonthValue() + "/" + date.getYear();
+    }
+
+    public String getHoursMinutes(){
+        return date.getHour()+":"+date.getMinute();
+    }
+
+    public Vehicle getVehicle(){
+        return journey.getVehicle();
+    }
+
+    public double getTotalPrice(){
+        return price*amount;
     }
 }

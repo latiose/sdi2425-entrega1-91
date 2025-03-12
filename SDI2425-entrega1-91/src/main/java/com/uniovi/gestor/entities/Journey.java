@@ -3,10 +3,32 @@ package com.uniovi.gestor.entities;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "journey")
 public class Journey {
+    @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
+
+    @Id
+    @GeneratedValue
+    private long id;
+    private double duration;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+
+    private double odometerStart;
+    private double odometerEnd;
+
+    @OneToMany(mappedBy = "journey")
+    private Set<Refuel> refuels = new HashSet<Refuel>();
 
     public Journey(){
         this.startDate = LocalDateTime.now();
@@ -31,18 +53,7 @@ public class Journey {
         this();
         this.vehicle=v;
     }
-    @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
-    private Employee employee;
 
-    @ManyToOne
-    @JoinColumn(name = "vehicle_id", nullable = false)
-    private Vehicle vehicle;
-
-    @Id
-    @GeneratedValue
-    private long id;
-    private double duration;
 
     public Employee getEmployee() {
         return employee;
@@ -108,9 +119,11 @@ public class Journey {
         this.startDate = startDate;
     }
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    public Set<Refuel> getRefuels() {
+        return refuels;
+    }
 
-    private double odometerStart;
-    private double odometerEnd;
+    public void setRefuels(Set<Refuel> refuels) {
+        this.refuels = refuels;
+    }
 }

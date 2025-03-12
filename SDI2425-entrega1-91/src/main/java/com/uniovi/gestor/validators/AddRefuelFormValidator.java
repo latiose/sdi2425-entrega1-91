@@ -15,10 +15,10 @@ import java.util.List;
 
 @Component
 public class AddRefuelFormValidator implements Validator {
-    private final JourneysService journeysService;
+    private final RefuelsService refuelsService;
 
-    public AddRefuelFormValidator(JourneysService journeysService) {
-        this.journeysService = journeysService;
+    public AddRefuelFormValidator(RefuelsService refuelsService) {
+        this.refuelsService = refuelsService;
     }
 
     @Override
@@ -39,11 +39,9 @@ public class AddRefuelFormValidator implements Validator {
         if(refuel.getAmount() <= 0){
             errors.rejectValue("amount", "Error.negative");
         }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String dni = auth.getName();
-        Journey activeJourney = journeysService.findActiveJourneyByDni(dni);
+        Journey activeJourney = refuelsService.getActiveJourney();
 
-        if(dni != null && activeJourney == null){
+        if(activeJourney == null){
             errors.reject("Error.journeyNotStarted");
         }
         if(activeJourney != null){
