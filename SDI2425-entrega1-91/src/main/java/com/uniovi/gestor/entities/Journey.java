@@ -79,8 +79,19 @@ public class Journey {
         this.id = id;
     }
 
+    public String getObservations() {
+        return observations;
+    }
+
+    public void setObservations(String observaciones) {
+        this.observations = observaciones;
+    }
+
+    private String observations;
+
     public double getDuration() {
-        return ChronoUnit.HOURS.between(endDate, startDate);
+        if(endDate!=null) return ChronoUnit.HOURS.between(startDate, endDate);
+        return 0;
     }
 
     public void setDuration(double duration) {

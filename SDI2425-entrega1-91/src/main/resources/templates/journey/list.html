@@ -38,9 +38,19 @@
             <tr th:each="journey : ${journeyList}">
                 <td th:text="${journey.startDate}"></td>
                 <td th:text="${journey.vehicle.numberPlate}"></td>
-                <td th:text="${journey.duration}"></td>
+                <td>
+                    <span th:if="${journey.endDate != null}" th:text="${journey.duration}"></span>
+                </td>
                 <td th:text="${journey.odometerStart}"></td>
-                <td th:text="${journey.odometerEnd}"></td>
+                <td>
+                    <span th:if="${journey.endDate != null}" th:text="${journey.odometerEnd}"></span>
+                </td>
+                <input type="hidden" th:value="${journey.id}" name="id" />
+                <td>
+                    <a th:if="${journey.endDate == null}" th:href="@{/journey/end}"
+                       class="btn btn-primary">Finalizar</a>
+                </td>
+
             </tr>
             </tbody>
         </table>
