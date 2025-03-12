@@ -1,43 +1,51 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org"
+xmlns:sec="http://www.springframework.org/schema/security">
 <head th:replace="fragments/head"/>
 <body>
 <!-- Barra de Navegación superior -->
 <nav th:replace="fragments/nav"/>
 <div class="container">
     <h2 th:text="#{employees.title}"></h2>
-    <p th:if="${generatedPassword}">La contraseña del nuevo empleado es: <b th:text="${generatedPassword}"></b></p>
-    <p>Los empleados que actualmente figuran en el sistema son los
-        siguientes:</p>
-
+    <p th:text = "#{employees.subtext}"></p>
+    <button type="button" id="updateButton" class="btn btn-primary" th:text="#{update.message}"></button>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var numberPage = /*[[${param.page}]]*/ null;
+        $(document).ready(function() {
+            $("#updateButton").click(function() {
+                let urlUpdate = '/employee/list/update';
+                if (numberPage != null) {
+                    urlUpdate += "?page=" + numberPage;
+                }
+                $("#vehicleTable").load(urlUpdate);
+            });
+        });
+        /*]]>*/
+    </script>
     <div class="table-responsive">
         <table class="table table-hover" th:fragment="employeeTable" id="employeeTable">
             <thead>
             <tr>
-                <th scope="col">DNI</th>
+                <th scope="col">Dni</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Apellidos</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="employee : ${employeesList}">
-                <td th:text="${employee.dni}">71888888X</td>
-                <td th:text="${employee.name}">Nombre del empleado</td>
-                <td th:text="${employee.lastName}">Apellidos del empleado</td>
-                <td><a sec:authorize="hasTole('ROLE_ADMIN')" th:href="${'/employee/details/' + employee.id}">detalles</a></td>
-                <td><a sec:authorize="hasTole('ROLE_ADMIN')" th:href="${'/employee/edit/' + employee.id}">modificar</a></td>
-                <
+                <td th:text="${employee.dni}">Dni</td>
+                <td th:text="${employee.name}">Nombre</td>
+                <td th:text="${employee.lastName}">Apellidos</td>
+                <td th:text="${employee.role}">Rol</td>
+                <td><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="${'/employee/edit/' + employee.id}">modificar</a></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div th:if="${#lists.isEmpty(employeesList)}"> No marks </div>
-    <footer th:replace="fragments/pagination"/>
+    <div th:if="${#lists.isEmpty(employeesList)}"> No vehicles </div>
+    <footer th:replace="fragments/pagination"></footer>
 </div>
 <footer th:replace="fragments/footer"/>
 </body>

@@ -1,9 +1,11 @@
 package com.uniovi.gestor.controllers;
+
 import com.uniovi.gestor.PasswordGenerator;
 import com.uniovi.gestor.services.EmployeesService;
 import com.uniovi.gestor.services.RolesService;
 import com.uniovi.gestor.services.SecurityService;
 import com.uniovi.gestor.validators.AddEmployeeFormValidator;
+import com.uniovi.gestor.validators.EditEmployeeFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -25,16 +27,19 @@ public class EmployeesController {
     private final EmployeesService employeesService;
     private final SecurityService securityService;
     private final AddEmployeeFormValidator addEmployeeFormValidator;
+    private final EditEmployeeFormValidator editEmployeeFormValidator;
     private final RolesService rolesService;
 
     public EmployeesController(EmployeesService employeesService, SecurityService securityService, AddEmployeeFormValidator
-            addEmployeeFormValidator, RolesService rolesService) {
+            addEmployeeFormValidator, EditEmployeeFormValidator editEmployeeFormValidator ,RolesService rolesService) {
         this.employeesService = employeesService;
         this.securityService = securityService;
         this.addEmployeeFormValidator = addEmployeeFormValidator;
         this.rolesService = rolesService;
+        this.editEmployeeFormValidator = editEmployeeFormValidator;
 
     }
+
     @RequestMapping("/employee/list")
     public String getListado(Model model, Pageable pageable, HttpSession session) {
 
@@ -46,10 +51,11 @@ public class EmployeesController {
 
         if (password != null) {
             model.addAttribute("generatedPassword", password);
-           session.removeAttribute("generatedPassword");
+            session.removeAttribute("generatedPassword");
         }
         return "employee/list";
     }
+
     @RequestMapping(value = "/employee/add")
     public String getEmployee(Model model) {
         model.addAttribute("employee", new Employee());
@@ -71,16 +77,19 @@ public class EmployeesController {
         session.setAttribute("generatedPassword", generatedPassword);
         return "redirect:/employee/list";
     }
+
     @RequestMapping("/employee/details/{id}")
     public String getDetail(Model model, @PathVariable Long id) {
         model.addAttribute("employee", employeesService.getEmployee(id));
         return "employee/details";
     }
+
     @RequestMapping("/employee/delete/{id}")
     public String delete(@PathVariable Long id) {
         employeesService.deleteEmployee(id);
         return "redirect:/employee/list";
     }
+
     @RequestMapping(value = "/employee/edit/{id}")
     public String getEdit(Model model, @PathVariable Long id) {
         Employee employee = employeesService.getEmployee(id);
@@ -90,7 +99,7 @@ public class EmployeesController {
 
     @RequestMapping(value = "/employee/edit/{id}", method = RequestMethod.POST)
     public String setEdit(@Validated Employee employee, BindingResult result, @PathVariable Long id) {
-        addEmployeeFormValidator.validate(employee, result);
+        editEmployeeFormValidator.validate(employee, result);
 
         if (result.hasErrors()) {
             return "employee/edit";
@@ -100,6 +109,7 @@ public class EmployeesController {
         originalEmployee.setDni(employee.getDni());
         originalEmployee.setName(employee.getName());
         originalEmployee.setLastName(employee.getLastName());
+        originalEmployee.setRole(employee.getRole());
         employeesService.addEmployee(originalEmployee);
         return "redirect:/employee/details/" + id;
 
@@ -128,11 +138,12 @@ public class EmployeesController {
         }
         return "redirect:/home";
     }
-@RequestMapping(value = "/login/error", method = RequestMethod.GET)
-public String loginError(Model model) {
-    model.addAttribute("error", true);
-    return "login";
-}
+
+    @RequestMapping(value = "/login/error", method = RequestMethod.GET)
+    public String loginError(Model model) {
+        model.addAttribute("error", true);
+        return "login";
+    }
 
     @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
     public String home(Model model) {
@@ -145,9 +156,15 @@ public String loginError(Model model) {
 
 
     @RequestMapping("/employee/list/update")
-    public String updateList(Model model, Pageable pageable){
-        model.addAttribute("employeesList", employeesService.getEmployees(pageable) );
+    public String updateList(Model model, Pageable pageable) {
+        model.addAttribute("employeesList", employeesService.getEmployees(pageable));
         return "employee/list :: employeeTable";
+    }
+
+    @RequestMapping("/employee/changePassword")
+    public String changePassword(Model model) {
+        model.addAttribute("employee", new Employee());
+        return "employee/changePassword";
     }
 
 
