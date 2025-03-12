@@ -1,5 +1,6 @@
 package com.uniovi.gestor.controllers;
 
+import com.uniovi.gestor.entities.Employee;
 import com.uniovi.gestor.entities.Journey;
 
 
@@ -8,16 +9,22 @@ import com.uniovi.gestor.services.EmployeesService;
 import com.uniovi.gestor.services.JourneysService;
 
 import com.uniovi.gestor.services.VehiclesService;
+import com.uniovi.gestor.validators.EndJourneyFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -26,11 +33,15 @@ public class JourneysController {
     private final JourneysService journeysService;
     private final VehiclesService vehiclesService;
     private final EmployeesService employeesService;
+    private final EndJourneyFormValidator endJourneyFormValidator;
+    private final EmployeesService employeeService;
 
-    public JourneysController(JourneysService journeysService, VehiclesService vehiclesService, EmployeesService employeesService) {
+    public JourneysController(JourneysService journeysService, VehiclesService vehiclesService, EmployeesService employeesService, EndJourneyFormValidator endJourneyFormValidator, EmployeesService employeeService) {
         this.journeysService = journeysService;
         this.vehiclesService = vehiclesService;
         this.employeesService = employeesService;
+        this.endJourneyFormValidator = endJourneyFormValidator;
+        this.employeeService = employeeService;
     }
 
     @RequestMapping(value = "/journey/add")
@@ -38,6 +49,34 @@ public class JourneysController {
         model.addAttribute("journey", new Journey());
         model.addAttribute("plateList",vehiclesService.findAllPlates());
         return "journey/add";
+    }
+
+    @RequestMapping(value = "/journey/end")
+    public String getJourneyEnd(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String dni = auth.getName();
+        Journey journey = journeysService.findActiveJourneyByDni(dni);
+        if (journey == null) {
+            return "redirect:/journey/list";
+        }
+        model.addAttribute("journey", journey);
+        return "journey/end";
+    }
+
+    @RequestMapping(value="/journey/end", method = RequestMethod.POST)
+    public String endJourney(@Validated @ModelAttribute("journey") Journey journey, BindingResult result) {
+        endJourneyFormValidator.validate(journey,result);
+        if (result.hasErrors()) {
+            return "journey/end";
+        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String dni = auth.getName();
+        Journey existingJourney = journeysService.findActiveJourneyByDni(dni);
+        existingJourney.setOdometerEnd(journey.getOdometerEnd());
+        existingJourney.setObservations(journey.getObservations());
+        existingJourney.setEndDate(LocalDateTime.now());
+        journeysService.addJourney(existingJourney);
+        return "redirect:/journey/list"; //Actualizarlo cuando se acabe el 13
     }
 
     @RequestMapping(value="/journey/add", method = RequestMethod.POST)
@@ -88,7 +127,7 @@ public class JourneysController {
     public String getJourneyList(Model model, Pageable pageable){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
-        Page<Journey> journeys = journeysService.findFinishedForCurrentUser(dni,pageable);
+        Page<Journey> journeys = journeysService.findByDniPage(dni,pageable);
         model.addAttribute("journeyList",journeys.getContent());
         model.addAttribute("page", journeys);
         return "journey/list";
@@ -98,7 +137,7 @@ public class JourneysController {
     public String updateList(Model model, Pageable pageable){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
-        Page<Journey> journeys = journeysService.findFinishedForCurrentUser(dni,pageable);
+        Page<Journey> journeys = journeysService.findByDniPage(dni,pageable);
         model.addAttribute("journeyList",journeys.getContent());
         return "journey/list :: journeyTable";
     }

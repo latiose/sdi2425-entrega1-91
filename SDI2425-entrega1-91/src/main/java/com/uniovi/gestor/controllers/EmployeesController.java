@@ -107,10 +107,10 @@ public class EmployeesController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
         Employee activeEmployee = employeesService.getEmployeeByDni(dni);
-        if (activeEmployee.getRole().equals(rolesService.getRoles()[1])) {
+        if (activeEmployee.getRole().equals(rolesService.getRoles()[0])) {
             return "redirect:/journey/list";
         }
-        return "redirect:/home";
+        return "redirect:/employee/list";
     }
 @RequestMapping(value = "/login/error", method = RequestMethod.GET)
 public String loginError(Model model) {
