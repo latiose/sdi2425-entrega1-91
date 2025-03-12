@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
-<head th:replace="fragments/head"></head>
+<head th:replace="fragments/head"><title>Refuels list</title></head>
 <body>
 <!-- Barra de Navegación superior -->
 <nav th:replace="fragments/nav"></nav>
@@ -45,14 +45,14 @@
     <table class="table table-hover" th:fragment="refuelsTable" id="refuelsTable">
       <thead>
       <tr>
-        <th scope="col">Fecha</th>
-        <th scope="col">Hora</th>
-        <th scope="col">Odómetro</th>
-        <th scope="col">Combustible</th>
-        <th scope="col">Estación de servicio</th>
-        <th scope="col">Precio por unidad</th>
-        <th scope="col">Cantidad</th>
-        <th scope="col">Precio total</th>
+        <th scope="col" th:text="#{refuels.date}"></th>
+        <th scope="col" th:text="#{refuels.hour}"></th>
+        <th scope="col" th:text="#{refuels.odometer}"></th>
+        <th scope="col" th:text="#{refuels.fuel}"></th>
+        <th scope="col" th:text="#{refuels.station}"></th>
+        <th scope="col" th:text="#{refuels.fuel.price}"></th>
+        <th scope="col" th:text="#{refuels.fuel.quantity}"></th>
+        <th scope="col" th:text="#{refuels.fuel.total.price}"></th>
       </tr>
       </thead>
       <tbody>
@@ -71,6 +71,6 @@
   </div>
   <footer th:replace="fragments/pagination"></footer>
 </div>
-<footer th:replace="fragments/footer"/>
+<footer th:replace="fragments/footer"></footer>
 </body>
 </html>

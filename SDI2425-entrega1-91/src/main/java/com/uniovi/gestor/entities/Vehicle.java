@@ -1,5 +1,7 @@
 package com.uniovi.gestor.entities;
 
+import com.uniovi.gestor.VehicleStatusConfig.VehicleStatus;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +19,10 @@ public class Vehicle {
     private String brand;
     private String model;
     private float mileage;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private VehicleStatus status;
+
     @OneToMany(mappedBy = "vehicle",cascade = CascadeType.ALL)
     private Set<Journey> journeys = new HashSet<Journey>(); ;
     private String fuel;
@@ -25,7 +30,7 @@ public class Vehicle {
     public Vehicle(){}
 
     public Vehicle(String numberPlate, String vin, String brand, String model, String fuel,
-                   float mileage, String status) {
+                   float mileage, VehicleStatus status) {
         this.numberPlate = numberPlate;
         this.vin = vin;
         this.brand = brand;
@@ -91,11 +96,11 @@ public class Vehicle {
         this.mileage = mileage;
     }
 
-    public String getStatus() {
+    public VehicleStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(VehicleStatus status) {
         this.status = status;
     }
 }

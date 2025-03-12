@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
-<head th:replace="fragments/head"/>
+<head th:replace="fragments/head"><title>Add vehicle</title></head>
 <body>
 <!-- Barra de Navegación superior -->
-<nav th:replace="fragments/nav"/>
+<nav th:replace="fragments/nav"></nav>
 <div class="container">
-    <h2>Agregar vehículo</h2>
+    <h2 th:text="#{vehicles.add.vehicle}"></h2>
     <form class="form-horizontal" method="post" action="/vehicle/add" th:object="${vehicle}">
         <div class="form-group">
-            <label class="control-label col-sm-2" for="numberPlate">Matrícula:</label>
+            <label class="control-label col-sm-2" for="numberPlate" th:text="#{vehicles.number.plate} + ':'"></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="numberPlate" name="numberPlate"
                        placeholder="1234BCD" required="true"/>
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="vin">Número de bastidor:</label>
+            <label class="control-label col-sm-2" for="vin" th:text="#{vehicles.vin} + ':'"></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="vin" name="vin"
                        placeholder="TMBJC7NY0M0123456" required="true"/>
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="brand">Marca:</label>
+            <label class="control-label col-sm-2" for="brand" th:text="#{vehicles.vin} + ':'"></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="brand" name="brand"
                        placeholder="Ejemplo: Mercedes" required="true"/>
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="model">Modelo:</label>
+            <label class="control-label col-sm-2" for="model" th:text="#{vehicles.model} + ':'"></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="model" name="model"
                        placeholder="Ejemplo: Clase A" required="true"/>
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="fuel">Combustible:</label>
+            <label class="control-label col-sm-2" for="fuel" th:text="#{vehicles.fuel} + ':'"></label>
             <div class="col-sm-10">
                 <select id="fuel" class="form-control" name="fuel">
                     <option th:each="fuel : ${fuelTypesList}"
@@ -48,16 +48,15 @@
                             th:text="${fuel}">
                     </option>
                 </select>
-                <input type="hidden" class="form-control" id="status" name="status" value="LIBRE"/> <!-- Cambiar por .messages al internacionalizar -->
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="submit" class="btn btn-primary" th:text="#{button.send}"></button>
             </div>
         </div>
     </form>
 </div>
-<footer th:replace="fragments/footer"/>
+<footer th:replace="fragments/footer"></footer>
 </body>
 </html>
