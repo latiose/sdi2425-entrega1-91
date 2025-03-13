@@ -5,7 +5,14 @@
 <!-- Barra de Navegación superior -->
 <nav th:replace="fragments/nav"/>
 <div class="container">
-    <h2  th:text="#{journey.add}"></h2>
+    <h2 th:text="#{journey.add}"></h2>
+
+    <div class="alert alert-danger" th:if="${#fields.hasErrors('journey.vehicle.numberPlate')}">
+        <span th:errors="*{journey.vehicle.numberPlate}"></span>
+    </div>
+
+
+
     <form class="form-horizontal" method="post" action="/journey/add" th:object="${journey}">
         <div class="form-group">
             <label class="control-label col-sm-2" for="plateNumber" th:text="#{journey.vehicles}">:</label>
@@ -17,13 +24,10 @@
                     </option>
                 </select>
             </div>
-            <div th:if="${error}" class="alert alert-danger">
-                <span th:text="${error}"></span>
-            </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="submit" class="btn btn-primary" th:text="#{button.send}"></button>
             </div>
         </div>
     </form>

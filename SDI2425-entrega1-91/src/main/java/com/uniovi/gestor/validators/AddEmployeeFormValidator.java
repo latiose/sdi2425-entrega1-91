@@ -34,7 +34,11 @@ public class AddEmployeeFormValidator implements Validator {
         }
 
         char lastChar = employee.getDni().charAt(employee.getDni().length() - 1);
-        if (employee.getDni().length() != 9 || Character.isDigit(lastChar)) {
+        int number = Integer.parseInt(employee.getDni().substring(0, 8));
+
+        String letters = "TRWAGMYFPDXBNJZSQVHLCKE";
+
+        if (employee.getDni().length() != 9 || Character.isDigit(lastChar) || lastChar != letters.charAt(number % 23)) {
             errors.rejectValue("dni", "Error.signup.dni.invalid");
         }
 
