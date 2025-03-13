@@ -90,7 +90,7 @@ public class JourneysController {
 
         Vehicle vehicle = vehiclesService.findVehicleByNumberPlate(plateNumber);
         if (vehicle == null) {
-            result.rejectValue("vehicle.numberPlate", "Error.vehicleNotFound");
+            result.rejectValue("vehicle.numberPlate", "Error.empty");
         } else {
             journey.setVehicle(vehicle);
         }
