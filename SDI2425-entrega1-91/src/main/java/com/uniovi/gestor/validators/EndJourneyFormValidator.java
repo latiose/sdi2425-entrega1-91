@@ -32,6 +32,7 @@ public class EndJourneyFormValidator implements Validator {
         Journey journeyActivo = journeysService.findActiveJourneyByDni(dni);
         if(journeyActivo == null) {
             errors.reject("id");
+            return;
         }
         if (journey.getOdometerEnd() < 0)
             errors.rejectValue("odometerEnd", "Error.odometer.negativo");

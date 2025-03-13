@@ -30,29 +30,27 @@ public class InsertSampleDataService {
         employee1.setPassword("@Dm1n1str@D0r");
         employee1.setRole(rolesService.getRoles()[1]);
         employeesService.addEmployee(employee1);
-//        10000001S Us3r@1-PASSW
-//        10000002Q Us3r@2-PASSW
-//        10000003V Us3r@3-PASSW
-//        10000004H Us3r@4-PASSW
-//        10000005L Us3r@5-PASSW
-//        10000006C Us3r@6-PASSW
-//        10000007K Us3r@7-PASSW
-//        10000008E Us3r@8-PASSW
-//        10000009T Us3r@9-PASSW
-//        100000010N Us3r@10-PASSW
-//        100000011J Us3r@11-PASSW
-//        100000012Z Us3r@12-PASSW
-//        100000013S Us3r@13-PASSW
-//        100000014Q Us3r@14-PASSW
-//        100000015V Us3r@15-PASSW
+//        Nombre: Usuario1, DNI: 10000001S, Password: Us3r@1-PASSW
+//        Nombre: Usuario2, DNI: 10000002Q, Password: Us3r@2-PASSW
+//        Nombre: Usuario3, DNI: 10000003V, Password: Us3r@3-PASSW
+//        Nombre: Usuario4, DNI: 10000004H, Password: Us3r@4-PASSW
+//        Nombre: Usuario5, DNI: 10000005L, Password: Us3r@5-PASSW
+//        Nombre: Usuario6, DNI: 10000006C, Password: Us3r@6-PASSW
+//        Nombre: Usuario7, DNI: 10000007K, Password: Us3r@7-PASSW
+//        Nombre: Usuario8, DNI: 10000008E, Password: Us3r@8-PASSW
+//        Nombre: Usuario9, DNI: 10000009T, Password: Us3r@9-PASSW
+//        Nombre: Usuario10, DNI: 10000010R, Password: Us3r@10-PASSW
+//        Nombre: Usuario11, DNI: 10000011W, Password: Us3r@11-PASSW
+//        Nombre: Usuario12, DNI: 10000012A, Password: Us3r@12-PASSW
+//        Nombre: Usuario13, DNI: 10000013G, Password: Us3r@13-PASSW
+//        Nombre: Usuario14, DNI: 10000014M, Password: Us3r@14-PASSW
+//        Nombre: Usuario15, DNI: 10000015Y, Password: Us3r@15-PASSW
         for (int i = 1; i <= 15; i++) {
             String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-            String dni = String.format("1000000%d", i);
+            String dni =  i < 10 ? String.format("1000000%d", i) :  String.format("100000%d", i);
             dni += letras.charAt(Integer.parseInt(dni) % 23);
             String nombre = "Usuario" + i;
             String password = "Us3r@"+i+"-PASSW";
-
-
             Employee employee = new Employee(dni, nombre, "Apellido" + i);
             employee.setPassword(password);
             employee.setRole(rolesService.getRoles()[0]);
