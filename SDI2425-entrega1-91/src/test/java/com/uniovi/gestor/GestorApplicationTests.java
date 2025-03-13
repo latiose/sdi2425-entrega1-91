@@ -10,12 +10,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -74,7 +77,7 @@ class GestorApplicationTests {
     public void PR02() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "10000001S","Us3r@1-PASSW");
-        String checkText = "10000001S";
+        String checkText = PO_HomeView.getP().getString("journey.list.title", PO_Properties.getSPANISH());
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
         PO_LoginView.logOut(driver);
@@ -88,7 +91,7 @@ class GestorApplicationTests {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "","");
         List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
-        Assertions.assertFalse(requiredFieldErrors.isEmpty());
+        assertFalse(requiredFieldErrors.isEmpty());
         String currentUrl = driver.getCurrentUrl();
         assertTrue(currentUrl.contains("/login"));
     }
@@ -128,11 +131,11 @@ class GestorApplicationTests {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
-        PO_PrivateView.goThroughNav(driver,"text","Gestión de usuarios","text","Agregar usuario");
-        PO_PrivateView.fillFormAddEmployee(driver, "100000016H", "Pablo", "Perez Alvarez");
-        String checkText = "100000016H";
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Agregar empleado");
+        PO_PrivateView.fillFormAddEmployee(driver, "07112884L", "Pablo", "Perez Alvarez");
+        String checkText = "07112884L";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertFalse(result.isEmpty());
+        assertFalse(result.isEmpty());
         PO_LoginView.logOut(driver);
     }
 
@@ -145,12 +148,12 @@ class GestorApplicationTests {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
-        PO_PrivateView.goThroughNav(driver,"text","Gestión de usuarios","text","Agregar usuario");
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Agregar empleado");
 
         driver.findElement(By.className("btn-primary")).click();
 
         List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
-        Assertions.assertFalse(requiredFieldErrors.isEmpty());
+        assertFalse(requiredFieldErrors.isEmpty());
         String currentUrl = driver.getCurrentUrl();
         assertTrue(currentUrl.contains("/employee/add"));
 
@@ -164,13 +167,13 @@ class GestorApplicationTests {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
-        PO_PrivateView.goThroughNav(driver,"text","Gestión de usuarios","text","Agregar usuario");
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Agregar empleado");
 
         PO_PrivateView.fillFormAddEmployee(driver, "123", "Pablo", "Perez Alvarez");
 
         String checkText = PO_HomeView.getP().getString("Error.signup.dni.invalid", PO_Properties.getSPANISH());
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertFalse(result.isEmpty());
+        assertFalse(result.isEmpty());
 
         PO_LoginView.logOut(driver);
     }
@@ -182,13 +185,13 @@ class GestorApplicationTests {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
-        PO_PrivateView.goThroughNav(driver,"text","Gestión de usuarios","text","Agregar usuario");
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Agregar empleado");
 
         PO_PrivateView.fillFormAddEmployee(driver, "12345678Z", "Pablo", "Perez Alvarez");
 
         String checkText = PO_HomeView.getP().getString("Error.dni.duplicate", PO_Properties.getSPANISH());
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
-        Assertions.assertFalse(result.isEmpty());
+        assertFalse(result.isEmpty());
 
         PO_LoginView.logOut(driver);
     }
@@ -221,7 +224,7 @@ class GestorApplicationTests {
         PO_PrivateView.fillFormAddVehicle(driver, "", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
 
         List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
-        Assertions.assertFalse(requiredFieldErrors.isEmpty());
+        assertFalse(requiredFieldErrors.isEmpty());
         String currentUrl = driver.getCurrentUrl();
         assertTrue(currentUrl.contains("/vehicle/add"));
     }
@@ -238,7 +241,7 @@ class GestorApplicationTests {
         PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "", "Toyota", "Corolla", "DIESEL");
 
         List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
-        Assertions.assertFalse(requiredFieldErrors.isEmpty());
+        assertFalse(requiredFieldErrors.isEmpty());
         String currentUrl = driver.getCurrentUrl();
         assertTrue(currentUrl.contains("/vehicle/add"));
     }
@@ -254,7 +257,7 @@ class GestorApplicationTests {
         PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "", "Corolla", "DIESEL");
 
         List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
-        Assertions.assertFalse(requiredFieldErrors.isEmpty());
+        assertFalse(requiredFieldErrors.isEmpty());
         String currentUrl = driver.getCurrentUrl();
         assertTrue(currentUrl.contains("/vehicle/add"));
     }
@@ -270,7 +273,7 @@ class GestorApplicationTests {
         PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "Toyota", "", "DIESEL");
 
         List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
-        Assertions.assertFalse(requiredFieldErrors.isEmpty());
+        assertFalse(requiredFieldErrors.isEmpty());
         String currentUrl = driver.getCurrentUrl();
         assertTrue(currentUrl.contains("/vehicle/add"));
     }
@@ -446,6 +449,156 @@ class GestorApplicationTests {
         WebElement errorMessage = driver.findElement(By.className("alert-danger"));
         String checkText = PO_HomeView.getP().getString("Error.journeyStarted", PO_Properties.getSPANISH());
         assertTrue(errorMessage.getText().contains(checkText));
+        PO_LoginView.logOut(driver);
+    }
+
+
+    @Test
+    @Order(27)
+    //Añadir el coche ya esta siendo usado
+    public void PR027() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r"); //tiene uno en curso por defecto
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Agregar trayecto");
+
+        WebElement dropdown = driver.findElement(By.id("plateNumber"));
+        Select select = new Select(dropdown);
+        select.selectByValue("9101GHJ");
+
+        driver.findElement(By.cssSelector("button[type='submit']")).click();
+
+        WebElement errorMessage = driver.findElement(By.className("alert-danger"));
+        String checkText = PO_HomeView.getP().getString("Error.vehicleInUse", PO_Properties.getSPANISH());
+        assertTrue(errorMessage.getText().contains(checkText));
+        PO_LoginView.logOut(driver);
+    }
+
+
+    @Test
+    @Order(28)
+    // Finalizar trayecto válido
+    public void PR028() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Ver trayectos");
+        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='journeyTable']/tbody/tr"));
+
+        for (WebElement row : rows) {
+            if (row.getText().contains("9101GHJ") && row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]")).isDisplayed()) {
+                WebElement finishButton = row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]"));
+                finishButton.click();
+                break;
+            }
+        }
+
+
+        WebElement odometerEndField = driver.findElement(By.id("odometerEnd"));
+        odometerEndField.clear();
+        odometerEndField.sendKeys("55000000000");
+
+        WebElement observationsField = driver.findElement(By.id("observations"));
+        observationsField.clear();
+        observationsField.sendKeys("Finalización del trayecto");
+
+        WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit' and contains(text(),'Finalizar')]"));
+        submitButton.click();
+    //comprobar que se rededirija
+        PO_LoginView.logOut(driver);
+    }
+
+
+    @Test
+    @Order(29)
+    // Finalizar trayecto odometro vacio
+    public void PR029() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Agregar trayecto");
+
+        WebElement dropdown = driver.findElement(By.id("plateNumber"));
+        Select select = new Select(dropdown);
+        select.selectByValue("9202VWG");
+
+        driver.findElement(By.cssSelector("button[type='submit']")).click();
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Ver trayectos");
+
+        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='journeyTable']/tbody/tr"));
+
+        for (WebElement row : rows) {
+            if (row.getText().contains("9202VWG") && row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]")).isDisplayed()) {
+                WebElement finishButton = row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]"));
+                finishButton.click();
+                break;
+            }
+        }
+
+
+        WebElement odometerEndField = driver.findElement(By.id("odometerEnd"));
+        odometerEndField.clear();
+
+
+        WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit' and contains(text(),'Finalizar')]"));
+        submitButton.click();
+        List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
+        assertFalse(requiredFieldErrors.isEmpty());
+        String currentUrl = driver.getCurrentUrl();
+        assertTrue(currentUrl.contains("/end"));
+
+        PO_LoginView.logOut(driver);
+    }
+    @Test
+    @Order(30)
+    // Finalizar trayecto odometro negativo
+    public void PR030() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Ver trayectos");
+        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='journeyTable']/tbody/tr"));
+
+        for (WebElement row : rows) {
+            if (row.getText().contains("9202VWG") && row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]")).isDisplayed()) {
+                WebElement finishButton = row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]"));
+                finishButton.click();
+                break;
+            }
+        }
+
+
+        WebElement odometerEndField = driver.findElement(By.id("odometerEnd"));
+        odometerEndField.clear();
+        odometerEndField.sendKeys("-5");
+
+        WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit' and contains(text(),'Finalizar')]"));
+        submitButton.click();
+        WebElement errorMessage = driver.findElement(By.className("text-danger"));
+        String checkText = PO_HomeView.getP().getString("Error.odometer.negativo", PO_Properties.getSPANISH());
+        assertTrue(errorMessage.getText().contains(checkText));
+        PO_LoginView.logOut(driver);
+    }
+
+
+    @Test
+    @Order(31)
+    // No hay en curso
+    public void PR031() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000002Q","Us3r@2-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Ver trayectos");
+        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='journeyTable']/tbody/tr"));
+
+        for (WebElement row : rows) {
+            assertFalse(row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]")).isDisplayed());
+        }
+        driver.navigate().to("http://localhost:8090/journey/end");
+
+        new WebDriverWait(driver, 10).until(ExpectedConditions.urlContains("/journey/list"));
+        //nos devuelve a list si no existe ninguno en curso
+        String currentUrl = driver.getCurrentUrl();
+        assertTrue(currentUrl.contains("/journey/list"));
+        PO_LoginView.logOut(driver);
     }
 
 }

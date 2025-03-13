@@ -33,12 +33,24 @@ public class AddEmployeeFormValidator implements Validator {
             errors.rejectValue("name", "Error.space");
         }
 
+        if(employee.getDni().length() != 9){
+            errors.rejectValue("dni", "Error.signup.dni.invalid");
+            return;
+        }
+
+        String numberPart = employee.getDni().substring(0, 8);
+        for (char c : numberPart.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                errors.rejectValue("dni", "Error.signup.dni.invalid");
+                return;
+            }
+        }
         char lastChar = employee.getDni().charAt(employee.getDni().length() - 1);
-        int number = Integer.parseInt(employee.getDni().substring(0, 8));
+        int number = Integer.parseInt(numberPart);
 
         String letters = "TRWAGMYFPDXBNJZSQVHLCKE";
 
-        if (employee.getDni().length() != 9 || Character.isDigit(lastChar) || lastChar != letters.charAt(number % 23)) {
+        if (Character.isDigit(lastChar) || lastChar != letters.charAt(number % 23)) {
             errors.rejectValue("dni", "Error.signup.dni.invalid");
         }
 
