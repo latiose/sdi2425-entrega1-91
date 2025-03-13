@@ -13,9 +13,9 @@ public class Vehicle {
     @GeneratedValue
     private long id;
     @Column(unique=true)
-    private String numberPlate; // matrícula
+    private String numberPlate;
     @Column(unique=true)
-    private String vin; // número de bastidor
+    private String vin;
     private String brand;
     private String model;
     private float mileage;
