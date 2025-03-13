@@ -9,6 +9,7 @@ import com.uniovi.gestor.services.EmployeesService;
 import com.uniovi.gestor.services.JourneysService;
 
 import com.uniovi.gestor.services.VehiclesService;
+import com.uniovi.gestor.validators.AddJourneyFormValidator;
 import com.uniovi.gestor.validators.EndJourneyFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,14 +37,15 @@ public class JourneysController {
     private final VehiclesService vehiclesService;
     private final EmployeesService employeesService;
     private final EndJourneyFormValidator endJourneyFormValidator;
-    private final EmployeesService employeeService;
+    private final AddJourneyFormValidator addJourneyFormValidator;
 
-    public JourneysController(JourneysService journeysService, VehiclesService vehiclesService, EmployeesService employeesService, EndJourneyFormValidator endJourneyFormValidator, EmployeesService employeeService) {
+
+    public JourneysController(JourneysService journeysService, VehiclesService vehiclesService, EndJourneyFormValidator endJourneyFormValidator, EmployeesService employeeService, AddJourneyFormValidator addJourneyFormValidator) {
         this.journeysService = journeysService;
         this.vehiclesService = vehiclesService;
-        this.employeesService = employeesService;
+        this.employeesService = employeeService;
         this.endJourneyFormValidator = endJourneyFormValidator;
-        this.employeeService = employeeService;
+        this.addJourneyFormValidator = addJourneyFormValidator;
     }
 
     @RequestMapping(value = "/journey/add")
@@ -80,38 +84,26 @@ public class JourneysController {
     }
 
     @RequestMapping(value="/journey/add", method = RequestMethod.POST)
-    public String addJourney(@RequestParam("plateNumber") String plateNumber, Model model) {
-        Vehicle v = vehiclesService.getVehicleByNumberPlate(plateNumber);
-        if (v == null) {
-            model.addAttribute("journey", new Journey());
+    public String addJourney(@RequestParam("plateNumber") String plateNumber,
+                             @ModelAttribute("journey") Journey journey,
+                             BindingResult result, Model model) {
+
+        Vehicle vehicle = vehiclesService.findVehicleByNumberPlate(plateNumber);
+        if (vehicle == null) {
+            result.rejectValue("vehicle.numberPlate", "Error.vehicleNotFound");
+        } else {
+            journey.setVehicle(vehicle);
+        }
+
+        addJourneyFormValidator.validate(journey, result);
+
+        if (result.hasErrors()) {
             model.addAttribute("plateList", vehiclesService.findAllPlates());
-            model.addAttribute("error", "Vehiculo no encontrado");
+            model.addAttribute("journey", journey);
             return "journey/add";
         }
-
-        List<Journey> vehicleJourneys = journeysService.findByVehicle(v);
-        for (Journey j : vehicleJourneys) {
-            if (j.getEndDate() == null) {
-                model.addAttribute("journey", new Journey());
-                model.addAttribute("plateList", vehiclesService.findAllPlates());
-                model.addAttribute("error", "Vehiculo en uso");
-                return "journey/add";
-            }
-        }
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
-        List<Journey> userJourneys = journeysService.findByDni(dni);
-        for (Journey j : userJourneys) {
-            if (j.getEndDate() == null) {
-                model.addAttribute("journey", new Journey());
-                model.addAttribute("plateList", vehiclesService.findAllPlates());
-                model.addAttribute("error", "Ya tienes un trayecto activo");
-                return "journey/add";
-            }
-        }
-
-        Journey journey = new Journey(v);
         Vehicle existingVehicle = journeysService.findVehicleByNumberPlate(plateNumber);
         if (existingVehicle != null) {
             journey.setOdometerStart(existingVehicle.getMileage());
@@ -120,8 +112,9 @@ public class JourneysController {
         }
         journey.setEmployee(employeesService.getEmployeeByDni(dni));
         journeysService.addJourney(journey);
-        return "redirect:/journey/list";
+        return "redirect:/journey/list"; //Actualizar
     }
+
 
     @RequestMapping("/journey/list")
     public String getJourneyList(Model model, Pageable pageable){
