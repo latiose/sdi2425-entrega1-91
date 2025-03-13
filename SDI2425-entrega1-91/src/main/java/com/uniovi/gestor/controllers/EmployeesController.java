@@ -5,6 +5,7 @@ import com.uniovi.gestor.services.EmployeesService;
 import com.uniovi.gestor.services.RolesService;
 import com.uniovi.gestor.services.SecurityService;
 import com.uniovi.gestor.validators.AddEmployeeFormValidator;
+import com.uniovi.gestor.validators.ChangePasswordValidator;
 import com.uniovi.gestor.validators.EditEmployeeFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import com.uniovi.gestor.entities.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 
 @Controller
@@ -29,15 +31,16 @@ public class EmployeesController {
     private final AddEmployeeFormValidator addEmployeeFormValidator;
     private final EditEmployeeFormValidator editEmployeeFormValidator;
     private final RolesService rolesService;
+    private final ChangePasswordValidator changePasswordValidator;
 
     public EmployeesController(EmployeesService employeesService, SecurityService securityService, AddEmployeeFormValidator
-            addEmployeeFormValidator, EditEmployeeFormValidator editEmployeeFormValidator ,RolesService rolesService) {
+            addEmployeeFormValidator, EditEmployeeFormValidator editEmployeeFormValidator , RolesService rolesService, ChangePasswordValidator changePasswordValidator) {
         this.employeesService = employeesService;
         this.securityService = securityService;
         this.addEmployeeFormValidator = addEmployeeFormValidator;
         this.rolesService = rolesService;
         this.editEmployeeFormValidator = editEmployeeFormValidator;
-
+        this.changePasswordValidator = changePasswordValidator;
     }
 
     @RequestMapping("/employee/list")
@@ -162,9 +165,31 @@ public class EmployeesController {
     }
 
     @RequestMapping("/employee/changePassword")
-    public String changePassword(Model model) {
+    public String getChangePassword(Model model, Principal principal) {
         model.addAttribute("employee", new Employee());
         return "employee/changePassword";
+    }
+
+    @RequestMapping(value = "/employee/changePassword", method = RequestMethod.POST)
+    public String setChangePassword(@Validated Employee employee, BindingResult result) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        employee.setDni(auth.getName());
+        changePasswordValidator.validate(employee, result);
+
+        if(result.hasErrors()) {
+            return "employee/changePassword";
+        }
+
+
+
+        Employee activeEmployee = employeesService.getEmployeeByDni(auth.getName());
+
+        activeEmployee.setPassword(employee.getNewPassword());
+
+        employeesService.addEmployee(activeEmployee);
+
+        return "home";
     }
 
 

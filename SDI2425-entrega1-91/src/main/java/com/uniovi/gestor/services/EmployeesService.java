@@ -22,6 +22,11 @@ public class EmployeesService {
     @PostConstruct
     public void init() {
     }
+
+    public List<Employee> getAllEmployees() {
+        return (List<Employee>) employeesRepository.findAll();
+    }
+
     public Page<Employee> getEmployees(Pageable pageable) {
         Page<Employee> employees = employeesRepository.findAll(pageable);
         return employees;

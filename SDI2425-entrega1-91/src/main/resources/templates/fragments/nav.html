@@ -27,6 +27,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/employee/add" sec:authorize="hasRole('ROLE_ADMIN')">Agregar usuario</a>
           <a class="dropdown-item" href="/employee/list" sec:authorize="hasRole('ROLE_ADMIN')">Ver usuarios</a>
+          <a class="dropdown-item" href="/employee/changePassword" sec:authorize="isAuthenticated">Cambiar contraseña</a>
         </div>
       </li>
       <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
