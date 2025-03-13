@@ -119,19 +119,9 @@ public String loginError(Model model) {
 }
 
     @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
-    public String home(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String dni = auth.getName();
-        Employee activeEmployee = employeesService.getEmployeeByDni(dni);
-
+    public String home() {
         return "home";
     }
-
-
-
-
-
-
 
     @RequestMapping("/employee/list/update")
     public String updateList(Model model){

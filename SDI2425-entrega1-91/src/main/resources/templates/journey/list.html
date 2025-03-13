@@ -48,7 +48,7 @@
                 <input type="hidden" th:value="${journey.id}" name="id" />
                 <td>
                     <a th:if="${journey.endDate == null}" th:href="@{/journey/end}"
-                       class="btn btn-primary">Finalizar</a>
+                       class="btn btn-primary" th:text="#{journey.end.button}"></a>
                 </td>
 
             </tr>
