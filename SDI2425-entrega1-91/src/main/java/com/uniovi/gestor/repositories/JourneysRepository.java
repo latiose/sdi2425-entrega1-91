@@ -12,6 +12,10 @@ import java.util.List;
 
 public interface JourneysRepository extends CrudRepository<Journey, Long> {
 
+    @Query("SELECT j.vehicle FROM Journey j WHERE j.id = ?1")
+    Vehicle findVehicleByJourneyId(Long id);
+
+
     Page<Journey> findAll(Pageable pageable);
 
     @Query("SELECT j.vehicle FROM Journey j WHERE LOWER(j.vehicle.numberPlate) = LOWER(?1)")
