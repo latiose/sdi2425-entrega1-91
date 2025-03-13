@@ -76,6 +76,8 @@ public class JourneysController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
         Journey existingJourney = journeysService.findActiveJourneyByDni(dni);
+        Vehicle existingVehicle = journeysService.findVehicleByJourney(existingJourney.getId());
+        existingVehicle.setMileage((float) journey.getOdometerEnd());
         existingJourney.setOdometerEnd(journey.getOdometerEnd());
         existingJourney.setObservations(journey.getObservations());
         existingJourney.setEndDate(LocalDateTime.now());
