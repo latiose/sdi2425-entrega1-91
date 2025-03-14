@@ -64,6 +64,10 @@
             <img th:src="@{/images/if_spain_flag.png}" style="border: 0; float: left; margin-right: 15px"/>
             <span th:text="#{language.es}"></span>
           </a>
+          <a class="dropdown-item" id="btnGerman" value="DE">
+            <img th:src="@{/images/if_german_flag.png}" style="border: 0; float: left; margin-right: 15px"/>
+            <span th:text="#{language.de}"></span>
+          </a>
         </div>
       </li>
       <li sec:authorize="!isAuthenticated()" class="nav-item">

@@ -6,6 +6,7 @@ xmlns:sec="http://www.springframework.org/schema/security">
 <!-- Barra de Navegación superior -->
 <nav th:replace="fragments/nav"/>
 <div class="container">
+    <p th:if="${generatedPassword}" th:text="#{generated.password}"><b th:text="${generatedPassword}"></b></p>
     <h2 th:text="#{employees.title}"></h2>
     <p th:text = "#{employees.subtext}"></p>
     <button type="button" id="updateButton" class="btn btn-primary" th:text="#{update.message}"></button>
@@ -27,24 +28,24 @@ xmlns:sec="http://www.springframework.org/schema/security">
         <table class="table table-hover" th:fragment="employeeTable" id="employeeTable">
             <thead>
             <tr>
-                <th scope="col">Dni</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellidos</th>
-                <th scope="col"></th>
+                <th scope="col" th:text="#{dni.form}"></th>
+                <th scope="col"th:text="#{name.form}"></th>
+                <th scope="col" th:text="#{lastName.form}"></th>
+                <th scope="col"th:text="#{role.form}"> </th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="employee : ${employeesList}">
-                <td th:text="${employee.dni}">Dni</td>
-                <td th:text="${employee.name}">Nombre</td>
-                <td th:text="${employee.lastName}">Apellidos</td>
-                <td th:text="${employee.role}">Rol</td>
-                <td><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="${'/employee/edit/' + employee.id}">modificar</a></td>
+                <td th:text="${employee.dni}"></td>
+                <td th:text="${employee.name}"></td>
+                <td th:text="${employee.lastName}"></td>
+                <td th:text="${employee.role}"></td>
+                <td><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="${'/employee/edit/' + employee.id}" th:text="#{modify.button}"></a></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div th:if="${#lists.isEmpty(employeesList)}"> No vehicles </div>
+    <div th:if="${#lists.isEmpty(employeesList)}" th:text="${employee.empty}" >  </div>
     <footer th:replace="fragments/pagination"></footer>
 </div>
 <footer th:replace="fragments/footer"/>
