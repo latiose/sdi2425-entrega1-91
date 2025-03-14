@@ -132,5 +132,14 @@ public class InsertSampleDataService {
         journey3.setOdometerStart(78345.2);
         journey3.setStartDate(LocalDateTime.now().minusHours(1));
         journeysService.addJourney(journey3);
+
+        // Este lo uso para probar los refuels
+        Employee employee2 = employeesService.getEmployeeByDni("10000010R");
+        Vehicle vehicleEmp2 = vehiclesService.getVehicleByNumberPlate("B3545CA");
+        Journey journey4 = new Journey(vehicleEmp2);
+        journey4.setEmployee(employee2);
+        journey4.setOdometerStart(1234.5);
+        journey4.setStartDate(LocalDateTime.now().minusHours(2));
+        journeysService.addJourney(journey4);
     }
 }

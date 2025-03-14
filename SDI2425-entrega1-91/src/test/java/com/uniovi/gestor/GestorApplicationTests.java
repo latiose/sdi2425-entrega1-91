@@ -522,10 +522,10 @@ class GestorApplicationTests {
     // Repostaje válido
     public void PR028() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
+        PO_LoginView.fillForm(driver, "10000010R","Us3r@10-PASSW");
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
-        PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100000, "Repostaje de prueba");
+        PO_ListView.fillFormAddRefuel(driver, "Manolo", 1.2, 50.0, true, 100000, "Repostaje de prueba");
 
         WebElement dropdown = driver.findElement(By.id("plateNumber"));
         Select select = new Select(dropdown);
@@ -609,7 +609,7 @@ class GestorApplicationTests {
     // Repostaje inválido -  odómetro anterior al inicial del trayecto
     public void PR032() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
+        PO_LoginView.fillForm(driver, "10000010R","Us3r@10-PASSW");
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
         PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100, "Repostaje de prueba");
@@ -756,7 +756,7 @@ class GestorApplicationTests {
     // Repostaje válido
     public void PR038() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
+        PO_LoginView.fillForm(driver, "10000010R","Us3r@10-PASSW");
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
         PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100000, "Repostaje de prueba");
@@ -765,7 +765,7 @@ class GestorApplicationTests {
 
         WebElement dropdown = driver.findElement(By.id("plateNumber"));
         Select select = new Select(dropdown);
-        select.selectByValue("9101GHJ");
+        select.selectByValue("B3545CA");
 
         List<WebElement> rows = driver.findElements(By.xpath("//table[@id='refuelsTable']/tbody/tr"));
         int repsolCount = 0;
