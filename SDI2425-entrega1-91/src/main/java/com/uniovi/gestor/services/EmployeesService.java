@@ -4,6 +4,8 @@ import java.util.*;
 import com.uniovi.gestor.repositories.EmployeesRepository;
 import javax.annotation.PostConstruct;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.uniovi.gestor.entities.*;
@@ -20,9 +22,13 @@ public class EmployeesService {
     @PostConstruct
     public void init() {
     }
-    public List<Employee> getEmployees() {
-        List<Employee> employees = new ArrayList<Employee>();
-        employeesRepository.findAll().forEach(employees::add);
+
+    public List<Employee> getAllEmployees() {
+        return (List<Employee>) employeesRepository.findAll();
+    }
+
+    public Page<Employee> getEmployees(Pageable pageable) {
+        Page<Employee> employees = employeesRepository.findAll(pageable);
         return employees;
     }
     public Employee getEmployee(Long id) {

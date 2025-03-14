@@ -45,6 +45,10 @@ public class JourneysService {
         return journeysRepository.findByVehicle(v);
     }
 
+    public Page<Journey> findByVehiclePageable(Vehicle v, Pageable pageable) {
+        return journeysRepository.findByVehicle(v, pageable);
+    }
+
     public List<Journey> findByDni(String dni) {
         return journeysRepository.findByDni(dni);
     }
@@ -55,5 +59,8 @@ public class JourneysService {
 
     public Page<Journey> findByDniPage(String dni, Pageable pageable){
         return journeysRepository.findByDniPage(dni, pageable);
+    }
+
+    public Vehicle findVehicleByJourney(Long id ) { return journeysRepository.findVehicleByJourneyId(id);
     }
 }

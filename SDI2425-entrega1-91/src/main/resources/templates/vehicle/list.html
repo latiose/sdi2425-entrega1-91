@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org"
+xmlns:sec="http://www.springframework.org/schema/security">
 <head th:replace="fragments/head"><title>Vehicles list</title></head>
 <body>
 <!-- Barra de Navegación superior -->
@@ -8,7 +9,7 @@
     <h2 th:text="#{vehicles.message}"></h2>
     <p th:text="#{vehicles.message.extra}"></p>
     <button type="button" id="updateButton" class="btn btn-primary" th:text="#{update.message}"></button>
-    <button type="button" id="deleteButton" class="btn btn-primary" th:text="#{delete.message}"></button>
+    <button type="button" id="deleteButton" class="btn btn-primary" sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{delete.message}"></button>
     <script th:inline="javascript">
         /*<![CDATA[*/
         var numberPage = /*[[${param.page}]]*/ null;
@@ -50,27 +51,29 @@
             <thead>
             <tr>
                 <th scope="col" th:text="#{vehicles.number.plate}"></th>
-                <th scope="col" th:text="#{vehicles.vin}"></th>
+                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{vehicles.vin}"></th>
                 <th scope="col" th:text="#{vehicles.brand}"></th>
                 <th scope="col" th:text="#{vehicles.model}"></th>
-                <th scope="col" th:text="#{vehicles.fuel}"></th>
+                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{vehicles.fuel}"></th>
                 <th scope="col" th:text="#{vehicles.mileage}"></th>
-                <th scope="col" th:text="#{vehicles.status}"></th>
+                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{vehicles.status}"></th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="vehicle : ${vehiclesList}">
                 <td th:text="${vehicle.numberPlate}"></td>
-                <td th:text="${vehicle.vin}"></td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${vehicle.vin}"></td>
                 <td th:text="${vehicle.brand}"></td>
                 <td th:text="${vehicle.model}"></td>
-                <td th:text="${vehicle.fuel}"></td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${vehicle.fuel}"></td>
                 <td th:text="${vehicle.mileage}"></td>
-                <td th:text="#{vehicles.status.__${vehicle.status}__}"></td>
-                <td><label>
+                <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{vehicles.status.__${vehicle.status}__}"></td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')"><label>
                     <input type="checkbox" class="vehicleCheckbox" th:value="${vehicle.id}"/>
                 </label></td>
+                <td><a th:href="${'/refuel/list/update' + vehicle.numberPlate}" th:text="#{refuels.list}"></a></td>
+                <td><a th:href="${'/journey/list/vehicle/' + vehicle.numberPlate}" th:text="#{journey.header}"></a></td>
             </tr>
             </tbody>
         </table>
