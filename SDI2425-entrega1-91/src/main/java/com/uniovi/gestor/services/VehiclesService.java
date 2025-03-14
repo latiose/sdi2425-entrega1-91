@@ -1,6 +1,7 @@
 package com.uniovi.gestor.services;
 
 import com.uniovi.gestor.VehicleStatusConfig;
+import com.uniovi.gestor.entities.Journey;
 import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.repositories.VehiclesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +62,7 @@ public class VehiclesService {
     public String getDisplayStatus(Vehicle vehicle) {
         return statusConfig.getStatusDisplay(vehicle.getStatus());
     }
+
+   
 
 }

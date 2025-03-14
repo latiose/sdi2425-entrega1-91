@@ -6,16 +6,15 @@
 <nav th:replace="fragments/nav"/>
 <div class="container">
     <h2 th:text="#{employees.title}"></h2>
-    <p th:if="${generatedPassword}">La contraseña del nuevo empleado es: <b th:text="${generatedPassword}"></b></p>
-    <p>Los empleados que actualmente figuran en el sistema son los
-        siguientes:</p>
+    <p th:if="${generatedPassword}" th:text="#{generated.password}"><b th:text="${generatedPassword}"></b></p>
+    <p th:text="#{user.list.title}"></p>
     <div class="table-responsive">
         <table class="table table-hover" th:fragment="employeeTable" id="employeeTable">
             <thead>
             <tr>
-                <th scope="col">DNI</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellidos</th>
+                <th scope="col" th:text="#{dni.form}"></th>
+                <th scope="col"th:text="#{name.form}"></th>
+                <th scope="col" th:text="#{lastName.form}"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -26,11 +25,11 @@
             <tbody>
             <tr th:each="employee : ${employeesList}">
                 <td th:text="${employee.dni}">71888888X</td>
-                <td th:text="${employee.name}">Nombre del alumno</td>
-                <td th:text="${employee.lastName}">Apellidos del alumno</td>
-                <td><a th:href="${'/employee/details/' + employee.id}">detalles</a></td>
-                <td><a th:href="${'/employee/edit/' + employee.id}">modificar</a></td>
-                <td><a th:href="${'/employee/delete/' + employee.id}">eliminar</a></td>
+                <td th:text="${employee.name}"></td>
+                <td th:text="${employee.lastName}"></td>
+                <td><a th:href="${'/employee/details/' + employee.id}" th:text="#{details.text}"></a> </td>
+                <td><a th:href="${'/employee/edit/' + employee.id}" th:text="#{edit.text}"></a></td>
+                <td><a th:href="${'/employee/delete/' + employee.id}" th:text="#{delete.text}"></a></td>
             </tr>
             </tbody>
         </table>

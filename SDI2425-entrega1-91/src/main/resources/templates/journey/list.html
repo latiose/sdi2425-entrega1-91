@@ -7,7 +7,7 @@
 <div class="container">
     <h2 th:text = "#{journey.header}"></h2>
     <p th:text = "#{journey.list.title}"></p>
-    <button type="button" id="updateButton" class="btn btn-primary">Actualizar</button>
+    <button type="button" id="updateButton" class="btn btn-primary" th:text="#{update.message}"></button>
     <script th:inline="javascript">
         /*<![CDATA[*/
         var numberPage = /*[[${param.page}]]*/ null;

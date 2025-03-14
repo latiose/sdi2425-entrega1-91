@@ -1,6 +1,7 @@
 package com.uniovi.gestor.repositories;
 
 import com.uniovi.gestor.entities.Employee;
+import com.uniovi.gestor.entities.Journey;
 import com.uniovi.gestor.entities.Vehicle;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,5 +21,6 @@ public interface VehiclesRepository extends CrudRepository<Vehicle, Long> {
 
     @Query("SELECT v.numberPlate FROM Vehicle v ORDER BY v.numberPlate ASC")
     List<String> findAllPlates();
+
 
 }
