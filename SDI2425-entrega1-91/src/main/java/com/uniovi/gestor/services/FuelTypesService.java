@@ -22,8 +22,8 @@ public class FuelTypesService {
 
     public String[] getFuelTypes() {
         String[] fuelTypes = new String[typeKeys.length];
-        for(String key : typeKeys) {
-            fuelTypes[Integer.parseInt(key)] = messageSource.getMessage(key, null, LocaleContextHolder.getLocale());
+        for (int i = 0; i < typeKeys.length; i++) {
+            fuelTypes[i] = messageSource.getMessage(typeKeys[i], null, LocaleContextHolder.getLocale());
         }
         return fuelTypes;
     }

@@ -11,7 +11,7 @@
             <label class="control-label col-sm-2" for="numberPlate" th:text="#{vehicles.number.plate} + ':'"></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="numberPlate" name="numberPlate"
-                       placeholder="1234BCD" required="true"/>
+                       placeholder="1234BCD" required="required"/>
                 <span class="text-danger" th:if="${#fields.hasErrors('numberPlate')}" th:errors="*{numberPlate}"></span>
             </div>
         </div>

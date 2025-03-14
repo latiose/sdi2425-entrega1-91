@@ -59,6 +59,8 @@ public class VehiclesService {
     return getVehicleByNumberPlate(plate);
     }
 
+    public Page<Vehicle> findVehiclesByStatus(VehicleStatusConfig.VehicleStatus status, Pageable pageable) { return vehiclesRepository.findByStatus(status, pageable); }
+
     public String getDisplayStatus(Vehicle vehicle) {
         return statusConfig.getStatusDisplay(vehicle.getStatus());
     }

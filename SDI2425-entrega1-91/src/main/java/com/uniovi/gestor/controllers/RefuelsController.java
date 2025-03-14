@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,6 +57,15 @@ public class RefuelsController {
         model.addAttribute("refuelsList",refuels);
         model.addAttribute("page", refuels);
         return "refuel/list";
+    }
+
+    @RequestMapping("/refuel/list/{plateNumber}")
+    public String getVehicleList(@PathVariable("plateNumber") String plateNumber, Model model, Pageable pageable){
+        Page<Refuel> refuels = refuelsService.getRefuelsByNumberPlate(plateNumber, pageable);
+        model.addAttribute("plateList",vehiclesService.findAllPlates());
+        model.addAttribute("refuelsList",refuels);
+        model.addAttribute("page", refuels);
+        return "refuel/listVehicle";
     }
 
     @RequestMapping("/refuel/list/update")

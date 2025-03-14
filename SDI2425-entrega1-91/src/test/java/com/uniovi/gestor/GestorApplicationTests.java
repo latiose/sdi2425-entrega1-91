@@ -133,6 +133,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Agregar empleado");
         PO_PrivateView.fillFormAddEmployee(driver, "07112884L", "Pablo", "Perez Alvarez");
+        PO_ListView.goToLastPage(driver);
         String checkText = "07112884L";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         assertFalse(result.isEmpty());
@@ -206,7 +207,7 @@ class GestorApplicationTests {
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
         PO_PrivateView.fillFormAddVehicle(driver, "1234BCL", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
-        PO_PrivateView.goToLastPage(driver);
+        PO_ListView.goToLastPage(driver);
         String checkText = "1234BCL";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         Assertions.assertEquals(checkText, result.get(0).getText());
@@ -375,6 +376,7 @@ class GestorApplicationTests {
 
     @Test
     @Order(21)
+    // Listado de vehículos de la empresa
     public void PR020() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
@@ -388,14 +390,55 @@ class GestorApplicationTests {
         while (next) {
             List<WebElement> vehicleRows = driver.findElements(By.xpath("//*[@id=\"vehicleTable\"]/tbody/tr"));
             totalCount += vehicleRows.size();
-            next = PO_PrivateView.goToNextPage(driver);
+            next = PO_ListView.goToNextPage(driver);
         }
 
         Assertions.assertEquals(totalCount, numCars, "El número de vehículos no coincide.");
     }
 
     @Test
+    @Order(22)
+    // Ir a lista de vehículos, borrar el primero de la lista, comprobar que la lista se actualiza y que el vehículo desaparece
+    public void PR021() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Ver vehículos");
+
+        boolean found = PO_ListView.deleteVehiclesByIndexes(driver, new int[]{0});
+        assertFalse(found, "El vehículo no se ha eliminado correctamente.");
+    }
+
+    @Test
+    @Order(23)
+    // Ir a lista de vehículos, borrar el último de la lista, comprobar que la lista se actualiza y que el vehículo desaparece
+    public void PR022() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Ver vehículos");
+
+        List<WebElement> vehicleRows = driver.findElements(By.xpath("//*[@id=\"vehicleTable\"]/tbody/tr"));
+        PO_ListView.goToLastPage(driver);
+        boolean found = PO_ListView.deleteVehiclesByIndexes(driver, new int[]{vehicleRows.size() - 1});
+        assertFalse(found, "El vehículo no se ha eliminado correctamente.");
+    }
+
+    @Test
     @Order(24)
+    // Ir a lista de vehículos, borrar 3 vehículos, comprobar que la lista se actualiza y que dichos vehículos desaparecen
+    public void PR023() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Ver vehículos");
+
+        boolean found = PO_ListView.deleteVehiclesByIndexes(driver, new int[]{0, 1, 2});
+        assertFalse(found, "Los vehículos no se han eliminado correctamente.");
+    }
+
+    @Test
+    @Order(25)
     // Mostrar el listado de trayectos
     public void PR024() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -416,7 +459,7 @@ class GestorApplicationTests {
 
 
     @Test
-    @Order(25)
+    @Order(26)
     //Añadir válido
     public void PR025() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -433,7 +476,7 @@ class GestorApplicationTests {
     }
 
     @Test
-    @Order(26)
+    @Order(27)
     //Añadir ya tiene trayecto en curso
     public void PR026() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -454,7 +497,7 @@ class GestorApplicationTests {
 
 
     @Test
-    @Order(27)
+    @Order(28)
     //Añadir el coche ya esta siendo usado
     public void PR027() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -473,11 +516,117 @@ class GestorApplicationTests {
         PO_LoginView.logOut(driver);
     }
 
+    @Test
+    @Order(29)
+    // Registrar un repostaje realizado en el vehículo que el usuario tiene asignado
+    // Repostaje válido
+    public void PR028() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000010R","Us3r@10-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
+        PO_ListView.fillFormAddRefuel(driver, "Manolo", 1.2, 50.0, true, 100000, "Repostaje de prueba");
+
+        WebElement dropdown = driver.findElement(By.id("plateNumber"));
+        Select select = new Select(dropdown);
+        select.selectByValue("9101GHJ");
+
+        List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "vehicle.selection.refuel",
+                PO_Properties.getSPANISH());
+
+        String checkText = PO_HomeView.getP().getString("vehicle.selection.refuel",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='refuelsTable']/tbody/tr"));
+        boolean isPresent = false;
+        for (WebElement row : rows) {
+            if (row.getText().contains("Repsol")) {
+                isPresent = true;
+                break;
+            }
+        }
+        Assertions.assertTrue(isPresent, "El repostaje no se ha añadido correctamente.");
+    }
 
     @Test
-    @Order(28)
+    @Order(30)
+    // Registrar un repostaje realizado en el vehículo que el usuario tiene asignado
+    // Repostaje inválido - no hay trayecto asignado
+    public void PR029() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000002Q","Us3r@2-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
+        PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100000, "Repostaje de prueba");
+
+        WebElement errorMessage = driver.findElement(By.className("alert-danger"));
+        String checkText = PO_HomeView.getP().getString("Error.journeyNotStarted", PO_Properties.getSPANISH());
+        assertTrue(errorMessage.getText().contains(checkText));
+        PO_LoginView.logOut(driver);
+    }
+
+    @Test
+    @Order(31)
+    // Registrar un repostaje realizado en el vehículo que el usuario tiene asignado
+    // Repostaje inválido - nombre de estación vacío, precio vacío, cantidad vacía, odómetro vacío
+    public void PR030() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
+        PO_ListView.clickSendButton(driver);
+        List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
+        assertFalse(requiredFieldErrors.isEmpty());
+        String currentUrl = driver.getCurrentUrl();
+        assertTrue(currentUrl.contains("/refuel/add"));
+        PO_LoginView.logOut(driver);
+    }
+
+    @Test
+    @Order(32)
+    // Registrar un repostaje realizado en el vehículo que el usuario tiene asignado
+    // Repostaje inválido - precio y cantidad negativos
+    public void PR031() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
+        PO_ListView.fillFormAddRefuel(driver, "Repsol", -1.2, -50.0, true, 100000, "Repostaje de prueba");
+
+        List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.negative",
+                PO_Properties.getSPANISH());
+
+        String checkText = PO_HomeView.getP().getString("Error.negative",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+        PO_LoginView.logOut(driver);
+    }
+
+    @Test
+    @Order(33)
+    // Registrar un repostaje realizado en el vehículo que el usuario tiene asignado
+    // Repostaje inválido -  odómetro anterior al inicial del trayecto
+    public void PR032() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000010R","Us3r@10-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
+        PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100, "Repostaje de prueba");
+
+        List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.odometer",
+                PO_Properties.getSPANISH());
+
+        String checkText = PO_HomeView.getP().getString("Error.odometer",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+        PO_LoginView.logOut(driver);
+    }
+
+    @Test
+    @Order(34)
     // Finalizar trayecto válido
-    public void PR028() {
+    public void PR033() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
@@ -509,9 +658,9 @@ class GestorApplicationTests {
 
 
     @Test
-    @Order(29)
+    @Order(35)
     // Finalizar trayecto odometro vacio
-    public void PR029() {
+    public void PR034() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
         PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Agregar trayecto");
@@ -548,9 +697,9 @@ class GestorApplicationTests {
         PO_LoginView.logOut(driver);
     }
     @Test
-    @Order(30)
+    @Order(36)
     // Finalizar trayecto odometro negativo
-    public void PR030() {
+    public void PR035() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
@@ -580,9 +729,9 @@ class GestorApplicationTests {
 
 
     @Test
-    @Order(31)
+    @Order(37)
     // No hay en curso
-    public void PR031() {
+    public void PR036() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "10000002Q","Us3r@2-PASSW");
 
@@ -600,6 +749,36 @@ class GestorApplicationTests {
         assertTrue(currentUrl.contains("/journey/list"));
         PO_LoginView.logOut(driver);
     }
+
+    @Test
+    @Order(39)
+    // Registrar un repostaje realizado en el vehículo que el usuario tiene asignado
+    // Repostaje válido
+    public void PR038() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000010R","Us3r@10-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
+        PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100000, "Repostaje de prueba");
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
+        PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100100, "Repostaje de prueba2");
+
+        WebElement dropdown = driver.findElement(By.id("plateNumber"));
+        Select select = new Select(dropdown);
+        select.selectByValue("B3545CA");
+
+        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='refuelsTable']/tbody/tr"));
+        int repsolCount = 0;
+        for (WebElement row : rows) {
+            if (row.getText().contains("Repsol")) {
+                repsolCount++;
+                if(repsolCount == 2)
+                    break;
+            }
+        }
+        Assertions.assertEquals(repsolCount, 2,"Los repostajes asignados no figuran en la lista.");
+    }
+
 
 }
 
