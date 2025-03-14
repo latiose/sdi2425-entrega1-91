@@ -27,7 +27,7 @@ public class InsertSampleDataService {
     @PostConstruct
     public void init() {
         Employee employee1 = new Employee("12345678Z", "Pedro", "Díaz");
-        employee1.setPassword("@Dm1n1str@D0r");
+        employee1.setPassword("admin");
         employee1.setRole(rolesService.getRoles()[1]);
         employeesService.addEmployee(employee1);
 //        Nombre: Usuario1, DNI: 10000001S, Password: Us3r@1-PASSW
