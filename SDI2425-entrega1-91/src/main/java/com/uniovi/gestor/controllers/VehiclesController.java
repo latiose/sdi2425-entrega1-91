@@ -1,12 +1,16 @@
 package com.uniovi.gestor.controllers;
 
 import com.uniovi.gestor.VehicleStatusConfig;
+import com.uniovi.gestor.entities.Employee;
 import com.uniovi.gestor.entities.Vehicle;
+import com.uniovi.gestor.services.EmployeesService;
 import com.uniovi.gestor.services.FuelTypesService;
 import com.uniovi.gestor.services.VehiclesService;
 import com.uniovi.gestor.validators.AddVehicleFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,11 +25,13 @@ public class VehiclesController {
     private final VehiclesService vehiclesService;
     private final AddVehicleFormValidator addVehicleFormValidator;
     private final FuelTypesService fuelTypesService;
+    private final EmployeesService employeesService;
 
-    public VehiclesController(VehiclesService vehiclesService, AddVehicleFormValidator addVehicleFormValidator, FuelTypesService fuelTypesService) {
+    public VehiclesController(VehiclesService vehiclesService, AddVehicleFormValidator addVehicleFormValidator, FuelTypesService fuelTypesService, EmployeesService employeesService) {
         this.vehiclesService = vehiclesService;
         this.addVehicleFormValidator = addVehicleFormValidator;
         this.fuelTypesService = fuelTypesService;
+        this.employeesService = employeesService;
     }
 
     @RequestMapping(value = "/vehicle/add")
@@ -50,9 +56,24 @@ public class VehiclesController {
 
     @RequestMapping("/vehicle/list")
     public String getVehicleList(Model model, Pageable pageable){
-        Page<Vehicle> vehicles = vehiclesService.getVehicles(pageable);
-        model.addAttribute("vehiclesList",vehicles);
-        model.addAttribute("page", vehicles);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String dni = auth.getName();
+
+        Employee employee = employeesService.getEmployeeByDni(dni);
+
+        if(employee.getRole().equals("ROLE_STANDARD")){
+            Page<Vehicle> vehicles = vehiclesService.findVehiclesByStatus(VehicleStatusConfig.VehicleStatus.AVAILABLE, pageable);
+            model.addAttribute("vehiclesList",vehicles);
+            model.addAttribute("page", vehicles);
+        }
+        else{
+            Page<Vehicle> vehicles = vehiclesService.getVehicles(pageable);
+            model.addAttribute("vehiclesList",vehicles);
+            model.addAttribute("page", vehicles);
+        }
+
+
         return "vehicle/list";
     }
 

@@ -30,13 +30,13 @@
           <a class="dropdown-item" href="/journey/list" th:text="#{journey.list}"></a>
           <a class="dropdown-item" href="/journey/list/vehicle" sec:authorize="isAuthenticated" th:text="#{journeys.byVehicle}"></a>
         </div>
-      <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+      <li class="nav-item dropdown" sec:authorize="isAuthenticated">
         <a class="nav-link dropdown-toggle" href="#" id="vehicleDropdown" role="button" data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false" th:text="#{vehicle.dropdown}">
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/vehicle/add" sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{vehicle.add}"></a>
-          <a class="dropdown-item" href="/vehicle/list" sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{vehicle.view}"></a>
+          <a class="dropdown-item" href="/vehicle/list" sec:authorize="isAuthenticated" th:text="#{vehicle.view}"></a>
         </div>
       </li>
       <li class="nav-item dropdown active" sec:authorize="isAuthenticated()">

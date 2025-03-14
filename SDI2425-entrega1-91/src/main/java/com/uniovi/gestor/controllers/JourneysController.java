@@ -22,10 +22,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -147,6 +144,17 @@ public class JourneysController {
         model.addAttribute("page", journeys);
         return "vehicle/vehicleJourney";
     }
+
+    @RequestMapping("/journey/list/vehicle/{plateNumber}")
+    public String getVehicleList(@PathVariable("plateNumber") String plateNumber, Model model, Pageable pageable){
+        Page<Journey> journeys = journeysService.findByVehiclePageable(journeysService.findVehicleByNumberPlate(plateNumber), pageable);
+        model.addAttribute("plateList",vehiclesService.findAllPlates());
+        model.addAttribute("journeysList",journeys.getContent());
+        model.addAttribute("page", journeys);
+        return "journey/listVehicle";
+    }
+
+
 
     @RequestMapping("/journey/list/vehicle/update")
     public String updateList(@RequestParam("plateNumber") String numberPlate, Model model, Pageable pageable){

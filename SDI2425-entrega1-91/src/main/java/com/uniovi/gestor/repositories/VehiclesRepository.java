@@ -1,5 +1,6 @@
 package com.uniovi.gestor.repositories;
 
+import com.uniovi.gestor.VehicleStatusConfig;
 import com.uniovi.gestor.entities.Employee;
 import com.uniovi.gestor.entities.Vehicle;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,8 @@ public interface VehiclesRepository extends CrudRepository<Vehicle, Long> {
 
     @Query("SELECT v FROM Vehicle v WHERE LOWER(v.vin) = LOWER(?1)")
     Vehicle findByVin(String vin);
+
+    Page<Vehicle> findByStatus(VehicleStatusConfig.VehicleStatus status, Pageable pageable);
 
     Page<Vehicle> findAll(Pageable pageable);
 

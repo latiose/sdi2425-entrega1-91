@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/head"><title>Refuels list</title></head>
+<body>
+<!-- Barra de Navegación superior -->
+<nav th:replace="fragments/nav"></nav>
+<div class="container">
+  <h2 th:text="#{refuels.list}"></h2>
+
+  <div class="table-responsive">
+    <table class="table table-hover" th:fragment="refuelsTable" id="refuelsTable">
+      <thead>
+      <tr>
+        <th scope="col" th:text="#{refuels.date}"></th>
+        <th scope="col" th:text="#{refuels.hour}"></th>
+        <th scope="col" th:text="#{refuels.odometer}"></th>
+        <th scope="col" th:text="#{refuels.fuel}"></th>
+        <th scope="col" th:text="#{refuels.station}"></th>
+        <th scope="col" th:text="#{refuels.fuel.price}"></th>
+        <th scope="col" th:text="#{refuels.fuel.quantity}"></th>
+        <th scope="col" th:text="#{refuels.fuel.total.price}"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="refuel : ${refuelsList}">
+        <td th:text="${refuel.dayMonthYear}"></td>
+        <td th:text="${refuel.hoursMinutes}"></td>
+        <td th:text="${refuel.odometer}"></td>
+        <td th:text="${refuel.vehicle.fuel}"></td>
+        <td th:text="${refuel.station}"></td>
+        <td th:text="${refuel.price}"></td>
+        <td th:text="${refuel.amount}"></td>
+        <td th:text="${refuel.totalPrice}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <footer th:replace="fragments/pagination"></footer>
+</div>
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>
