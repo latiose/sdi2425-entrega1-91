@@ -6,8 +6,9 @@
 <nav th:replace="fragments/nav"/>
 <div class="container" style="text-align: center">
     <h2 th:text="#{welcome.message}"></h2>
-    <p th:text="#{user.identified}">
-        <b th:inline="text" sec:authentication="principal.username"></b>
+    <p>
+        <span th:text="#{user.identified}"></span>
+        <b th:text="${#authentication.principal.username}"></b>
     </p>
 </div>
 <footer th:replace="fragments/footer"/>
