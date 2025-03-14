@@ -9,66 +9,73 @@
   <div class="collapse navbar-collapse" id="my-navbarColor02">
     <ul class="navbar-nav mr-auto" sec:authorize="isAuthenticated()">
       <li class="nav-item ">
-        <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false"> Gestión de notas
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/mark/list">Ver Notas</a>
-          <a class="dropdown-item" href="/mark/add" sec:authorize="hasRole('ROLE_ADMIN')">Agregar Nota</a>
-        </div>
+        <a class="nav-link" href="/home" th:text="#{home}"><span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">Gestión de usuarios
+           aria-haspopup="true" aria-expanded="false" th:text="#{employee.dropDown}">
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/employee/add" sec:authorize="hasRole('ROLE_ADMIN')">Agregar usuario</a>
-          <a class="dropdown-item" href="/employee/list" sec:authorize="hasRole('ROLE_ADMIN')">Ver usuarios</a>
-          <a class="dropdown-item" href="/employee/changePassword" sec:authorize="isAuthenticated">Cambiar contraseña</a>
+          <a class="dropdown-item" href="/employee/add" sec:authorize="hasRole('ROLE_ADMIN') " th:text="#{employee.add}" ></a>
+          <a class="dropdown-item" href="/employee/list" sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{employee.view}">"</a>
+          <a class="dropdown-item" href="/employee/changePassword" sec:authorize="isAuthenticated" th:text="#{employees.changePassword}">"</a>
         </div>
       </li>
-      <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
-        <a class="nav-link dropdown-toggle" href="#" id="vehicleDropdown" role="button" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">Gestión de vehículos
+      <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+        <a class="nav-link dropdown-toggle" href="#" id="journeyDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false" th:text="#{journey.dropdown}">
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/vehicle/add" sec:authorize="hasRole('ROLE_ADMIN')">Agregar vehículo</a>
-          <a class="dropdown-item" href="/vehicle/list" sec:authorize="hasRole('ROLE_ADMIN')">Ver vehículos</a>
+          <a class="dropdown-item" href="/journey/add"  th:text="#{journey.add}"></a>
+          <a class="dropdown-item" href="/journey/list" th:text="#{journey.list}"></a>
+        </div>
+      <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+        <a class="nav-link dropdown-toggle" href="#" id="vehicleDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false" th:text="#{vehicle.dropdown}">
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/vehicle/add" sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{vehicle.add}"></a>
+          <a class="dropdown-item" href="/vehicle/list" sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{vehicle.view}"></a>
+        </div>
+      </li>
+      <li class="nav-item dropdown active" sec:authorize="isAuthenticated()">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false" th:text="#{refuels.dropdown}">
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/refuel/list" th:text="#{refuels.view}"></a>
+          <a class="dropdown-item" href="/refuel/add" th:text="#{refuels.add}"></a>
         </div>
       </li>
     </ul>
-  <ul class="navbar-nav justify-content-end">
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="btnLanguage" role="button" data-toggle="dropdown"
-         aria-haspopup="true" aria-expanded="false">
-        <span th:text="#{language.change}"></span>
-      </a>
-      <div id="languageDropdownMenuButton" class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" id="btnEnglish" value="EN">
-          <img th:src="@{/images/if_uk_flag.png}" style="border: 0; float: left; margin-right: 15px"/>
-          <span th:text="#{language.en}">Inglés</span>
+    <ul class="navbar-nav justify-content-end">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="btnLanguage" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+          <span th:text="#{language.change}"></span>
         </a>
-        <a class="dropdown-item" id="btnSpanish" value="ES">
-          <img th:src="@{/images/if_spain_flag.png}" style="border: 0; float: left; margin-right: 15px"/>
-          <span th:text="#{language.es}">Español</span>
+        <div id="languageDropdownMenuButton" class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" id="btnEnglish" value="EN">
+            <img th:src="@{/images/if_uk_flag.png}" style="border: 0; float: left; margin-right: 15px"/>
+            <span th:text="#{language.en}"></span>
+          </a>
+          <a class="dropdown-item" id="btnSpanish" value="ES">
+            <img th:src="@{/images/if_spain_flag.png}" style="border: 0; float: left; margin-right: 15px"/>
+            <span th:text="#{language.es}"></span>
+          </a>
+        </div>
+      </li>
+      <li sec:authorize="!isAuthenticated()" class="nav-item">
+        <a class="nav-link" href="/login" th:text="#{login.message}">
+          <i class='fas fa-sign-in-alt' style='font-size:16px'></i>
         </a>
-      </div>
-    </li>
-    <li sec:authorize="!isAuthenticated()" class="nav-item">
-      <a class="nav-link" href="/login" th:text="#{login.message}">
-        <i class='fas fa-sign-in-alt' style='font-size:16px'></i>
-        <span>Identifícate</span>
-      </a>
-    </li>
-    <li sec:authorize="isAuthenticated()" class="nav-item">
-      <a class="nav-link" href="/logout">
-        <i class='fas fa-sign-out-alt' style='font-size:16px'></i>
-        <span>Desconectar</span>
-      </a>
-    </li>
-  </ul>
+      </li>
+      <li sec:authorize="isAuthenticated()" class="nav-item">
+        <a class="nav-link" href="/logout" th:text="#{signout.message}">
+          <i class='fas fa-sign-out-alt' style='font-size:16px'></i>
+        </a>
+      </li>
+    </ul>
   </div>
 </nav>
+
