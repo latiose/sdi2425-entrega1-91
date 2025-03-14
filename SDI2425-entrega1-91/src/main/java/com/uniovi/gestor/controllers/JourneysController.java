@@ -67,30 +67,54 @@ public class JourneysController {
 
     @RequestMapping(value="/journey/end", method = RequestMethod.POST)
     public String endJourney(@Validated @ModelAttribute("journey") Journey journey, BindingResult result) {
-        endJourneyFormValidator.validate(journey,result);
+        endJourneyFormValidator.validate(journey, result);
         if (result.hasErrors()) {
             return "journey/end";
         }
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
         Journey existingJourney = journeysService.findActiveJourneyByDni(dni);
-        Vehicle existingVehicle = journeysService.findVehicleByJourney(existingJourney.getId());
+
+        if (existingJourney == null) {
+            return "redirect:/journey/list";
+        }
+
+        Vehicle existingVehicle = existingJourney.getVehicle();
+        if (existingVehicle == null) {
+            return "redirect:/journey/list";
+        }
+
         existingVehicle.setMileage((float) journey.getOdometerEnd());
         existingJourney.setOdometerEnd(journey.getOdometerEnd());
         existingJourney.setObservations(journey.getObservations());
         existingJourney.setEndDate(LocalDateTime.now());
         journeysService.addJourney(existingJourney);
-        return "redirect:/journey/list"; //Actualizarlo cuando se acabe el 13
+
+        return "redirect:/journey/list/vehicle/" + existingVehicle.getNumberPlate();
     }
 
+
+
     @RequestMapping(value="/journey/add", method = RequestMethod.POST)
-    public String addJourney(@RequestParam("plateNumber") String plateNumber,
+    public String addJourney(@RequestParam(value = "plateNumber", required = false) String plateNumber,
                              @ModelAttribute("journey") Journey journey,
                              BindingResult result, Model model) {
 
+        if (plateNumber == null || plateNumber.isEmpty()) {
+            List<String> plates = vehiclesService.findAllPlates();
+            if (!plates.isEmpty()) {
+                plateNumber = plates.get(0);
+            } else {
+                result.rejectValue("vehicle.numberPlate", "Error.noVehicles", "No hay vehículos disponibles.");
+                model.addAttribute("plateList", plates);
+                return "journey/add";
+            }
+        }
+
         Vehicle vehicle = vehiclesService.findVehicleByNumberPlate(plateNumber);
         if (vehicle == null) {
-            result.rejectValue("vehicle.numberPlate", "Error.empty");
+            result.rejectValue("vehicle.numberPlate", "Error.invalidPlate", "Matrícula no válida.");
         } else {
             journey.setVehicle(vehicle);
         }
@@ -99,21 +123,18 @@ public class JourneysController {
 
         if (result.hasErrors()) {
             model.addAttribute("plateList", vehiclesService.findAllPlates());
-            model.addAttribute("journey", journey);
             return "journey/add";
         }
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
-        Vehicle existingVehicle = journeysService.findVehicleByNumberPlate(plateNumber);
-        if (existingVehicle != null) {
-            journey.setOdometerStart(existingVehicle.getMileage());
-        } else {
-            journey.setOdometerStart(0);
-        }
+        journey.setOdometerStart(vehicle.getMileage());
         journey.setEmployee(employeesService.getEmployeeByDni(dni));
         journeysService.addJourney(journey);
-        return "redirect:/journey/list"; //Actualizar
+
+        return "redirect:/journey/list/vehicle/" + plateNumber;
     }
+
 
 
     @RequestMapping("/journey/list")
