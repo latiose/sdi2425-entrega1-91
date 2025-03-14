@@ -8,6 +8,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PO_ListView extends PO_NavView{
+
+    static public void fillFormAddRefuel(WebDriver driver, String stationp, double pricep, double amountp,
+                                         boolean fullTankp, double odometerp, String commentsp)
+    {
+        WebElement stationInput = driver.findElement(By.id("station"));
+        stationInput.clear();
+        stationInput.sendKeys(stationp);
+
+        WebElement priceInput = driver.findElement(By.id("price"));
+        priceInput.clear();
+        priceInput.sendKeys(String.valueOf(pricep));
+
+        WebElement amountInput = driver.findElement(By.id("amount"));
+        amountInput.clear();
+        amountInput.sendKeys(String.valueOf(amountp));
+
+        WebElement fullTankInput = driver.findElement(By.id("fullTank"));
+        if (fullTankp && !fullTankInput.isSelected()) {
+            fullTankInput.click();
+        } else if (!fullTankp && fullTankInput.isSelected()) {
+            fullTankInput.click();
+        }
+
+        WebElement odometerInput = driver.findElement(By.id("odometer"));
+        odometerInput.clear();
+        odometerInput.sendKeys(String.valueOf(odometerp));
+
+        WebElement commentsInput = driver.findElement(By.id("comments"));
+        commentsInput.clear();
+        commentsInput.sendKeys(commentsp);
+
+        clickSendButton(driver);
+    }
+
+    static public void clickSendButton(WebDriver driver){
+        driver.findElement(By.className("btn-primary")).click();
+    }
+
     static public boolean goToNextPage(WebDriver driver) {
         List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
 
