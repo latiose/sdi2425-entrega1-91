@@ -146,6 +146,8 @@ public class EmployeesController {
     @RequestMapping(value = "/login/success", method = RequestMethod.GET)
     public String loginSuccess() {
         logService.log("PET", "PET [GET] /login/success");
+        logService.log("LOGIN-EX", "LOGIN-EX | DNI: "
+                + SecurityContextHolder.getContext().getAuthentication().getName());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
         Employee activeEmployee = employeesService.getEmployeeByDni(dni);
@@ -158,6 +160,8 @@ public class EmployeesController {
     @RequestMapping(value = "/login/error", method = RequestMethod.GET)
     public String loginError(Model model) {
         logService.log("PET", "PET [GET] /login/error");
+        logService.log("LOGIN-ERR", "LOGIN-ERR | DNI: "
+                + SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("error", true);
         return "login";
     }
@@ -168,7 +172,6 @@ public class EmployeesController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
         Employee activeEmployee = employeesService.getEmployeeByDni(dni);
-
         return "home";
     }
 

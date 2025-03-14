@@ -1,4 +1,5 @@
 package com.uniovi.gestor;
+import com.uniovi.gestor.services.LogService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,11 +8,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final LogService logService;
+
+    public WebSecurityConfig(LogService logService) {
+        this.logService = logService;
+    }
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -38,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/vehicle/list/**").authenticated()
                 .antMatchers("/vehicle/add/**").hasRole("ADMIN")
                 .antMatchers("/journey/**").hasAnyAuthority("ROLE_STANDARD", "ROLE_ADMIN")
+                .antMatchers("/refuel/**").hasAnyAuthority("ROLE_STANDARD", "ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -49,5 +58,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/login?logout=true")
                 .permitAll();
+    }
+
+    private LogoutHandler customLogoutHandler() {
+        return (request, response, authentication) -> {
+            if (authentication != null) {
+                String dni = authentication.getName();
+                logService.log("LOGOUT", "Usuario salió de sesión | DNI: " + dni);
+            }
+        };
     }
 }

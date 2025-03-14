@@ -26,4 +26,8 @@ public class Log {
         this.timestamp = LocalDateTime.now();
         this.description = description;
     }
+
+    public String toString(){
+        return "Log: " + this.logType + " - " + this.description;
+    }
 }
