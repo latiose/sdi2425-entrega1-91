@@ -27,7 +27,7 @@
             <label class="control-label col-sm-2" for="brand" th:text="#{vehicles.vin} + ':'"></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="brand" name="brand"
-                       placeholder="Ejemplo: Mercedes" required="true"/>
+                       placeholder="Mercedes" required="true"/>
                 <span class="text-danger" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></span>
             </div>
         </div>
@@ -35,7 +35,7 @@
             <label class="control-label col-sm-2" for="model" th:text="#{vehicles.model} + ':'"></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="model" name="model"
-                       placeholder="Ejemplo: Clase A" required="true"/>
+                       placeholder="CLA" required="true"/>
                 <span class="text-danger" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
             </div>
         </div>
