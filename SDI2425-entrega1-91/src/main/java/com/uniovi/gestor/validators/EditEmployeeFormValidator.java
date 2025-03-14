@@ -23,17 +23,11 @@ public class EditEmployeeFormValidator implements Validator {
         Employee employee = (Employee) target;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "Error.empty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "Error.empty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dni", "Error.empty");
         if (employee.getLastName() != null && !employee.getLastName().trim().equals(employee.getLastName())) {
             errors.rejectValue("lastName", "Error.space");
         }
         if (employee.getName() != null && !employee.getName().trim().equals(employee.getName())) {
             errors.rejectValue("name", "Error.space");
-        }
-
-        char lastChar = employee.getDni().charAt(employee.getDni().length() - 1);
-        if (employee.getDni().length() != 9 || Character.isDigit(lastChar)) {
-            errors.rejectValue("dni", "Error.signup.dni.invalid");
         }
 
     }

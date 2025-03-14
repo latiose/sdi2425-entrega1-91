@@ -109,7 +109,6 @@ public class EmployeesController {
         }
 
         Employee originalEmployee = employeesService.getEmployee(id);
-        originalEmployee.setDni(employee.getDni());
         originalEmployee.setName(employee.getName());
         originalEmployee.setLastName(employee.getLastName());
         originalEmployee.setRole(employee.getRole());
