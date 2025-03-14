@@ -108,6 +108,7 @@ public class InsertSampleDataService {
         Vehicle vehicle = vehiclesService.getVehicleByNumberPlate("1234BCD");
         Vehicle vehicle2 = vehiclesService.getVehicleByNumberPlate("5678DFG");
         Vehicle vehicle3 = vehiclesService.getVehicleByNumberPlate("9101GHJ");
+        Vehicle vehicle4 = vehiclesService.getVehicleByNumberPlate("5161PQR");
         Journey journey1 = new Journey(vehicle);
         journey1.setEmployee(employee);
         journey1.setOdometerStart(15234.5);
@@ -132,11 +133,17 @@ public class InsertSampleDataService {
         journey3.setOdometerStart(78345.2);
         journey3.setStartDate(LocalDateTime.now().minusHours(1));
         journeysService.addJourney(journey3);
+        Employee employee2 = employeesService.getEmployeeByDni("10000005L");
+        Journey journey4 = new Journey(vehicle4);
+        journey4.setEmployee(employee2);
+        journey4.setOdometerStart(78345.2);
+        journey4.setStartDate(LocalDateTime.now().minusHours(1));
+        journeysService.addJourney(journey4);
 
         // Este lo uso para probar los refuels
-        Employee employee2 = employeesService.getEmployeeByDni("10000010R");
+        employee2 = employeesService.getEmployeeByDni("10000010R");
         Vehicle vehicleEmp2 = vehiclesService.getVehicleByNumberPlate("B3545CA");
-        Journey journey4 = new Journey(vehicleEmp2);
+        journey4 = new Journey(vehicleEmp2);
         journey4.setEmployee(employee2);
         journey4.setOdometerStart(1234.5);
         journey4.setStartDate(LocalDateTime.now().minusHours(2));

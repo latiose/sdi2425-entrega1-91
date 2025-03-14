@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -398,6 +399,7 @@ class GestorApplicationTests {
 
     @Test
     @Order(22)
+    @Transactional
     // Ir a lista de vehículos, borrar el primero de la lista, comprobar que la lista se actualiza y que el vehículo desaparece
     public void PR021() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -411,6 +413,7 @@ class GestorApplicationTests {
 
     @Test
     @Order(23)
+    @Transactional
     // Ir a lista de vehículos, borrar el último de la lista, comprobar que la lista se actualiza y que el vehículo desaparece
     public void PR022() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -426,6 +429,7 @@ class GestorApplicationTests {
 
     @Test
     @Order(24)
+    @Transactional
     // Ir a lista de vehículos, borrar 3 vehículos, comprobar que la lista se actualiza y que dichos vehículos desaparecen
     public void PR023() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -480,12 +484,12 @@ class GestorApplicationTests {
     //Añadir ya tiene trayecto en curso
     public void PR026() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r"); //tiene uno en curso por defecto
+        PO_LoginView.fillForm(driver, "10000001S", "Us3r@1-PASSW");
         PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Agregar trayecto");
 
         WebElement dropdown = driver.findElement(By.id("plateNumber"));
         Select select = new Select(dropdown);
-        select.selectByValue("B3545CD");
+        select.selectByValue("5161PQR");
 
         driver.findElement(By.cssSelector("button[type='submit']")).click();
 
@@ -501,12 +505,12 @@ class GestorApplicationTests {
     //Añadir el coche ya esta siendo usado
     public void PR027() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r"); //tiene uno en curso por defecto
+        PO_LoginView.fillForm(driver, "10000002Q", "Us3r@2-PASSW");
         PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Agregar trayecto");
 
         WebElement dropdown = driver.findElement(By.id("plateNumber"));
         Select select = new Select(dropdown);
-        select.selectByValue("9101GHJ");
+        select.selectByValue("5161PQR");
 
         driver.findElement(By.cssSelector("button[type='submit']")).click();
 
@@ -548,6 +552,7 @@ class GestorApplicationTests {
         }
         Assertions.assertTrue(isPresent, "El repostaje no se ha añadido correctamente.");
     }
+
 
     @Test
     @Order(30)
@@ -628,13 +633,13 @@ class GestorApplicationTests {
     // Finalizar trayecto válido
     public void PR033() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+        PO_LoginView.fillForm(driver, "10000005L","Us3r@5-PASSW");
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Ver trayectos");
         List<WebElement> rows = driver.findElements(By.xpath("//table[@id='journeyTable']/tbody/tr"));
 
         for (WebElement row : rows) {
-            if (row.getText().contains("9101GHJ") && row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]")).isDisplayed()) {
+            if (row.getText().contains("5161PQR") && row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]")).isDisplayed()) {
                 WebElement finishButton = row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]"));
                 finishButton.click();
                 break;
