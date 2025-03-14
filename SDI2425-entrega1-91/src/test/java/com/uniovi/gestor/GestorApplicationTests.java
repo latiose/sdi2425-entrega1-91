@@ -533,7 +533,7 @@ class GestorApplicationTests {
 
         WebElement dropdown = driver.findElement(By.id("plateNumber"));
         Select select = new Select(dropdown);
-        select.selectByValue("9101GHJ");
+        select.selectByValue("B3545CA");
 
         List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "vehicle.selection.refuel",
                 PO_Properties.getSPANISH());
@@ -545,7 +545,7 @@ class GestorApplicationTests {
         List<WebElement> rows = driver.findElements(By.xpath("//table[@id='refuelsTable']/tbody/tr"));
         boolean isPresent = false;
         for (WebElement row : rows) {
-            if (row.getText().contains("Repsol")) {
+            if (row.getText().contains("ELECTRICO")) {
                 isPresent = true;
                 break;
             }
@@ -782,6 +782,122 @@ class GestorApplicationTests {
             }
         }
         Assertions.assertEquals(repsolCount, 2,"Los repostajes asignados no figuran en la lista.");
+        PO_LoginView.logOut(driver);
+    }
+
+
+    @Test
+    @Order(40) //Español ingles español en 3 paginas
+    public void PR039() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_NavView.changeLanguage(driver, "Spanish");
+        String checkText = PO_HomeView.getP().getString("employees.title", PO_Properties.getSPANISH());
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "English");
+        checkText = PO_HomeView.getP().getString("employees.title", PO_Properties.getENGLISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "Spanish");
+        checkText = PO_HomeView.getP().getString("employees.title", PO_Properties.getSPANISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Ver vehículos");
+
+
+        checkText = PO_HomeView.getP().getString("vehicles.message.extra", PO_Properties.getSPANISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "English");
+        checkText = PO_HomeView.getP().getString("vehicles.message.extra", PO_Properties.getENGLISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "Spanish");
+        checkText = PO_HomeView.getP().getString("vehicles.message.extra", PO_Properties.getSPANISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Ver trayectos");
+
+        checkText = PO_HomeView.getP().getString("journey.list.title", PO_Properties.getSPANISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "English");
+        checkText = PO_HomeView.getP().getString("journey.list.title", PO_Properties.getENGLISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "Spanish");
+        checkText = PO_HomeView.getP().getString("journey.list.title", PO_Properties.getSPANISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+        PO_LoginView.logOut(driver);
+
+    }
+
+    @Test
+    @Order(41) //ingles aleman ingles
+    public void PR040() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
+
+        PO_NavView.changeLanguage(driver, "English");
+        String checkText = PO_HomeView.getP().getString("employees.title", PO_Properties.getENGLISH());
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "German");
+        checkText = PO_HomeView.getP().getString("employees.title", PO_Properties.getGERMAN());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "English");
+        checkText = PO_HomeView.getP().getString("employees.title", PO_Properties.getENGLISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_PrivateView.goThroughNav(driver,"text","Vehicle Management","text","View vehicles");
+
+
+        checkText = PO_HomeView.getP().getString("vehicles.message.extra", PO_Properties.getENGLISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "German");
+        checkText = PO_HomeView.getP().getString("vehicles.message.extra", PO_Properties.getGERMAN());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "English");
+        checkText = PO_HomeView.getP().getString("vehicles.message.extra", PO_Properties.getENGLISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_PrivateView.goThroughNav(driver,"text","Journey Management","text","View journeys");
+
+        checkText = PO_HomeView.getP().getString("journey.list.title", PO_Properties.getENGLISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "German");
+        checkText = PO_HomeView.getP().getString("journey.list.title", PO_Properties.getGERMAN());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
+        PO_NavView.changeLanguage(driver, "English");
+        checkText = PO_HomeView.getP().getString("journey.list.title", PO_Properties.getENGLISH());
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+        PO_NavView.changeLanguage(driver, "Spanish");
+        PO_LoginView.logOut(driver);
     }
 
 
