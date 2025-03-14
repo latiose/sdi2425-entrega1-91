@@ -28,6 +28,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/journey/add"  th:text="#{journey.add}"></a>
           <a class="dropdown-item" href="/journey/list" th:text="#{journey.list}"></a>
+          <a class="dropdown-item" href="/journey/list/vehicle" sec:authorize="isAuthenticated" th:text="#{journeys.byVehicle}"></a>
         </div>
       <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
         <a class="nav-link dropdown-toggle" href="#" id="vehicleDropdown" role="button" data-toggle="dropdown"

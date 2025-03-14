@@ -4,6 +4,7 @@ import com.uniovi.gestor.entities.Employee;
 import com.uniovi.gestor.entities.Journey;
 
 
+import com.uniovi.gestor.entities.Refuel;
 import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.services.EmployeesService;
 import com.uniovi.gestor.services.JourneysService;
@@ -135,6 +136,22 @@ public class JourneysController {
         Page<Journey> journeys = journeysService.findByDniPage(dni,pageable);
         model.addAttribute("journeyList",journeys.getContent());
         return "journey/list :: journeyTable";
+    }
+
+    @RequestMapping("/journey/list/vehicle")
+    public String getVehicleList(Model model, Pageable pageable){
+        String numberPlate = vehiclesService.findAllPlates().get(0);
+        Page<Journey> journeys = journeysService.findByVehiclePageable(journeysService.findVehicleByNumberPlate(numberPlate), pageable);
+        model.addAttribute("plateList",vehiclesService.findAllPlates());
+        model.addAttribute("journeysList",journeys.getContent());
+        model.addAttribute("page", journeys);
+        return "vehicle/vehicleJourney";
+    }
+
+    @RequestMapping("/journey/list/vehicle/update")
+    public String updateList(@RequestParam("plateNumber") String numberPlate, Model model, Pageable pageable){
+        model.addAttribute("journeysList", journeysService.findByVehiclePageable(journeysService.findVehicleByNumberPlate(numberPlate), pageable));
+        return "vehicle/vehicleJourney :: journeysTable";
     }
 
 
