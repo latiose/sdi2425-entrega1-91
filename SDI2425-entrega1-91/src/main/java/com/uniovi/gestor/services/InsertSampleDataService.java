@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 import com.uniovi.gestor.VehicleStatusConfig;
 import com.uniovi.gestor.entities.Employee;
 import com.uniovi.gestor.entities.Journey;
+import com.uniovi.gestor.entities.Refuel;
 import com.uniovi.gestor.entities.Vehicle;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +16,21 @@ public class InsertSampleDataService {
     private final RolesService rolesService;
     private final VehiclesService vehiclesService;
     private final JourneysService journeysService;
+    private final RefuelsService refuelsService;
 
-    private int numCars; // esto lo utilizo en los tests para saber exactamente cuántos coches hay en el sistema
+    private int numCars;
 
-    public InsertSampleDataService(EmployeesService employeesService, RolesService rolesService, VehiclesService vehiclesService, JourneysService journeysService) {
+    public InsertSampleDataService(EmployeesService employeesService, RolesService rolesService, VehiclesService vehiclesService, JourneysService journeysService, RefuelsService refuelsService) {
         this.employeesService = employeesService;
         this.rolesService = rolesService;
         this.vehiclesService = vehiclesService;
         this.journeysService = journeysService;
+        this.refuelsService = refuelsService;
     }
     @PostConstruct
     public void init() {
         Employee employee1 = new Employee("12345678Z", "Pedro", "Díaz");
-        employee1.setPassword("admin");
+        employee1.setPassword("@Dm1n1str@D0r");
         employee1.setRole(rolesService.getRoles()[1]);
         employeesService.addEmployee(employee1);
 //        Nombre: Usuario1, DNI: 10000001S, Password: Us3r@1-PASSW

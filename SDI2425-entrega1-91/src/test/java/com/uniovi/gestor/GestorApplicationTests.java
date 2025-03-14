@@ -133,6 +133,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Agregar empleado");
         PO_PrivateView.fillFormAddEmployee(driver, "07112884L", "Pablo", "Perez Alvarez");
+        PO_ListView.goToLastPage(driver);
         String checkText = "07112884L";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         assertFalse(result.isEmpty());
@@ -748,6 +749,36 @@ class GestorApplicationTests {
         assertTrue(currentUrl.contains("/journey/list"));
         PO_LoginView.logOut(driver);
     }
+
+    @Test
+    @Order(39)
+    // Registrar un repostaje realizado en el vehículo que el usuario tiene asignado
+    // Repostaje válido
+    public void PR038() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
+        PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100000, "Repostaje de prueba");
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
+        PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100100, "Repostaje de prueba2");
+
+        WebElement dropdown = driver.findElement(By.id("plateNumber"));
+        Select select = new Select(dropdown);
+        select.selectByValue("9101GHJ");
+
+        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='refuelsTable']/tbody/tr"));
+        int repsolCount = 0;
+        for (WebElement row : rows) {
+            if (row.getText().contains("Repsol")) {
+                repsolCount++;
+                if(repsolCount == 2)
+                    break;
+            }
+        }
+        Assertions.assertEquals(repsolCount, 2,"Los repostajes asignados no figuran en la lista.");
+    }
+
 
 }
 
