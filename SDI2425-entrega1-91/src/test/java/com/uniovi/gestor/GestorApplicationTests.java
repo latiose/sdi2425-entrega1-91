@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.Duration;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -374,6 +375,26 @@ class GestorApplicationTests {
     }
 
     @Test
+    public void PR017() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "admin");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Ver empleados");
+
+        int numEmployees = insertSampleDataService.getNumEmployees() + 1;
+
+        int totalCount = 0;
+        boolean next = true;
+        while (next) {
+            List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"employeeTable\"]/tbody/tr"));
+            totalCount += employeeRows.size();
+            next = PO_PrivateView.goToNextPage(driver);
+        }
+
+        Assertions.assertEquals(numEmployees, totalCount, "El número de empleados no coincide");
+    }
+
+    @Test
     @Order(21)
     public void PR020() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -382,6 +403,8 @@ class GestorApplicationTests {
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Ver vehículos");
 
         int numCars = insertSampleDataService.getNumCars() + 1; // el que se añade en uno de los tests anteriores
+
+
 
         int totalCount = 0;
         boolean next = true;
@@ -601,5 +624,23 @@ class GestorApplicationTests {
         PO_LoginView.logOut(driver);
     }
 
+
+    @Test
+    public void PR040(){
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000002Q","Us3r@2-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contrasena");
+
+        PO_PrivateView.fillFormChangePassword(driver, "Us3r@2-PASSW", "Ahorasoyadministrad0r?", "Ahorasoyadministrad0r?");
+
+        PO_LoginView.logOut(driver);
+
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000002Q","Ahorasoyadministrad0r?");
+
+        String currentUrl = driver.getCurrentUrl();
+        assertTrue(currentUrl.contains("/employee/list"));
+    }
 }
 

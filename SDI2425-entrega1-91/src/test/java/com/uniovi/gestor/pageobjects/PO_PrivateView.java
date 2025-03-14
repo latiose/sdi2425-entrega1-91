@@ -109,4 +109,17 @@ public class PO_PrivateView extends PO_NavView {
         }
     }
 
+    static public void fillFormChangePassword(WebDriver driver, String current, String passwordp, String newpasswordp){
+        WebElement dniInput = driver.findElement(By.id("password"));
+        dniInput.clear();
+        dniInput.sendKeys(current);
+        WebElement nameInput = driver.findElement(By.id("newPassword"));
+        nameInput.clear();
+        nameInput.sendKeys(passwordp);
+        WebElement lastNameInput = driver.findElement(By.id("confirmNewPassword"));
+        lastNameInput.clear();
+        lastNameInput.sendKeys(newpasswordp);
+        driver.findElement(By.className("btn-primary")).click();
+    }
+
 }
