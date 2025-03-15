@@ -28,6 +28,6 @@ public class Log {
     }
 
     public String toString(){
-        return "Log: " + this.logType + " - " + this.description;
+        return timestamp + " | " + this.logType + " - " + this.description;
     }
 }

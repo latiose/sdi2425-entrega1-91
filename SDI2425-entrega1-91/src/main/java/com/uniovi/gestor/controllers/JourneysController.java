@@ -9,6 +9,7 @@ import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.services.EmployeesService;
 import com.uniovi.gestor.services.JourneysService;
 
+import com.uniovi.gestor.services.LogService;
 import com.uniovi.gestor.services.VehiclesService;
 import com.uniovi.gestor.validators.AddJourneyFormValidator;
 import com.uniovi.gestor.validators.EndJourneyFormValidator;
@@ -36,18 +37,21 @@ public class JourneysController {
     private final EmployeesService employeesService;
     private final EndJourneyFormValidator endJourneyFormValidator;
     private final AddJourneyFormValidator addJourneyFormValidator;
+    private final LogService logService;
 
 
-    public JourneysController(JourneysService journeysService, VehiclesService vehiclesService, EndJourneyFormValidator endJourneyFormValidator, EmployeesService employeeService, AddJourneyFormValidator addJourneyFormValidator) {
+    public JourneysController(JourneysService journeysService, VehiclesService vehiclesService, EndJourneyFormValidator endJourneyFormValidator, EmployeesService employeeService, AddJourneyFormValidator addJourneyFormValidator, LogService logService) {
         this.journeysService = journeysService;
         this.vehiclesService = vehiclesService;
         this.employeesService = employeeService;
         this.endJourneyFormValidator = endJourneyFormValidator;
         this.addJourneyFormValidator = addJourneyFormValidator;
+        this.logService = logService;
     }
 
     @RequestMapping(value = "/journey/add")
     public String getJourney(Model model){
+        logService.log("PET", "PET [GET] /journey/add");
         model.addAttribute("journey", new Journey());
         model.addAttribute("plateList",vehiclesService.findAllPlates());
         return "journey/add";
@@ -55,6 +59,7 @@ public class JourneysController {
 
     @RequestMapping(value = "/journey/end")
     public String getJourneyEnd(Model model){
+        logService.log("PET", "PET [GET] /journey/end");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
         Journey journey = journeysService.findActiveJourneyByDni(dni);
@@ -67,6 +72,7 @@ public class JourneysController {
 
     @RequestMapping(value="/journey/end", method = RequestMethod.POST)
     public String endJourney(@Validated @ModelAttribute("journey") Journey journey, BindingResult result) {
+        logService.log("PET", "PET [POST] /journey/end | parameters: JOURNEY = " + journey.toString());
         endJourneyFormValidator.validate(journey, result);
         if (result.hasErrors()) {
             return "journey/end";
@@ -85,7 +91,7 @@ public class JourneysController {
             return "redirect:/journey/list";
         }
 
-        existingVehicle.setMileage((float) journey.getOdometerEnd());
+        existingVehicle.setMileage(journey.getOdometerEnd());
         existingJourney.setOdometerEnd(journey.getOdometerEnd());
         existingJourney.setObservations(journey.getObservations());
         existingJourney.setEndDate(LocalDateTime.now());
@@ -100,6 +106,9 @@ public class JourneysController {
     public String addJourney(@RequestParam(value = "plateNumber", required = false) String plateNumber,
                              @ModelAttribute("journey") Journey journey,
                              BindingResult result, Model model) {
+        logService.log("PET", "PET [POST] /journey/add | parameters: PLATE = "
+                + plateNumber + ", JOURNEY = "
+                + journey.toString());
 
         if (plateNumber == null || plateNumber.isEmpty()) {
             List<String> plates = vehiclesService.findAllPlates();
@@ -139,6 +148,8 @@ public class JourneysController {
 
     @RequestMapping("/journey/list")
     public String getJourneyList(Model model, Pageable pageable){
+        logService.log("PET", "PET [GET] /journey/list | parameters: PAGE = "
+                + pageable.getPageNumber());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
         Page<Journey> journeys = journeysService.findByDniPage(dni,pageable);
@@ -149,6 +160,8 @@ public class JourneysController {
 
     @RequestMapping("/journey/list/update")
     public String updateList(Model model, Pageable pageable){
+        logService.log("PET", "PET [GET] /journey/list/update | parameters: PAGE = "
+                + pageable.getPageNumber());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
         Page<Journey> journeys = journeysService.findByDniPage(dni,pageable);
@@ -158,6 +171,8 @@ public class JourneysController {
 
     @RequestMapping("/journey/list/vehicle")
     public String getVehicleList(Model model, Pageable pageable){
+        logService.log("PET", "PET [GET] /journey/list/vehicle | parameters: PAGE = "
+                + pageable.getPageNumber());
         String numberPlate = vehiclesService.findAllPlates().get(0);
         Page<Journey> journeys = journeysService.findByVehiclePageable(journeysService.findVehicleByNumberPlate(numberPlate), pageable);
         model.addAttribute("plateList",vehiclesService.findAllPlates());
@@ -168,6 +183,10 @@ public class JourneysController {
 
     @RequestMapping("/journey/list/vehicle/{plateNumber}")
     public String getVehicleList(@PathVariable("plateNumber") String plateNumber, Model model, Pageable pageable){
+        logService.log("PET", "PET [GET] /journey/list/vehicle/"
+                + plateNumber + " | parameters: PLATE = "
+                + plateNumber
+                + ", PAGE = " + pageable.getPageNumber());
         Page<Journey> journeys = journeysService.findByVehiclePageable(journeysService.findVehicleByNumberPlate(plateNumber), pageable);
         model.addAttribute("plateList",vehiclesService.findAllPlates());
         model.addAttribute("journeysList",journeys.getContent());
@@ -179,6 +198,9 @@ public class JourneysController {
 
     @RequestMapping("/journey/list/vehicle/update")
     public String updateList(@RequestParam("plateNumber") String numberPlate, Model model, Pageable pageable){
+        logService.log("PET", "PET [GET] /journey/list/vehicle/update | parameters: PLATE = "
+                + numberPlate
+                + ", PAGE = " + pageable.getPageNumber());
         model.addAttribute("journeysList", journeysService.findByVehiclePageable(journeysService.findVehicleByNumberPlate(numberPlate), pageable));
         return "vehicle/vehicleJourney :: journeysTable";
     }

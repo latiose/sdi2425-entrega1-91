@@ -56,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/login/success")
                 .and()
                 .logout()
+                .addLogoutHandler(customLogoutHandler())
                 .logoutSuccessUrl("/login?logout=true")
                 .permitAll();
     }

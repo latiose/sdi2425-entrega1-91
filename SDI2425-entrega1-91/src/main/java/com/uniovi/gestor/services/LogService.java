@@ -25,8 +25,8 @@ public class LogService {
         logger.info("Log registrado: [{}] - {}", logType, description);
     }
 
-    public List<Log> findAllLogs() {
-        return (List<Log>) logRepository.findAll();
+    public List<Log> getOrderedLogs() {
+        return logRepository.findOrderedByTimestampDesc();
     }
 
 

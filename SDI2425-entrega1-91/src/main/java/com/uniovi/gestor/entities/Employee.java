@@ -48,12 +48,6 @@ public class Employee {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-//    public Set<Mark> getMarks() {
-//        return marks;
-//    }
-//    public void setMarks(Set<Mark> marks) {
-//        this.marks = marks;
-//    }
     public String getFullName() {
         return this.name + " " + this.lastName;
     }
@@ -79,4 +73,14 @@ public class Employee {
     public String getConfirmNewPassword() { return confirmNewPassword; }
     public void setConfirmNewPassword(String confirmNewPassword) { this.confirmNewPassword = confirmNewPassword; }
 
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", dni='" + dni + '\'' +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

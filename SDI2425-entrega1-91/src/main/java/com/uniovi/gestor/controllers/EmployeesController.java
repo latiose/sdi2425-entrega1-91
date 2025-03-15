@@ -46,7 +46,8 @@ public class EmployeesController {
     }
     @RequestMapping("/employee/list")
     public String getListado(Model model, Pageable pageable, HttpSession session) {
-        logService.log("PET", "PET [GET] /employee/list");
+        logService.log("PET", "PET [GET] /employee/list | parameters: PAGE = "
+                + pageable.getPageNumber());
         Page<Employee> employees = employeesService.getEmployees(pageable);
 
         model.addAttribute("employeesList", employees.getContent());
@@ -67,14 +68,19 @@ public class EmployeesController {
 
     @RequestMapping(value = "/employee/add", method = RequestMethod.POST)
     public String signup(@Validated Employee employee, BindingResult result, Model model, HttpSession session) {
-        String logMessage = String.format(
-                "PET [POST] /employee/add | parameters: DNI=%s, Nombre=%s, Email=%s",
-                employee.getDni(), employee.getName(), employee.getLastName()
-        );
-        logService.log("PET", logMessage);
+
         addEmployeeFormValidator.validate(employee, result);
         model.addAttribute("employee", employee);
         if (result.hasErrors()) {
+            String logMessage = String.format(
+                    "PET [POST] /employee/add | INVALID | parameters: EMPLOYEE = %s", employee.toString()
+            );
+            String logMessage2 = String.format(
+                    "ALTA [POST] /employee/add | INVALID | parameters: EMPLOYEE = %s",
+                    employee.toString()
+            );
+            logService.log("PET", logMessage);
+            logService.log("ALTA", logMessage2);
             return "/employee/add";
         }
         String generatedPassword = PasswordGenerator.generateSecurePassword();
@@ -85,28 +91,32 @@ public class EmployeesController {
         session.setAttribute("generatedPassword", generatedPassword);
 
         String logMessage2 = String.format(
-                "ALTA [POST] /employee/add | parameters: DNI=%s, Nombre=%s, Email=%s",
-                employee.getDni(), employee.getName(), employee.getLastName()
+                "ALTA [POST] /employee/add | parameters: EMPLOYEE = %s",
+                employee.toString()
         );
+        String logMessage = String.format(
+                "PET [POST] /employee/add | parameters: EMPLOYEE = %s", employee.toString()
+        );
+        logService.log("PET", logMessage);
         logService.log("ALTA", logMessage2);
 
         return "redirect:/employee/list";
     }
     @RequestMapping("/employee/details/{id}")
     public String getDetail(Model model, @PathVariable Long id) {
-        logService.log("PET", "PET [GET] /employee/details/" + id);
+        logService.log("PET", "PET [GET] /employee/details/" + id + " | parameters: ID = " + id);
         model.addAttribute("employee", employeesService.getEmployee(id));
         return "employee/details";
     }
     @RequestMapping("/employee/delete/{id}")
     public String delete(@PathVariable Long id) {
-        logService.log("PET", "PET [GET] /employee/delete/" + id);
+        logService.log("PET", "PET [GET] /employee/delete/" + id + " | parameters: ID = " + id);
         employeesService.deleteEmployee(id);
         return "redirect:/employee/list";
     }
     @RequestMapping(value = "/employee/edit/{id}")
     public String getEdit(Model model, @PathVariable Long id) {
-        logService.log("PET", "PET [GET] /employee/edit/" + id);
+        logService.log("PET", "PET [GET] /employee/edit/" + id + " | parameters: ID = " + id);
         Employee employee = employeesService.getEmployee(id);
         model.addAttribute("employee", employee);
         return "employee/edit";
@@ -114,7 +124,7 @@ public class EmployeesController {
 
     @RequestMapping(value = "/employee/edit/{id}", method = RequestMethod.POST)
     public String setEdit(@Validated Employee employee, BindingResult result, @PathVariable Long id) {
-        logService.log("PET", "PET [POST] /employee/edit/" + id);
+        logService.log("PET", "PET [POST] /employee/edit/" + id + " | parameters: ID = " + id + ", EMPLOYEE = " + employee.toString());
         editEmployeeFormValidator.validate(employee, result);
         if (result.hasErrors()) {
             return "employee/edit";
@@ -179,22 +189,23 @@ public class EmployeesController {
 
     @RequestMapping("/employee/list/update")
     public String updateList(Model model, Pageable pageable) {
-        logService.log("PET", "PET [GET] /employee/list/update");
+        logService.log("PET", "PET [GET] /employee/list/update | parameters: PAGE = "
+                + pageable.getPageNumber());
         model.addAttribute("employeesList", employeesService.getEmployees(pageable));
         return "employee/list :: employeeTable";
     }
 
     @RequestMapping("/employee/changePassword")
     public String getChangePassword(Model model, Principal principal) {
-        logService.log("PET", "PET [GET] /employee/changePassword | parameters: DNI=" + principal.getName());
+        logService.log("PET", "PET [GET] /employee/changePassword | parameters: DNI = " + principal.getName());
         model.addAttribute("employee", new Employee());
         return "employee/changePassword";
     }
 
     @RequestMapping(value = "/employee/changePassword", method = RequestMethod.POST)
     public String setChangePassword(@Validated Employee employee, BindingResult result) {
-        logService.log("PET", "PET [POST] /employee/changePassword | " +
-                "parameters: DNI=" + employee.getDni() + ", result=" + result.toString());
+        logService.log("PET", "PET [POST] /employee/changePassword | parameters: EMPLOYEE = "
+                + employee.toString());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         employee.setDni(auth.getName());
         changePasswordValidator.validate(employee, result);

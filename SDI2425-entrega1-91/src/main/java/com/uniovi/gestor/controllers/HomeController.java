@@ -1,5 +1,6 @@
 package com.uniovi.gestor.controllers;
 
+import com.uniovi.gestor.entities.Log;
 import com.uniovi.gestor.services.LogService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,9 @@ public class HomeController {
     @RequestMapping("/")
     public String index() {
         logService.log("PET", "PET [GET] /");
+        for(Log l : logService.getOrderedLogs()) {
+            System.out.println(l.toString());
+        }
         return "index";
     }
 
