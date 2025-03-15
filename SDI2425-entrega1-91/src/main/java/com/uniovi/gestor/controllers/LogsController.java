@@ -46,7 +46,7 @@ public class LogsController {
     public String delete(@RequestBody List<Long> logIds){
         List<Long> deletedLogIds = new ArrayList<>();
         for(Long logId : logIds){
-            deletedLogIds.add(logRepository.findById(logId).get().getId());
+            deletedLogIds.add(logService.findById(logId).getId());
         }
 
         logService.log("PET", "PET [POST] /log/delete " +
