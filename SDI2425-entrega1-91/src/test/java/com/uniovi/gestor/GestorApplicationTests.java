@@ -207,7 +207,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "1234BCL", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCL", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "Diésel");
         PO_ListView.goToLastPage(driver);
         String checkText = "1234BCL";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
@@ -223,7 +223,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
+        PO_PrivateView.fillFormAddVehicle(driver, "", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "Diésel");
 
         List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
         assertFalse(requiredFieldErrors.isEmpty());
@@ -240,7 +240,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "", "Toyota", "Corolla", "DIESEL");
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "", "Toyota", "Corolla", "Diésel");
 
         List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
         assertFalse(requiredFieldErrors.isEmpty());
@@ -256,7 +256,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "", "Corolla", "DIESEL");
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "", "Corolla", "Diésel");
 
         List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
         assertFalse(requiredFieldErrors.isEmpty());
@@ -272,7 +272,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "Toyota", "", "DIESEL");
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "Toyota", "", "Diésel");
 
         List<WebElement> requiredFieldErrors = driver.findElements(By.cssSelector(":invalid"));
         assertFalse(requiredFieldErrors.isEmpty());
@@ -289,7 +289,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "123", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
+        PO_PrivateView.fillFormAddVehicle(driver, "123", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "Diésel");
 
         List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.addvehicle.plate.invalid",
                 PO_Properties.getSPANISH());
@@ -308,7 +308,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "1234BCF", "ASDFGHJKLQWERTYUII", "Toyota", "Corolla", "DIESEL");
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCF", "ASDFGHJKLQWERTYUII", "Toyota", "Corolla", "Diésel");
 
         List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.vin.length",
                 PO_Properties.getSPANISH());
@@ -327,7 +327,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "1234BCF", "ASDFGHJKLQWERTYU", "Toyota", "Corolla", "DIESEL");
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCF", "ASDFGHJKLQWERTYU", "Toyota", "Corolla", "Diésel");
 
         List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.vin.length",
                 PO_Properties.getSPANISH());
@@ -346,7 +346,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BCD", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "Diésel");
 
         List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.plate.duplicate",
                 PO_Properties.getSPANISH());
@@ -365,7 +365,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "1234BGD", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "DIESEL");
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BGD", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "Diésel");
 
         List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.vin.duplicate",
                 PO_Properties.getSPANISH());

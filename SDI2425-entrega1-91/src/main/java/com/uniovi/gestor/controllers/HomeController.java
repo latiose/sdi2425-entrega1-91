@@ -17,9 +17,6 @@ public class HomeController {
     @RequestMapping("/")
     public String index() {
         logService.log("PET", "PET [GET] /");
-        for(Log l : logService.getOrderedLogs()) {
-            System.out.println(l.toString());
-        }
         return "index";
     }
 

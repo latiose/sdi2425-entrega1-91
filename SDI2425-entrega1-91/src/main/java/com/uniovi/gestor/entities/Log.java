@@ -16,7 +16,7 @@ public class Log {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false)
     private String description;
 
     public Log() {}
@@ -29,5 +29,37 @@ public class Log {
 
     public String toString(){
         return timestamp + " | " + this.logType + " - " + this.description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLogType() {
+        return logType;
+    }
+
+    public void setLogType(String logType) {
+        this.logType = logType;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
