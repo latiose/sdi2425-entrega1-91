@@ -865,7 +865,7 @@ class GestorApplicationTests {
         result = PO_View.checkElementBy(driver, "text", checkText);
         assertFalse(result.isEmpty());
 
-        PO_PrivateView.goThroughNav(driver,"text","Vehicle Management","text","View vehicles");
+        PO_PrivateView.goThroughNav(driver,"text","Vehicle management","text","View vehicles");
 
 
         checkText = PO_HomeView.getP().getString("vehicles.message.extra", PO_Properties.getENGLISH());
@@ -882,7 +882,7 @@ class GestorApplicationTests {
         result = PO_View.checkElementBy(driver, "text", checkText);
         assertFalse(result.isEmpty());
 
-        PO_PrivateView.goThroughNav(driver,"text","Journey Management","text","View journeys");
+        PO_PrivateView.goThroughNav(driver,"text","Journey management","text","View journeys");
 
         checkText = PO_HomeView.getP().getString("journey.list.title", PO_Properties.getENGLISH());
         result = PO_View.checkElementBy(driver, "text", checkText);
