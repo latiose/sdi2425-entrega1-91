@@ -4,6 +4,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+
+
 public class PO_Properties {
 	public static int getSPANISH() {
 		return SPANISH;
@@ -13,10 +15,13 @@ public class PO_Properties {
 		return ENGLISH;
 	}
 
+	public static int getGERMAN() { return GERMAN;}
+
 	static private String Path;
 	static final int SPANISH = 0;
 	static final int ENGLISH = 1;
-	static final Locale[] idioms = new Locale[] {new Locale("ES"), new Locale("EN")};
+	static final int GERMAN = 2;
+	static final Locale[] idioms = new Locale[] {new Locale("es"), new Locale("en"),new Locale("de")};
 	//static Properties p = new Properties();
 	public PO_Properties(String Path) //throws FileNotFoundException, IOException 
 	{
