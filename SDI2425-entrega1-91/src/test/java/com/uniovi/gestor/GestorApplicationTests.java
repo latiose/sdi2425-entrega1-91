@@ -475,7 +475,8 @@ class GestorApplicationTests {
         select.selectByValue("B3545CD");
 
         driver.findElement(By.cssSelector("button[type='submit']")).click();
-        //FALTA
+        String checkText = PO_HomeView.getP().getString("journey.list", PO_Properties.getSPANISH());
+        assertFalse(checkText.isEmpty());
         PO_LoginView.logOut(driver);
     }
 
@@ -657,7 +658,8 @@ class GestorApplicationTests {
 
         WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit' and contains(text(),'Finalizar')]"));
         submitButton.click();
-    //comprobar que se rededirija
+        String checkText = PO_HomeView.getP().getString("journey.list", PO_Properties.getSPANISH());
+        assertFalse(checkText.isEmpty());
         PO_LoginView.logOut(driver);
     }
 
