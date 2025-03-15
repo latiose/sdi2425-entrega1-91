@@ -137,4 +137,5 @@ public class Journey {
     public void setRefuels(Set<Refuel> refuels) {
         this.refuels = refuels;
     }
+
 }

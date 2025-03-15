@@ -118,4 +118,18 @@ public class Refuel {
     public double getTotalPrice(){
         return price*amount;
     }
+
+    @Override
+    public String toString(){
+        return "Refuel{" +
+                "id=" + id +
+                ", station='" + station + '\'' +
+                ", price=" + price +
+                ", amount=" + amount +
+                ", fullTank=" + fullTank +
+                ", odometer=" + odometer +
+                ", comments='" + comments + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }

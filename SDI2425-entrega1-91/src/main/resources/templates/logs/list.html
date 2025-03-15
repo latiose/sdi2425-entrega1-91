@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.springframework.org/schema/security">
+<head th:replace="fragments/head"><title>Logs</title></head>
+<body>
+<nav th:replace="fragments/nav"></nav>
+<div class="container">
+    <h2 th:text="#{logs.header}"></h2>
+
+    <div class="row mb-3">
+        <div class="col-sm-4">
+            <select id="logTypeFilter" class="form-control" name="logType">
+                <option th:each="type : ${logTypes}"
+                        th:value="${type}"
+                        th:text="${type}"
+                        th:selected="${type == selectedType}">
+                </option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <button id="deleteLogsBtn" class="btn btn-danger" th:text="#{logs.delete}"></button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover" id="logsTable">
+            <thead>
+            <tr>
+                <th th:text="#{logs.datetime}"></th>
+                <th th:text="#{logs.type}"></th>
+                <th th:text="#{logs.description}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="log : ${logs}">
+                <td th:text="${#temporals.format(log.timestamp, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                <td th:text="${log.logType}"></td>
+                <td th:text="${log.description}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${#lists.isEmpty(logs)}" th:text="#{logs.no.logs}"></div>
+</div>
+
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+
+        $('#logTypeFilter').change(function() {
+            window.location.href = '/logs/list?type=' + $(this).val();
+        });
+
+        $('#deleteLogsBtn').click(function() {
+            let type = $('#logTypeFilter').val();
+            $.ajax({
+                url: '/logs/delete',
+                type: 'POST',
+                data: { type: type },
+                success: function() {
+                    location.reload();
+                }
+            });
+        });
+    });
+    /*]]>*/
+</script>
+
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>
