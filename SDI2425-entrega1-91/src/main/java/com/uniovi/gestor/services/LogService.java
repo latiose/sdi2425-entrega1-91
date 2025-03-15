@@ -29,5 +29,7 @@ public class LogService {
         return logRepository.findOrderedByTimestampDesc();
     }
 
-
+    public List<Log> findByType(String type) {
+        return logRepository.findByLogType(type);
+    }
 }
