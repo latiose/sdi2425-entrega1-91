@@ -20,4 +20,10 @@ public class HomeController {
         return "index";
     }
 
+    @RequestMapping("/error-403")
+    public String error403() {
+        logService.log("PET", "PET [GET] /error-403");
+        return "error/error-403";
+    }
+
 }
