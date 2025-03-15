@@ -16,7 +16,7 @@ public class Log {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String description;
 
     public Log() {}

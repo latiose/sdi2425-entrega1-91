@@ -11,35 +11,21 @@
     <select id="plateNumber" class="form-control" name="plateNumber">
       <option th:each="plate : ${plateList}"
               th:value="${plate}"
-              th:text="${plate}">
+              th:text="${plate}"
+              th:selected="${plate == selectedPlate}">
       </option>
     </select>
   </div>
   <script th:inline="javascript">
-    function loadRefuelsForPlate(numberPlate) {
-      fetch('/refuel/list/update?plateNumber=' + numberPlate, {
-        method: 'GET',
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        }
-      })
-              .then(response => response.text())
-              .then(html => {
-                document.getElementById('refuelsTable').innerHTML = html;
-              })
-              .catch(error => console.error('Error updating refuels list:', error));
+    function loadRefuelsForPlate(numberPlate, page = 0) {
+      const url = `/refuel/list?plateNumber=${numberPlate}&page=${page}`;
+      window.location.href = url;
     }
 
     document.getElementById('plateNumber').addEventListener('change', function() {
       loadRefuelsForPlate(this.value);
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const plateSelect = document.getElementById('plateNumber');
-      if (plateSelect.options.length > 0) {
-        loadRefuelsForPlate(plateSelect.value);
-      }
-    });
   </script>
   <div class="table-responsive">
     <table class="table table-hover" th:fragment="refuelsTable" id="refuelsTable">
@@ -69,7 +55,7 @@
       </tbody>
     </table>
   </div>
-  <footer th:replace="fragments/pagination"></footer>
+  <footer th:replace="fragments/vehiclepagination"></footer>
 </div>
 <footer th:replace="fragments/footer"></footer>
 </body>
