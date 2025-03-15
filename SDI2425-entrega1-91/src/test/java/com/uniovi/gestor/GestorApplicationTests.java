@@ -865,7 +865,7 @@ class GestorApplicationTests {
         result = PO_View.checkElementBy(driver, "text", checkText);
         assertFalse(result.isEmpty());
 
-        PO_PrivateView.goThroughNav(driver,"text","Vehicle Management","text","View vehicles");
+        PO_PrivateView.goThroughNav(driver,"text","Vehicle management","text","View vehicles");
 
 
         checkText = PO_HomeView.getP().getString("vehicles.message.extra", PO_Properties.getENGLISH());
@@ -882,7 +882,7 @@ class GestorApplicationTests {
         result = PO_View.checkElementBy(driver, "text", checkText);
         assertFalse(result.isEmpty());
 
-        PO_PrivateView.goThroughNav(driver,"text","Journey Management","text","View journeys");
+        PO_PrivateView.goThroughNav(driver,"text","Journey management","text","View journeys");
 
         checkText = PO_HomeView.getP().getString("journey.list.title", PO_Properties.getENGLISH());
         result = PO_View.checkElementBy(driver, "text", checkText);
@@ -898,6 +898,42 @@ class GestorApplicationTests {
         result = PO_View.checkElementBy(driver, "text", checkText);
         assertFalse(result.isEmpty());
         PO_NavView.changeLanguage(driver, "Spanish");
+        PO_LoginView.logOut(driver);
+    }
+
+    @Test
+    @Order(47)
+    // Intentar acceder sin estar autenticado a la opción de listado de empleados. Debe devolver al login.
+    public void PR046() {
+        driver.get("http://localhost:8090/employee/list");
+        new WebDriverWait(driver, 10).until(ExpectedConditions.urlContains("/login"));
+        String currentUrl = driver.getCurrentUrl();
+        assertTrue(currentUrl.contains("/login"));
+    }
+
+    @Test
+    @Order(48)
+    // Intentar acceder sin estar autenticado a la opción de listado de vehículos. Debe devolver al login.
+    public void PR047() {
+        driver.get("http://localhost:8090/vehicle/list");
+        new WebDriverWait(driver, 10).until(ExpectedConditions.urlContains("/login"));
+        String currentUrl = driver.getCurrentUrl();
+        assertTrue(currentUrl.contains("/login"));
+    }
+
+    @Test
+    @Order(49)
+    // Estando autenticado, intentar acceder a opción de listado de logs.
+    public void PR048() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000001S", "Us3r@1-PASSW");
+
+        driver.get("http://localhost:8090/logs/list");
+
+        String checkText = PO_HomeView.getP().getString("Error.forbidden", PO_Properties.getSPANISH());
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+
         PO_LoginView.logOut(driver);
     }
 

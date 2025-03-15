@@ -32,4 +32,10 @@ public class LogService {
     public List<Log> findByType(String type) {
         return logRepository.findByLogType(type);
     }
+    public Log findById(Long id) {
+        return logRepository.findById(id).get();
+    }
+    public void delete(Long aLong) {
+        logRepository.deleteById(aLong);
+    }
 }
