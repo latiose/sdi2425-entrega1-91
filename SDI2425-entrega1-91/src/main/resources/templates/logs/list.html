@@ -21,7 +21,40 @@
             <button id="deleteLogsBtn" class="btn btn-danger" th:text="#{logs.delete}"></button>
         </div>
     </div>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function() {
 
+            $('#logTypeFilter').change(function() {
+                window.location.href = '/logs/list?type=' + $(this).val();
+            });
+
+            $('#deleteLogsBtn').click(function() {
+
+                let selectedIds = $(".logCheckbox:checked").map(function() {
+                    return $(this).val();
+                }).get();
+
+                if (selectedIds.length > 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/logs/delete",
+                        contentType: "application/json",
+                        data: JSON.stringify(selectedIds),
+                        success: function() {
+                            location.reload();
+                        },
+                        error: function() {
+                            alert("Error al eliminar logs");
+                        }
+                    });
+                } else {
+                    alert("Seleccione al menos un log para eliminar.");
+                }
+            });
+        });
+        /*]]>*/
+    </script>
     <div class="table-responsive">
         <table class="table table-hover" id="logsTable">
             <thead>
@@ -36,36 +69,20 @@
                 <td th:text="${#temporals.format(log.timestamp, 'dd-MM-yyyy HH:mm:ss')}"></td>
                 <td th:text="${log.logType}"></td>
                 <td th:text="${log.description}"></td>
+                <td ><label>
+                    <input type="checkbox" class="logCheckbox" th:value="${log.id}"/>
+                </label></td>
             </tr>
             </tbody>
         </table>
     </div>
 
+
+
     <div th:if="${#lists.isEmpty(logs)}" th:text="#{logs.no.logs}"></div>
 </div>
 
-<script type="text/javascript" th:inline="javascript">
-    /*<![CDATA[*/
-    $(document).ready(function() {
 
-        $('#logTypeFilter').change(function() {
-            window.location.href = '/logs/list?type=' + $(this).val();
-        });
-
-        $('#deleteLogsBtn').click(function() {
-            let type = $('#logTypeFilter').val();
-            $.ajax({
-                url: '/logs/delete',
-                type: 'POST',
-                data: { type: type },
-                success: function() {
-                    location.reload();
-                }
-            });
-        });
-    });
-    /*]]>*/
-</script>
 
 <footer th:replace="fragments/footer"></footer>
 </body>
