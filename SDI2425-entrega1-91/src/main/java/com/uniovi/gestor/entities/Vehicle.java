@@ -18,7 +18,7 @@ public class Vehicle {
     private String vin;
     private String brand;
     private String model;
-    private float mileage;
+    private double mileage;
 
     @Enumerated(EnumType.STRING)
     private VehicleStatus status;
@@ -30,7 +30,7 @@ public class Vehicle {
     public Vehicle(){}
 
     public Vehicle(String numberPlate, String vin, String brand, String model, String fuel,
-                   float mileage, VehicleStatus status) {
+                   double mileage, VehicleStatus status) {
         this.numberPlate = numberPlate;
         this.vin = vin;
         this.brand = brand;
@@ -88,11 +88,11 @@ public class Vehicle {
         this.fuel = fuel;
     }
 
-    public float getMileage() {
+    public double getMileage() {
         return mileage;
     }
 
-    public void setMileage(float mileage) {
+    public void setMileage(double mileage) {
         this.mileage = mileage;
     }
 
@@ -102,5 +102,19 @@ public class Vehicle {
 
     public void setStatus(VehicleStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id=" + id +
+                ", numberPlate='" + numberPlate + '\'' +
+                ", vin='" + vin + '\'' +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", mileage=" + mileage +
+                ", status=" + status +
+                ", fuel='" + fuel + '\'' +
+                '}';
     }
 }

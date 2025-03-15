@@ -5,6 +5,7 @@ import com.uniovi.gestor.entities.Employee;
 import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.services.EmployeesService;
 import com.uniovi.gestor.services.FuelTypesService;
+import com.uniovi.gestor.services.LogService;
 import com.uniovi.gestor.services.VehiclesService;
 import com.uniovi.gestor.validators.AddVehicleFormValidator;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -26,16 +28,19 @@ public class VehiclesController {
     private final AddVehicleFormValidator addVehicleFormValidator;
     private final FuelTypesService fuelTypesService;
     private final EmployeesService employeesService;
+    private final LogService logService;
 
-    public VehiclesController(VehiclesService vehiclesService, AddVehicleFormValidator addVehicleFormValidator, FuelTypesService fuelTypesService, EmployeesService employeesService) {
+    public VehiclesController(VehiclesService vehiclesService, AddVehicleFormValidator addVehicleFormValidator, FuelTypesService fuelTypesService, EmployeesService employeesService, LogService logService) {
         this.vehiclesService = vehiclesService;
         this.addVehicleFormValidator = addVehicleFormValidator;
         this.fuelTypesService = fuelTypesService;
         this.employeesService = employeesService;
+        this.logService = logService;
     }
 
     @RequestMapping(value = "/vehicle/add")
     public String getVehicle(Model model){
+        logService.log("PET", "PET [GET] /vehicle/add");
         model.addAttribute("vehicle", new Vehicle());
         model.addAttribute("fuelTypesList", fuelTypesService.getFuelTypes());
         return "vehicle/add";
@@ -43,20 +48,26 @@ public class VehiclesController {
 
     @RequestMapping(value="/vehicle/add", method = RequestMethod.POST)
     public String addVehicle(@Validated Vehicle vehicle, BindingResult result, Model model){
+
         addVehicleFormValidator.validate(vehicle, result);
         model.addAttribute("vehicle", vehicle);
         if(result.hasErrors()){
+            logService.log("PET", "PET [POST] | INVALID | /vehicle/add | parameters: VEHICLE = "
+                    + vehicle.toString());
             model.addAttribute("fuelTypesList", fuelTypesService.getFuelTypes());
             return "vehicle/add";
         }
         vehicle.setStatus(VehicleStatusConfig.VehicleStatus.AVAILABLE);
+        logService.log("PET", "PET [POST] /vehicle/add | parameters: VEHICLE = "
+                + vehicle.toString());
         vehiclesService.addVehicle(vehicle);
         return "redirect:/vehicle/list";
     }
 
     @RequestMapping("/vehicle/list")
     public String getVehicleList(Model model, Pageable pageable){
-
+        logService.log("PET", "PET [GET] /vehicle/list | parameters: PAGE = "
+                + pageable.getPageNumber());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
 
@@ -79,13 +90,25 @@ public class VehiclesController {
 
     @RequestMapping("/vehicle/list/update")
     public String updateList(Model model, Pageable pageable){
+        logService.log("PET", "PET [GET] /vehicle/list/update | parameters: PAGE = "
+                + pageable.getPageNumber());
         model.addAttribute("vehiclesList", vehiclesService.getVehicles(pageable) );
         return "vehicle/list :: vehicleTable";
     }
 
     @RequestMapping(value = "/vehicle/delete", method = RequestMethod.POST)
     public String delete(@RequestBody List<Long> vehicleIds) {
-        if (vehicleIds != null && !vehicleIds.isEmpty()) {
+        List<String> deletedPlates = new ArrayList<>();
+        vehicleIds.forEach(
+                vehicleId -> {deletedPlates.add(
+                    vehiclesService.getVehicle(vehicleId)
+                                   .getNumberPlate()
+                    );
+                });
+        logService.log("PET", "PET [POST] /vehicle/list/delete " +
+                "| parameters: VEHICLE_IDS (number plates deleted) = "
+                + deletedPlates.toString());
+        if (!vehicleIds.isEmpty()) {
             vehicleIds.forEach(vehiclesService::deleteVehicle);
         }
         return "redirect:/vehicle/list";

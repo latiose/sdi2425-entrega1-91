@@ -1,5 +1,7 @@
 package com.uniovi.gestor.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -21,7 +23,9 @@ public class Journey {
     @GeneratedValue
     private long id;
     private double duration;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime startDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime endDate;
 
     private double odometerStart;
@@ -137,4 +141,5 @@ public class Journey {
     public void setRefuels(Set<Refuel> refuels) {
         this.refuels = refuels;
     }
+
 }
