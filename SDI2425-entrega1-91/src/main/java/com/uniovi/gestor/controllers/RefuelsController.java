@@ -52,18 +52,21 @@ public class RefuelsController {
     }
 
     @RequestMapping("/refuel/list")
-    public String getVehicleList(Model model, Pageable pageable){
+    public String getVehicleList(@RequestParam(value = "plateNumber", required = false) String plateNumber, Model model, Pageable pageable){
         logService.log("PET", "PET [GET] /refuel/list | parameters: PAGE = " + pageable.getPageNumber());
-        String numberPlate = vehiclesService.findAllPlates().get(0);
-        Page<Refuel> refuels = refuelsService.getRefuelsByNumberPlate(numberPlate, pageable);
-        model.addAttribute("plateList",vehiclesService.findAllPlates());
-        model.addAttribute("refuelsList",refuels);
+        if (plateNumber == null) {
+            plateNumber = vehiclesService.findAllPlates().get(0);
+        }
+        Page<Refuel> refuels = refuelsService.getRefuelsByNumberPlate(plateNumber, pageable);
+        model.addAttribute("plateList", vehiclesService.findAllPlates());
+        model.addAttribute("refuelsList", refuels);
         model.addAttribute("page", refuels);
+        model.addAttribute("selectedPlate", plateNumber);
         return "refuel/list";
     }
 
     @RequestMapping("/refuel/list/{plateNumber}")
-    public String getVehicleList(@PathVariable("plateNumber") String plateNumber, Model model, Pageable pageable){
+    public String getVehicleListByPlateNumber(@PathVariable("plateNumber") String plateNumber, Model model, Pageable pageable){
         logService.log("PET", "PET [GET] /refuel/list/"
                 + plateNumber + " | parameters: PLATE = "
                 + plateNumber
