@@ -72,7 +72,7 @@ xmlns:sec="http://www.springframework.org/schema/security">
                 <td sec:authorize="hasRole('ROLE_ADMIN')"><label>
                     <input type="checkbox" class="vehicleCheckbox" th:value="${vehicle.id}"/>
                 </label></td>
-                <td><a th:href="${'/refuel/list/update' + vehicle.numberPlate}" th:text="#{refuels.list}"></a></td>
+                <td><a th:href="${'/refuel/list/' + vehicle.numberPlate}" th:text="#{refuels.list}"></a></td>
                 <td><a th:href="${'/journey/list/vehicle/' + vehicle.numberPlate}" th:text="#{journey.header}"></a></td>
             </tr>
             </tbody>

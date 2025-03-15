@@ -39,6 +39,11 @@ public class EmployeesService {
         employee.setPassword(bCryptPasswordEncoder.encode(employee.getPassword()));
         employeesRepository.save(employee);
     }
+
+    public void editEmployee(Employee employee) {
+        employeesRepository.save(employee);
+    }
+
     public Employee getEmployeeByDni(String dni) {
         return employeesRepository.findByDni(dni);
     }

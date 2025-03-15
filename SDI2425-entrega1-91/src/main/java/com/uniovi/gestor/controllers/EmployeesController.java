@@ -102,10 +102,11 @@ public class EmployeesController {
         }
 
         Employee originalEmployee = employeesService.getEmployee(id);
+        originalEmployee.setDni(employee.getDni());
         originalEmployee.setName(employee.getName());
         originalEmployee.setLastName(employee.getLastName());
         originalEmployee.setRole(employee.getRole());
-        employeesService.addEmployee(originalEmployee);
+        employeesService.editEmployee(originalEmployee);
         return "redirect:/employee/details/" + id;
 
     }
