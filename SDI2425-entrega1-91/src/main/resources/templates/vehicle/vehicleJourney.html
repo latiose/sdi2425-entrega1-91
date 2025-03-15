@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/head"><title>Journeys list</title></head>
 <body>
 <!-- Barra de Navegación superior -->
@@ -53,10 +54,14 @@
             </thead>
             <tbody>
             <tr th:each="journey : ${journeysList}">
-                <td th:text="${journey.startDate}"></td>
+                <td th:text="${#temporals.format(journey.startDate,'dd-MM-yyyy HH:mm:ss')}"></td>
                 <td th:text="${journey.employee.name}"></td>
                 <td th:text="${journey.duration}"></td>
                 <td th:text="${journey.odometerEnd - journey.odometerStart > 0 ? journey.odometerEnd - journey.odometerStart : 0}"></td>
+                <td>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:if="${journey.endDate != null}"
+                       th:href="${'/journey/edit/' + journey.id}" th:text="#{modify.button}"></a>
+                </td>
 
             </tr>
             </tbody>

@@ -45,6 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/employee/**").hasRole("ADMIN")
                 .antMatchers("/vehicle/list/**").authenticated()
                 .antMatchers("/vehicle/add/**").hasRole("ADMIN")
+                .antMatchers("/journey/edit/**").hasRole("ADMIN")
                 .antMatchers("/journey/**").hasAnyAuthority("ROLE_STANDARD", "ROLE_ADMIN")
                 .antMatchers("/refuel/**").hasAnyAuthority("ROLE_STANDARD", "ROLE_ADMIN")
                 .anyRequest().authenticated()

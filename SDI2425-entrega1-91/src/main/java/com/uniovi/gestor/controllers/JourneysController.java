@@ -12,6 +12,7 @@ import com.uniovi.gestor.services.JourneysService;
 import com.uniovi.gestor.services.LogService;
 import com.uniovi.gestor.services.VehiclesService;
 import com.uniovi.gestor.validators.AddJourneyFormValidator;
+import com.uniovi.gestor.validators.EditJourneyFormValidator;
 import com.uniovi.gestor.validators.EndJourneyFormValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,16 +38,18 @@ public class JourneysController {
     private final EmployeesService employeesService;
     private final EndJourneyFormValidator endJourneyFormValidator;
     private final AddJourneyFormValidator addJourneyFormValidator;
+    private final EditJourneyFormValidator editJourneyFormValidator;
     private final LogService logService;
 
 
-    public JourneysController(JourneysService journeysService, VehiclesService vehiclesService, EndJourneyFormValidator endJourneyFormValidator, EmployeesService employeeService, AddJourneyFormValidator addJourneyFormValidator, LogService logService) {
+    public JourneysController(JourneysService journeysService, VehiclesService vehiclesService, EndJourneyFormValidator endJourneyFormValidator, EmployeesService employeeService, AddJourneyFormValidator addJourneyFormValidator, LogService logService,EditJourneyFormValidator editJourneyFormValidator) {
         this.journeysService = journeysService;
         this.vehiclesService = vehiclesService;
         this.employeesService = employeeService;
         this.endJourneyFormValidator = endJourneyFormValidator;
         this.addJourneyFormValidator = addJourneyFormValidator;
         this.logService = logService;
+        this.editJourneyFormValidator = editJourneyFormValidator;
     }
 
     @RequestMapping(value = "/journey/add")
@@ -204,6 +207,34 @@ public class JourneysController {
         model.addAttribute("journeysList", journeysService.findByVehiclePageable(journeysService.findVehicleByNumberPlate(numberPlate), pageable));
         return "vehicle/vehicleJourney :: journeysTable";
     }
+
+
+    @RequestMapping(value = "/journey/edit/{id}")
+    public String getEdit(Model model, @PathVariable Long id) {
+        logService.log("PET", "PET [GET] /journey/edit/" + id + " | parameters: ID = " + id);
+        Journey journey = journeysService.getJourney(id);
+        model.addAttribute("journey", journey);
+        return "journey/edit";
+    }
+
+    @RequestMapping(value = "/journey/edit/{id}", method = RequestMethod.POST)
+    public String setEdit(@Validated Journey journey, BindingResult result, @PathVariable Long id) {
+        logService.log("PET", "PET [POST] /journey/edit/" + id + " | parameters: ID = " + id + ", JOURNEY = " + journey.toString());
+        editJourneyFormValidator.validate(journey, result);
+        if (result.hasErrors()) {
+            return "journey/edit";
+        }
+
+        Journey originalJourney = journeysService.getJourney(id);
+        originalJourney.setOdometerEnd(journey.getOdometerEnd());
+        originalJourney.setOdometerStart(journey.getOdometerStart());
+        originalJourney.setEndDate(journey.getEndDate());
+        originalJourney.setStartDate(journey.getStartDate());
+        journeysService.addJourney(originalJourney);
+        return "redirect:/journey/list/vehicle/" + originalJourney.getVehicle().getNumberPlate();
+
+    }
+
 
 
 }
