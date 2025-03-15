@@ -105,7 +105,7 @@ public class InsertSampleDataService {
 
     private void createTestJourneys() {
         Employee employee = employeesService.getEmployeeByDni("12345678Z");
-        Vehicle vehicle = vehiclesService.getVehicleByNumberPlate("1234BCD");
+        Vehicle vehicle = vehiclesService.getVehicleByNumberPlate("3141MNP");
         Vehicle vehicle2 = vehiclesService.getVehicleByNumberPlate("5678DFG");
         Vehicle vehicle3 = vehiclesService.getVehicleByNumberPlate("9101GHJ");
         Vehicle vehicle4 = vehiclesService.getVehicleByNumberPlate("5161PQR");

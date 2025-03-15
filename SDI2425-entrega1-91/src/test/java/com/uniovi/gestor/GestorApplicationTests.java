@@ -19,8 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -450,7 +449,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Ver trayectos");
         List<WebElement> rows = driver.findElements(By.xpath("//table[@id='journeyTable']/tbody/tr"));
-        List<String> matriculasEsperadas = List.of("9101GHJ", "5678DFG", "1234BCD");
+        List<String> matriculasEsperadas = List.of("9101GHJ", "5678DFG", "3141MNP");
         for (WebElement row : rows) {
             List<WebElement> cells = row.findElements(By.tagName("td"));
             if (!cells.isEmpty()) {
@@ -789,8 +788,8 @@ class GestorApplicationTests {
 
 
     @Test
-    @Order(40) //Español ingles español en 3 paginas
-    public void PR039() {
+    @Order(43) //Español ingles español en 3 paginas
+    public void PR044() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
@@ -846,8 +845,8 @@ class GestorApplicationTests {
     }
 
     @Test
-    @Order(41) //ingles aleman ingles
-    public void PR040() {
+    @Order(46) //ingles aleman ingles
+    public void PR045() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
@@ -899,6 +898,186 @@ class GestorApplicationTests {
         result = PO_View.checkElementBy(driver, "text", checkText);
         assertFalse(result.isEmpty());
         PO_NavView.changeLanguage(driver, "Spanish");
+        PO_LoginView.logOut(driver);
+    }
+
+    @Test
+    @Order(60)
+    public void PR057() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Historial de trayectos de un vehículo");
+
+        WebElement dropdown = driver.findElement(By.id("plateNumber"));
+        Select select = new Select(dropdown);
+        select.selectByValue("3141MNP");
+        WebElement boton = driver.findElement(By.cssSelector("a[href*='/journey/edit/']"));
+
+
+        boton.click();
+
+        WebElement startDateField = driver.findElement(By.id("startDate"));
+        startDateField.clear();
+        startDateField.sendKeys("2025-03-20T08:00");
+
+        WebElement endDateField = driver.findElement(By.id("endDate"));
+        endDateField.clear();
+        endDateField.sendKeys("2025-03-20T18:00");
+
+        WebElement odometerStartField = driver.findElement(By.id("odometerStart"));
+        odometerStartField.clear();
+        odometerStartField.sendKeys("500000");
+
+        WebElement odometerEndField = driver.findElement(By.id("odometerEnd"));
+        odometerEndField.clear();
+        odometerEndField.sendKeys("500001");
+
+        WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
+        submitButton.click();
+
+        List<WebElement> km = driver.findElements(By.xpath("//*[@id=\"journeysTable\"]/tbody/tr/td[4]"));
+        assertFalse(km.isEmpty());
+        assertEquals("1.0", km.get(0).getText());
+        List<WebElement> nombre = driver.findElements(By.xpath("//*[@id=\"journeysTable\"]/tbody/tr/td[2]"));
+        assertFalse(nombre.isEmpty());
+        assertEquals("Pedro", nombre.get(0).getText());
+        PO_LoginView.logOut(driver);
+    }
+
+
+    @Test
+    @Order(61)
+    public void PR058() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Historial de trayectos de un vehículo");
+
+        WebElement dropdown = driver.findElement(By.id("plateNumber"));
+        Select select = new Select(dropdown);
+        select.selectByValue("3141MNP");
+        WebElement boton = driver.findElement(By.cssSelector("a[href*='/journey/edit/']"));
+
+
+        boton.click();
+
+        WebElement startDateField = driver.findElement(By.id("startDate"));
+        startDateField.clear();
+        startDateField.sendKeys("2025-05-20T08:00");
+
+        WebElement endDateField = driver.findElement(By.id("endDate"));
+        endDateField.clear();
+        endDateField.sendKeys("2025-03-20T18:00");
+
+        WebElement odometerStartField = driver.findElement(By.id("odometerStart"));
+        odometerStartField.clear();
+        odometerStartField.sendKeys("500000");
+
+        WebElement odometerEndField = driver.findElement(By.id("odometerEnd"));
+        odometerEndField.clear();
+        odometerEndField.sendKeys("500001");
+
+        WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
+        submitButton.click();
+
+        List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.dateAfter",
+                PO_Properties.getSPANISH());
+
+        String checkText = PO_HomeView.getP().getString("Error.dateAfter",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        PO_LoginView.logOut(driver);
+    }
+
+    @Test
+    @Order(62)
+    public void PR059() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Historial de trayectos de un vehículo");
+
+        WebElement dropdown = driver.findElement(By.id("plateNumber"));
+        Select select = new Select(dropdown);
+        select.selectByValue("3141MNP");
+        WebElement boton = driver.findElement(By.cssSelector("a[href*='/journey/edit/']"));
+
+
+        boton.click();
+
+        WebElement startDateField = driver.findElement(By.id("startDate"));
+        startDateField.clear();
+        startDateField.sendKeys("2025-02-20T08:00");
+
+        WebElement endDateField = driver.findElement(By.id("endDate"));
+        endDateField.clear();
+        endDateField.sendKeys("2025-03-20T18:00");
+
+        WebElement odometerStartField = driver.findElement(By.id("odometerStart"));
+        odometerStartField.clear();
+        odometerStartField.sendKeys("500002");
+
+        WebElement odometerEndField = driver.findElement(By.id("odometerEnd"));
+        odometerEndField.clear();
+        odometerEndField.sendKeys("500001");
+
+        WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
+        submitButton.click();
+
+        List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.odometer.menor",
+                PO_Properties.getSPANISH());
+
+        String checkText = PO_HomeView.getP().getString("Error.odometer.menor",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        PO_LoginView.logOut(driver);
+    }
+
+    @Test
+    @Order(63)
+    public void PR060() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Historial de trayectos de un vehículo");
+
+        WebElement dropdown = driver.findElement(By.id("plateNumber"));
+        Select select = new Select(dropdown);
+        select.selectByValue("3141MNP");
+        WebElement boton = driver.findElement(By.cssSelector("a[href*='/journey/edit/']"));
+
+
+        boton.click();
+
+        WebElement startDateField = driver.findElement(By.id("startDate"));
+        startDateField.clear();
+        startDateField.sendKeys("2025-02-20T08:00");
+
+        WebElement endDateField = driver.findElement(By.id("endDate"));
+        endDateField.clear();
+        endDateField.sendKeys("2025-03-20T18:00");
+
+        WebElement odometerStartField = driver.findElement(By.id("odometerStart"));
+        odometerStartField.clear();
+        odometerStartField.sendKeys("-57");
+
+        WebElement odometerEndField = driver.findElement(By.id("odometerEnd"));
+        odometerEndField.clear();
+        odometerEndField.sendKeys("-20");
+
+        WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
+        submitButton.click();
+
+        List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.odometer.negativo",
+                PO_Properties.getSPANISH());
+
+        String checkText = PO_HomeView.getP().getString("Error.odometer.negativo",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
         PO_LoginView.logOut(driver);
     }
 
