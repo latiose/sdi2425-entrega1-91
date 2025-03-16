@@ -815,8 +815,10 @@ class GestorApplicationTests {
         List<WebElement> rows = driver.findElements(By.xpath("//table[@id='journeyTable']/tbody/tr"));
 
         for (WebElement row : rows) {
-            assertFalse(row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]")).isDisplayed());
+            List<WebElement> finalizarLinks = row.findElements(By.xpath(".//td/a[contains(text(),'Finalizar')]"));
+            assertTrue(finalizarLinks.isEmpty());
         }
+
         driver.navigate().to("http://localhost:8090/journey/end");
 
         new WebDriverWait(driver, 10).until(ExpectedConditions.urlContains("/journey/list"));

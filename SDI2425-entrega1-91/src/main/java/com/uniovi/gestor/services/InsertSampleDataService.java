@@ -104,12 +104,14 @@ public class InsertSampleDataService {
     public int getNumEmployees(){ return numEmployees; }
 
 
+
     private void createTestJourneys() {
         Employee employee = employeesService.getEmployeeByDni("12345678Z");
         Vehicle vehicle = vehiclesService.getVehicleByNumberPlate("3141MNP");
         Vehicle vehicle2 = vehiclesService.getVehicleByNumberPlate("5678DFG");
         Vehicle vehicle3 = vehiclesService.getVehicleByNumberPlate("9101GHJ");
         Vehicle vehicle4 = vehiclesService.getVehicleByNumberPlate("5161PQR");
+
         Journey journey1 = new Journey(vehicle);
         journey1.setEmployee(employee);
         journey1.setOdometerStart(15234.5);
@@ -128,12 +130,12 @@ public class InsertSampleDataService {
         journey2.setDuration(journey2.getDuration());
         journeysService.addJourney(journey2);
 
-
         Journey journey3 = new Journey(vehicle3);
         journey3.setEmployee(employee);
         journey3.setOdometerStart(78345.2);
         journey3.setStartDate(LocalDateTime.now().minusHours(1));
         journeysService.addJourney(journey3);
+
         Employee employee2 = employeesService.getEmployeeByDni("10000005L");
         Journey journey4 = new Journey(vehicle4);
         journey4.setEmployee(employee2);
@@ -148,5 +150,28 @@ public class InsertSampleDataService {
         journey4.setOdometerStart(1234.5);
         journey4.setStartDate(LocalDateTime.now().minusHours(2));
         journeysService.addJourney(journey4);
+
+        for (int i = 1; i <= 15; i++) {
+            String dni = i < 10 ? String.format("1000000%d", i) : String.format("100000%d", i);
+            String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            dni += letras.charAt(Integer.parseInt(dni) % 23);
+            Employee emp = employeesService.getEmployeeByDni(dni);
+            if (emp != null) {
+                for (int j = 0; j < 10; j++) {
+                    Vehicle veh = vehiclesService.getAvailableVehicle();
+                    if (veh != null) {
+                        Journey journey = new Journey(veh);
+                        journey.setEmployee(emp);
+                        journey.setOdometerStart(veh.getMileage() + (j * 10));
+                        journey.setOdometerEnd(journey.getOdometerStart() + 50);
+                        journey.setStartDate(LocalDateTime.now().minusDays(j).minusHours(j));
+                        journey.setEndDate(journey.getStartDate().plusHours(1));
+                        journey.setDuration(journey.getDuration());
+                        journeysService.addJourney(journey);
+                    }
+                }
+            }
+        }
     }
+
 }

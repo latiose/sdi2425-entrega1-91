@@ -7,6 +7,7 @@ import com.uniovi.gestor.repositories.JourneysRepository;
 import com.uniovi.gestor.repositories.RefuelsRepository;
 import com.uniovi.gestor.repositories.VehiclesRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +73,9 @@ public class VehiclesService {
     public Page<Vehicle> findVehiclesByStatus(VehicleStatusConfig.VehicleStatus status, Pageable pageable) { return vehiclesRepository.findByStatus(status, pageable); }
 
 
-   
+    public Vehicle getAvailableVehicle() {
+        List<Vehicle> vehicles = vehiclesRepository.findAvailableVehicles(PageRequest.of(0, 1));
+        return vehicles.isEmpty() ? null : vehicles.get(0);
+    }
 
 }
