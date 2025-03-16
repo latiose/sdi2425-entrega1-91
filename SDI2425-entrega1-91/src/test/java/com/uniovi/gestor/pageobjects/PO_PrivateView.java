@@ -46,6 +46,29 @@ public class PO_PrivateView extends PO_NavView {
         driver.findElement(By.className("btn-primary")).click();
     }
 
+    static public boolean goToNextPage(WebDriver driver) {
+        List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
+
+        // Obtiene la página actual
+        int currentPageIndex = -1;
+        for (int i = 0; i < elements.size(); i++) {
+            WebElement parent = elements.get(i).findElement(By.xpath("./.."));
+            if (parent.getAttribute("class").contains("active")) {
+                currentPageIndex = i;
+                break;
+            }
+        }
+
+        if (currentPageIndex != -1 && currentPageIndex + 1 < elements.size()) {
+            String nextText = elements.get(currentPageIndex + 1).getText().trim();
+            // Comprueba si la siguiente página es un dígito (no "Última")
+            if (nextText.matches("\\d+")) {
+                elements.get(currentPageIndex + 1).click();
+                return true;
+            }
+        }
+        return false;
+    }
 
     static public void goThroughNav(WebDriver driver,String type1,String text1,String type2,String text2){
         List<WebElement> elements = PO_View.checkElementBy(driver, type1,
