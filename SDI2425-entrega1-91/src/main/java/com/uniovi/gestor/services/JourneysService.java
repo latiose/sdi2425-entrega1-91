@@ -23,18 +23,12 @@ public class JourneysService {
     public void init() {
     }
 
-    public Page<Journey> getJourneys(Pageable pageable) {
-        return journeysRepository.findAll(pageable);
+    public Journey getJourney(long id) {
+        return journeysRepository.findById(id).orElse(null);
     }
-
-    public Journey getJourney(long id) { return journeysRepository.findById(id).get();}
 
     public void addJourney(Journey journey) {
         journeysRepository.save(journey);
-    }
-
-    public void deleteJourney(Journey journey) {
-        journeysRepository.delete(journey);
     }
 
     public Vehicle findVehicleByNumberPlate(String plateNumber) {
@@ -49,10 +43,6 @@ public class JourneysService {
         return journeysRepository.findByVehicle(v, pageable);
     }
 
-    public List<Journey> findByDni(String dni) {
-        return journeysRepository.findByDni(dni);
-    }
-
     public Journey findActiveJourneyByDni(String dni) {
         return journeysRepository.findActiveJourneyByDni(dni);
     }
@@ -60,7 +50,5 @@ public class JourneysService {
     public Page<Journey> findByDniPage(String dni, Pageable pageable){
         return journeysRepository.findByDniPage(dni, pageable);
     }
-
-    public Vehicle findVehicleByJourney(Long id ) { return journeysRepository.findVehicleByJourneyId(id);
-    }
+    
 }

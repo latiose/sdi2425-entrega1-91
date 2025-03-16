@@ -15,16 +15,9 @@ public class PO_View {
 		return timeout;
 	}
 
-	public static void setTimeout(int timeout) {
-		PO_View.timeout = timeout;
-	}
 
 	public static PO_Properties getP() {
 		return p;
-	}
-
-	public static void setP(PO_Properties p) {
-		PO_View.p = p;
 	}
 	
 	/**

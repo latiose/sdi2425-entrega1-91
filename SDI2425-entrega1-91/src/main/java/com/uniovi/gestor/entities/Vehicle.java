@@ -24,7 +24,7 @@ public class Vehicle {
     private VehicleStatus status;
 
     @OneToMany(mappedBy = "vehicle",cascade = CascadeType.ALL)
-    private Set<Journey> journeys = new HashSet<Journey>();
+    private Set<Journey> journeys = new HashSet<>();
     private String fuel;
 
     public Vehicle(){}

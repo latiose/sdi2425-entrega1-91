@@ -21,7 +21,7 @@ public class Refuel {
     private Journey journey;
 
     public Refuel() {}
-
+    @SuppressWarnings("unused")
     public Refuel(String station, double price, double amount, boolean fullTank, double odometer, String comments) {
         this.station = station;
         this.price = price;
@@ -57,15 +57,15 @@ public class Refuel {
     public double getAmount() {
         return amount;
     }
-
+    @SuppressWarnings("unused")
     public void setAmount(double amount) {
         this.amount = amount;
     }
-
+    @SuppressWarnings("unused")
     public boolean isFullTank() {
         return fullTank;
     }
-
+    @SuppressWarnings("unused")
     public void setFullTank(boolean fullTank) {
         this.fullTank = fullTank;
     }
@@ -77,11 +77,11 @@ public class Refuel {
     public void setOdometer(double odometer) {
         this.odometer = odometer;
     }
-
+    @SuppressWarnings("unused")
     public String getComments() {
         return comments;
     }
-
+    @SuppressWarnings("unused")
     public void setComments(String comments) {
         this.comments = comments;
     }
@@ -101,11 +101,11 @@ public class Refuel {
     public void setJourney(Journey journey) {
         this.journey = journey;
     }
-
+    @SuppressWarnings("unused")
     public String getDayMonthYear(){
         return date.getDayOfMonth()+"/"+date.getMonthValue() + "/" + date.getYear();
     }
-
+    @SuppressWarnings("unused")
     public String getHoursMinutes(){
         return date.getHour()+":"+date.getMinute();
     }
@@ -113,7 +113,7 @@ public class Refuel {
     public Vehicle getVehicle(){
         return journey.getVehicle();
     }
-
+    @SuppressWarnings("unused")
     public double getTotalPrice(){
         return price*amount;
     }

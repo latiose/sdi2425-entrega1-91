@@ -135,14 +135,15 @@ public class JourneysController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();
-        journey.setOdometerStart(vehicle.getMileage());
-        journey.setEmployee(employeesService.getEmployeeByDni(dni));
-        journeysService.addJourney(journey);
+        if(vehicle!= null){
+            journey.setOdometerStart(vehicle.getMileage());
+            journey.setEmployee(employeesService.getEmployeeByDni(dni));
+            journeysService.addJourney(journey);
+        }
+
 
         return "redirect:/journey/list/vehicle/" + plateNumber;
     }
-
-
 
     @RequestMapping("/journey/list")
     public String getJourneyList(Model model, Pageable pageable){
@@ -222,7 +223,7 @@ public class JourneysController {
     }
 
     @RequestMapping(value = "/journey/edit/{id}", method = RequestMethod.POST)
-    public String setEdit(Journey journey, BindingResult result, @PathVariable Long id, Model model) {
+    public String setEdit(Journey journey, BindingResult result, @PathVariable Long id) {
         logService.log("PET", "PET [POST] /journey/edit/" + id + " | parameters: ID = " + id + ", JOURNEY = " + journey.toString());
         Journey originalJourney = journeysService.getJourney(id);
         journey.setVehicle(originalJourney.getVehicle());

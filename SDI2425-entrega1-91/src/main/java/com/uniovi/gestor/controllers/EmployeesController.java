@@ -3,7 +3,6 @@ import com.uniovi.gestor.PasswordGenerator;
 import com.uniovi.gestor.services.EmployeesService;
 import com.uniovi.gestor.services.LogService;
 import com.uniovi.gestor.services.RolesService;
-import com.uniovi.gestor.services.SecurityService;
 import com.uniovi.gestor.validators.AddEmployeeFormValidator;
 import com.uniovi.gestor.validators.ChangePasswordValidator;
 import com.uniovi.gestor.validators.EditEmployeeFormValidator;
@@ -70,7 +69,7 @@ public class EmployeesController {
         model.addAttribute("employee", employee);
         if (result.hasErrors()) {
             String logMessage = String.format(
-                    "PET [POST] /employee/add | INVALID | parameters: EMPLOYEE = %s", employee.toString()
+                    "PET [POST] /employee/add | INVALID | parameters: EMPLOYEE = %s", employee
             );
             String logMessage2 = String.format(
                     "ALTA [POST] /employee/add | INVALID | parameters: EMPLOYEE = %s",
@@ -89,10 +88,10 @@ public class EmployeesController {
 
         String logMessage2 = String.format(
                 "ALTA [POST] /employee/add | parameters: EMPLOYEE = %s",
-                employee.toString()
+                employee
         );
         String logMessage = String.format(
-                "PET [POST] /employee/add | parameters: EMPLOYEE = %s", employee.toString()
+                "PET [POST] /employee/add | parameters: EMPLOYEE = %s", employee
         );
         logService.log("PET", logMessage);
         logService.log("ALTA", logMessage2);
@@ -177,11 +176,8 @@ public class EmployeesController {
     }
 
     @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
-    public String home(Model model) {
+    public String home() {
         logService.log("PET", "PET [GET] /home");
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String dni = auth.getName();
-        Employee activeEmployee = employeesService.getEmployeeByDni(dni);
         return "home";
     }
 

@@ -38,7 +38,7 @@ public class RefuelsController {
     }
 
     @RequestMapping(value="/refuel/add", method = RequestMethod.POST)
-    public String addRefuel(@Validated @ModelAttribute("refuel") Refuel refuel, BindingResult result, Model model){
+    public String addRefuel(@Validated @ModelAttribute("refuel") Refuel refuel, BindingResult result){
         addRefuelFormValidator.validate(refuel, result);
         refuel.setDate(LocalDateTime.now());
         if(result.hasErrors()){

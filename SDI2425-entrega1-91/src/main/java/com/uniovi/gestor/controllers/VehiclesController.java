@@ -73,16 +73,15 @@ public class VehiclesController {
 
         Employee employee = employeesService.getEmployeeByDni(dni);
 
+        Page<Vehicle> vehicles;
         if(employee.getRole().equals("ROLE_STANDARD")){
-            Page<Vehicle> vehicles = vehiclesService.findVehiclesByStatus(VehicleStatusConfig.VehicleStatus.AVAILABLE, pageable);
-            model.addAttribute("vehiclesList",vehicles);
-            model.addAttribute("page", vehicles);
+            vehicles = vehiclesService.findVehiclesByStatus(VehicleStatusConfig.VehicleStatus.AVAILABLE, pageable);
         }
         else{
-            Page<Vehicle> vehicles = vehiclesService.getVehicles(pageable);
-            model.addAttribute("vehiclesList",vehicles);
-            model.addAttribute("page", vehicles);
+            vehicles = vehiclesService.getVehicles(pageable);
         }
+        model.addAttribute("vehiclesList",vehicles);
+        model.addAttribute("page", vehicles);
 
 
         return "vehicle/list";
@@ -100,11 +99,10 @@ public class VehiclesController {
     public String delete(@RequestBody List<Long> vehicleIds) {
         List<String> deletedPlates = new ArrayList<>();
         vehicleIds.forEach(
-                vehicleId -> {deletedPlates.add(
+                vehicleId -> deletedPlates.add(
                     vehiclesService.getVehicle(vehicleId)
                                    .getNumberPlate()
-                    );
-                });
+                    ));
         logService.log("PET", "PET [POST] /vehicle/list/delete " +
                 "| parameters: VEHICLE_IDS (number plates deleted) = "
                 + deletedPlates);

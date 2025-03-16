@@ -39,18 +39,19 @@ public class Log {
         this.id = id;
     }
 
+    @SuppressWarnings("unused")
     public String getLogType() {
         return logType;
     }
-
+    @SuppressWarnings("unused")
     public void setLogType(String logType) {
         this.logType = logType;
     }
-
+    @SuppressWarnings("unused")
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
-
+    @SuppressWarnings("unused")
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }

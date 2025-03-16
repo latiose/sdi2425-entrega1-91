@@ -1,5 +1,4 @@
 package com.uniovi.gestor.services;
-import java.util.*;
 
 import com.uniovi.gestor.repositories.EmployeesRepository;
 import javax.annotation.PostConstruct;
@@ -9,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.uniovi.gestor.entities.*;
+
+import java.util.Optional;
 
 @Service
 public class EmployeesService {
@@ -23,15 +24,13 @@ public class EmployeesService {
     public void init() {
     }
 
-    public List<Employee> getAllEmployees() {
-        return (List<Employee>) employeesRepository.findAll();
-    }
 
     public Page<Employee> getEmployees(Pageable pageable) {
         return employeesRepository.findAll(pageable);
     }
     public Employee getEmployee(Long id) {
-        return employeesRepository.findById(id).get();
+        Optional<Employee> employee = employeesRepository.findById(id);
+        return employee.orElse(null);
     }
 
     public void addEmployee(Employee employee) {

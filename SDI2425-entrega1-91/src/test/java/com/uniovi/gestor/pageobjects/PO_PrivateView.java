@@ -1,6 +1,6 @@
 package com.uniovi.gestor.pageobjects;
 
-import com.uniovi.gestor.util.SeleniumUtils;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -77,10 +77,6 @@ public class PO_PrivateView extends PO_NavView {
         elements.get(0).click();
     }
 
-    static public void checkAndClick(WebDriver driver, String type, String text,int index){
-        List<WebElement> elements =SeleniumUtils.waitLoadElementsBy(driver, type, text, getTimeout());
-        elements.get(index).click();
-    }
 
 
 
@@ -97,7 +93,7 @@ public class PO_PrivateView extends PO_NavView {
         driver.findElement(By.className("btn-primary")).click();
     }
 
-    static public void filFormEditEmployee(WebDriver driver, String dnip, String namep, String lastnamep, String role){
+    static public void filFormEditEmployee(WebDriver driver, String dnip, String namep, String lastnamep){
         WebElement dniInput = driver.findElement(By.id("dni"));
         dniInput.clear();
         dniInput.sendKeys(dnip);

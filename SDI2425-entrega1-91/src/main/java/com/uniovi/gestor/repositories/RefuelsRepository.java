@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface RefuelsRepository extends CrudRepository<Refuel, Long> {
-
+    @SuppressWarnings("unused")
     Page<Refuel> findAll(Pageable pageable);
 
     @Query("SELECT r FROM Refuel r WHERE LOWER(r.journey.vehicle.numberPlate) = LOWER(?1)")

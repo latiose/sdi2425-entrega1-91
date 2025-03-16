@@ -6,7 +6,6 @@ import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.repositories.JourneysRepository;
 import com.uniovi.gestor.repositories.RefuelsRepository;
 import com.uniovi.gestor.repositories.VehiclesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,7 @@ import java.util.List;
 
 @Service
 public class VehiclesService {
-    @Autowired
-    private VehicleStatusConfig statusConfig;
+
     private final VehiclesRepository vehiclesRepository;
     private final JourneysRepository journeysRepository;
     private final RefuelsRepository refuelsRepository;
@@ -39,7 +37,7 @@ public class VehiclesService {
     }
 
     public Vehicle getVehicle(Long id) {
-        return vehiclesRepository.findById(id).get();
+        return vehiclesRepository.findById(id).orElse(null);
     }
 
     public void addVehicle(Vehicle vehicle) {
@@ -56,7 +54,7 @@ public class VehiclesService {
 
     @Transactional
     public void deleteVehicle(Long id) {
-        Vehicle vehicle = vehiclesRepository.findById(id).get();
+        Vehicle vehicle = vehiclesRepository.findById(id).orElse(null);
         List<Journey> journeys = journeysRepository.findByVehicle(vehicle);
         journeys.forEach(refuelsRepository::deleteByJourney);
         journeysRepository.deleteByVehicle(vehicle);
@@ -73,9 +71,6 @@ public class VehiclesService {
 
     public Page<Vehicle> findVehiclesByStatus(VehicleStatusConfig.VehicleStatus status, Pageable pageable) { return vehiclesRepository.findByStatus(status, pageable); }
 
-    public String getDisplayStatus(Vehicle vehicle) {
-        return statusConfig.getStatusDisplay(vehicle.getStatus());
-    }
 
    
 

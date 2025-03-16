@@ -24,10 +24,6 @@ public class RefuelsService {
         refuelsRepository.save(refuel);
     }
 
-    public Page<Refuel> getAllRefuels(Pageable pageable){
-        return refuelsRepository.findAll(pageable);
-    }
-
     public Journey getActiveJourney(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName();

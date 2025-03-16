@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface JourneysRepository extends CrudRepository<Journey, Long> {
-
+    @SuppressWarnings("unused")
     @Query("SELECT j.vehicle FROM Journey j WHERE j.id = ?1")
     Vehicle findVehicleByJourneyId(Long id);
 
-
+    @SuppressWarnings("unused")
     Page<Journey> findAll(Pageable pageable);
 
     @Query("SELECT j.vehicle FROM Journey j WHERE LOWER(j.vehicle.numberPlate) = LOWER(?1)")
@@ -26,7 +26,7 @@ public interface JourneysRepository extends CrudRepository<Journey, Long> {
     Page<Journey> findByVehicle(Vehicle vehicle, Pageable pageable);
     List<Journey> findByVehicle(Vehicle vehicle);
 
-
+    @SuppressWarnings("unused")
     @Query("SELECT j FROM Journey j WHERE LOWER(j.employee.dni) = LOWER(?1)")
     List<Journey> findByDni(String dni);
 

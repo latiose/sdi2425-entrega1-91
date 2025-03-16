@@ -32,7 +32,7 @@ public class Journey {
     private double odometerEnd;
 
     @OneToMany(mappedBy = "journey")
-    private Set<Refuel> refuels = new HashSet<Refuel>();
+    private Set<Refuel> refuels = new HashSet<>();
 
     public Journey(){
         this.startDate = LocalDateTime.now();

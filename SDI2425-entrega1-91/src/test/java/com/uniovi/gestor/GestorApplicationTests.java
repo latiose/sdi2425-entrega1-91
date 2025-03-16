@@ -400,7 +400,6 @@ class GestorApplicationTests {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
-        List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"employeeTable\"]/tbody/tr"));
 
         WebElement secondEditLink = driver.findElement(By.xpath("(//table[@id='employeeTable']//a[contains(text(),'Modificar')])[3]"));
         secondEditLink.click();
@@ -410,7 +409,7 @@ class GestorApplicationTests {
         String lastName = "Caraduje Martínez";
         String role = "ROLE_ADMIN";
 
-        PO_PrivateView.filFormEditEmployee(driver, dni, name, lastName, role);
+        PO_PrivateView.filFormEditEmployee(driver, dni, name, lastName);
 
         WebElement dniElement = driver.findElement(By.id("dni"));
         Assertions.assertEquals(dni, dniElement.getText());
@@ -440,7 +439,6 @@ class GestorApplicationTests {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
-        List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"employeeTable\"]/tbody/tr"));
 
         WebElement secondEditLink = driver.findElement(By.xpath("(//table[@id='employeeTable']//a[contains(text(),'Modificar')])[3]"));
         secondEditLink.click();
@@ -448,13 +446,9 @@ class GestorApplicationTests {
         String dni = "12345678Z";
         String name = "";
         String lastName = "";
-        String role = "ROLE_ADMIN";
 
-        PO_PrivateView.filFormEditEmployee(driver, dni, name, lastName, role);
+        PO_PrivateView.filFormEditEmployee(driver, dni, name, lastName);
 
-        String checkTextDni = PO_View.getP().getString("Error.dni.duplicate", PO_Properties.getSPANISH());
-        String checkTextName = PO_View.getP().getString("Error.empty", PO_Properties.getSPANISH());
-        String checkTextLastName = PO_View.getP().getString("Error.empty", PO_Properties.getSPANISH());
 
         List<WebElement> resultDni = PO_View.checkElementByKey(driver,  "Error.dni.duplicate" ,PO_Properties.getSPANISH());
         assertFalse(resultDni.isEmpty());

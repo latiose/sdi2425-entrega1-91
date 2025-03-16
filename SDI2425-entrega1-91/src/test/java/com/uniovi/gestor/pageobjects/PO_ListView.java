@@ -78,7 +78,7 @@ public class PO_ListView extends PO_NavView{
 
     static public boolean deleteVehiclesByIndexes(WebDriver driver, int[] indexes) {
         List<WebElement> vehicleRows = driver.findElements(By.xpath("//*[@id=\"vehicleTable\"]/tbody/tr"));
-        List<String> numberPlates = new ArrayList<String>();
+        List<String> numberPlates = new ArrayList<>();
         for(int index : indexes){
             WebElement vehicleRow = vehicleRows.get(index);
             String vehiclePlate = vehicleRow.findElement(By.xpath(".//td[1]")).getText();
