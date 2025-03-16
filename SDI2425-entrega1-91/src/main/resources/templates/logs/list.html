@@ -30,27 +30,15 @@
             });
 
             $('#deleteLogsBtn').click(function() {
-
-                let selectedIds = $(".logCheckbox:checked").map(function() {
-                    return $(this).val();
-                }).get();
-
-                if (selectedIds.length > 0) {
-                    $.ajax({
-                        type: "POST",
-                        url: "/logs/delete",
-                        contentType: "application/json",
-                        data: JSON.stringify(selectedIds),
-                        success: function() {
-                            location.reload();
-                        },
-                        error: function() {
-                            alert("Error al eliminar logs");
-                        }
-                    });
-                } else {
-                    alert("Seleccione al menos un log para eliminar.");
-                }
+                let type = $('#logTypeFilter').val();
+                $.ajax({
+                    url: '/logs/delete',
+                    type: 'POST',
+                    data: { type: type },
+                    success: function() {
+                        location.reload();
+                    }
+                });
             });
         });
         /*]]>*/
