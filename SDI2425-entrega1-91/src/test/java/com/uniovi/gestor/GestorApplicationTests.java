@@ -367,7 +367,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "1234BGD", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "Diésel");
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BGD", "0FAFP08192R123456", "Toyota", "Corolla", "Diésel");
 
         List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.vin.duplicate",
                 PO_Properties.getSPANISH());
@@ -378,9 +378,10 @@ class GestorApplicationTests {
     }
 
     @Test
+    // TODO falla aserto, asignar orden de ejecución
     public void PR017() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "12345678Z", "admin");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Ver empleados");
 
@@ -398,13 +399,14 @@ class GestorApplicationTests {
     }
 
     @Test
+    // TODO falla aserto, asignar orden de ejecución
     public void PR018() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "12345678Z", "admin");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
         List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"employeeTable\"]/tbody/tr"));
 
-        WebElement secondEditLink = driver.findElement(By.xpath("(//table[@id='employeeTable']//a[contains(text(),'modificar')])[3]"));
+        WebElement secondEditLink = driver.findElement(By.xpath("(//table[@id='employeeTable']//a[contains(text(),'Modificar')])[3]"));
         secondEditLink.click();
 
         String dni = "58435079Z";
@@ -441,11 +443,11 @@ class GestorApplicationTests {
     @Test
     public void PR019() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "12345678Z", "admin");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
         List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"employeeTable\"]/tbody/tr"));
 
-        WebElement secondEditLink = driver.findElement(By.xpath("(//table[@id='employeeTable']//a[contains(text(),'modificar')])[3]"));
+        WebElement secondEditLink = driver.findElement(By.xpath("(//table[@id='employeeTable']//a[contains(text(),'Modificar')])[3]"));
         secondEditLink.click();
 
         String dni = "12345678Z";
@@ -476,13 +478,14 @@ class GestorApplicationTests {
 
     @Test
     @Order(21)
+    // Listado de vehículos de la empresa
     public void PR020() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Ver vehículos");
 
-        int numCars = insertSampleDataService.getNumCars() + 1; // el que se añade en uno de los tests anteriores
+        int numCars = insertSampleDataService.getNumCars() + 1;
 
         int totalCount = 0;
         boolean next = true;
@@ -619,7 +622,6 @@ class GestorApplicationTests {
         PO_LoginView.logOut(driver);
     }
 
-
     @Test
     @Order(29)
     // Registrar un repostaje realizado en el vehículo que el usuario tiene asignado
@@ -645,7 +647,7 @@ class GestorApplicationTests {
         List<WebElement> rows = driver.findElements(By.xpath("//table[@id='refuelsTable']/tbody/tr"));
         boolean isPresent = false;
         for (WebElement row : rows) {
-            if (row.getText().contains("ELECTRICO")) {
+            if (row.getText().contains("Manolo")) {
                 isPresent = true;
                 break;
             }
@@ -857,6 +859,7 @@ class GestorApplicationTests {
     }
 
     @Test
+    // TODO error no encuentra 5678DFG
     public void PR037() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
@@ -879,6 +882,35 @@ class GestorApplicationTests {
     }
 
     @Test
+    @Order(38)
+    // Mostrar listado de repostajes
+    public void PR038() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000010R","Us3r@10-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
+        PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100000, "Repostaje de prueba");
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
+        PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100100, "Repostaje de prueba2");
+
+        WebElement dropdown = driver.findElement(By.id("plateNumber"));
+        Select select = new Select(dropdown);
+        select.selectByValue("B3545CA");
+
+        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='refuelsTable']/tbody/tr"));
+        int repsolCount = 0;
+        for (WebElement row : rows) {
+            if (row.getText().contains("Repsol")) {
+                repsolCount++;
+            }
+        }
+        Assertions.assertEquals(repsolCount, 2,"Los repostajes asignados no figuran en la lista.");
+        PO_LoginView.logOut(driver);
+    }
+
+
+    @Test
+    @Order(39)
     public void PR039() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "10000002Q", "Us3r@2-PASSW");
@@ -898,13 +930,13 @@ class GestorApplicationTests {
         Assertions.assertEquals(numVehicles, totalCount, "El número de empleados no coincide");
     }
 
-
     @Test
+    @Order(40)
     public void PR040(){
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "10000002Q","Us3r@2-PASSW");
 
-        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contrasena");
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contraseña");
 
         PO_PrivateView.fillFormChangePassword(driver, "Us3r@2-PASSW", "Ahorasoyadministrad0r?", "Ahorasoyadministrad0r?");
 
@@ -916,14 +948,17 @@ class GestorApplicationTests {
         assertTrue(currentUrl.contains("/journey/list"));
     }
 
+
+
     @Test
+    @Order(41)
     public void PR041() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "10000002Q", "Us3r@2-PASSW");
+        PO_LoginView.fillForm(driver, "10000013G", "Us3r@13-PASSW");
 
-        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contrasena");
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contraseña");
 
-        PO_PrivateView.fillFormChangePassword(driver, "Ahorasoyadministrad0r", "Ahorasoyadministrad1r?", "Ahorasoyadministrad1r?");
+        PO_PrivateView.fillFormChangePassword(driver, "Us3r@2-PASSW", "Ahorasoyadministrad1r?", "Ahorasoyadministrad1r?");
 
         String checkText = PO_HomeView.getP().getString("Error.password.incorrect", PO_Properties.getSPANISH());
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
@@ -931,13 +966,14 @@ class GestorApplicationTests {
     }
 
     @Test
+    @Order(42)
     public void PR042() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "10000002Q", "Us3r@2-PASSW");
+        PO_LoginView.fillForm(driver, "10000013G", "Us3r@13-PASSW");
 
-        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contrasena");
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contraseña");
 
-        PO_PrivateView.fillFormChangePassword(driver, "Us3r@2-PASSW", "contraseñadebil", "contraseñadebil");
+        PO_PrivateView.fillFormChangePassword(driver, "Us3r@13-PASSW", "contraseñadebil", "contraseñadebil");
 
         String checkText = PO_HomeView.getP().getString("Error.password.weak", PO_Properties.getSPANISH());
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
@@ -945,53 +981,22 @@ class GestorApplicationTests {
     }
 
     @Test
+    @Order(43)
     public void PR043() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "10000002Q", "Us3r@2-PASSW");
+        PO_LoginView.fillForm(driver, "10000013G", "Us3r@13-PASSW");
 
-        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contrasena");
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contraseña");
 
-        PO_PrivateView.fillFormChangePassword(driver, "Us3r@2-PASSW", "Ahorasoyadministrad1r?", "Ahorasoyadministrad1r");
+        PO_PrivateView.fillFormChangePassword(driver, "Us3r@13-PASSW", "Ahorasoyadministrad1r?", "Ahorasoyadministrad1r");
 
         String checkText = PO_HomeView.getP().getString("Error.password.passwordConfirm", PO_Properties.getSPANISH());
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
         assertFalse(result.isEmpty());
     }
 
-
     @Test
-    @Order(39)
-    // Registrar un repostaje realizado en el vehículo que el usuario tiene asignado
-    // Repostaje válido
-    public void PR038() {
-        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "10000010R","Us3r@10-PASSW");
-
-        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
-        PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100000, "Repostaje de prueba");
-        PO_PrivateView.goThroughNav(driver,"text","Gestión de repostajes","text","Agregar repostaje");
-        PO_ListView.fillFormAddRefuel(driver, "Repsol", 1.2, 50.0, true, 100100, "Repostaje de prueba2");
-
-        WebElement dropdown = driver.findElement(By.id("plateNumber"));
-        Select select = new Select(dropdown);
-        select.selectByValue("B3545CA");
-
-        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='refuelsTable']/tbody/tr"));
-        int repsolCount = 0;
-        for (WebElement row : rows) {
-            if (row.getText().contains("Repsol")) {
-                repsolCount++;
-                if(repsolCount == 2)
-                    break;
-            }
-        }
-        Assertions.assertEquals(repsolCount, 2,"Los repostajes asignados no figuran en la lista.");
-        PO_LoginView.logOut(driver);
-    }
-
-
-    @Test
-    @Order(43) //Español ingles español en 3 paginas
+    @Order(44) //Español ingles español en 3 paginas
     public void PR044() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
@@ -1048,7 +1053,7 @@ class GestorApplicationTests {
     }
 
     @Test
-    @Order(46) //ingles aleman ingles
+    @Order(45) //ingles aleman ingles
     public void PR045() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
@@ -1105,7 +1110,7 @@ class GestorApplicationTests {
     }
 
     @Test
-    @Order(47)
+    @Order(46)
     // Intentar acceder sin estar autenticado a la opción de listado de empleados. Debe devolver al login.
     public void PR046() {
         driver.get("http://localhost:8090/employee/list");
@@ -1115,7 +1120,7 @@ class GestorApplicationTests {
     }
 
     @Test
-    @Order(48)
+    @Order(47)
     // Intentar acceder sin estar autenticado a la opción de listado de vehículos. Debe devolver al login.
     public void PR047() {
         driver.get("http://localhost:8090/vehicle/list");
@@ -1125,7 +1130,7 @@ class GestorApplicationTests {
     }
 
     @Test
-    @Order(49)
+    @Order(48)
     // Estando autenticado, intentar acceder a opción de listado de logs.
     public void PR048() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -1141,7 +1146,8 @@ class GestorApplicationTests {
     }
 
     @Test
-    @Order(50)
+    @Order(49)
+    // TODO falla aserto
     public void PR049() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r"); // LOGIN-EX
@@ -1184,7 +1190,8 @@ class GestorApplicationTests {
     }
 
     @Test
-    @Order(51)
+    @Order(50)
+    // TODO falla aserto
     public void PR050() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "admin");         // LOGIN_ERR
@@ -1209,7 +1216,7 @@ class GestorApplicationTests {
     }
 
     @Test
-    @Order(60)
+    @Order(51)
     public void PR057() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
@@ -1254,7 +1261,7 @@ class GestorApplicationTests {
 
 
     @Test
-    @Order(61)
+    @Order(52)
     public void PR058() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
