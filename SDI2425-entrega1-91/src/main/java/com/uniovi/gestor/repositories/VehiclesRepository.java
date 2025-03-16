@@ -25,6 +25,6 @@ public interface VehiclesRepository extends CrudRepository<Vehicle, Long> {
 
 
     @Query("SELECT v FROM Vehicle v WHERE v.status = 'AVAILABLE'")
-    List<Vehicle> findAvailableVehicles(Pageable pageable);
+    List<Vehicle> findAvailableVehicles();
 
 }

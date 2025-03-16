@@ -1,5 +1,6 @@
 package com.uniovi.gestor.controllers;
 
+import com.uniovi.gestor.VehicleStatusConfig;
 import com.uniovi.gestor.entities.Journey;
 
 
@@ -88,7 +89,7 @@ public class JourneysController {
         if (existingVehicle == null) {
             return "redirect:/journey/list";
         }
-
+        existingVehicle.setStatus(VehicleStatusConfig.VehicleStatus.AVAILABLE);
         existingVehicle.setMileage(journey.getOdometerEnd());
         existingJourney.setOdometerEnd(journey.getOdometerEnd());
         existingJourney.setObservations(journey.getObservations());
@@ -123,6 +124,7 @@ public class JourneysController {
         if (vehicle == null) {
             result.rejectValue("vehicle.numberPlate", "Error.invalidPlate", "Matrícula no válida.");
         } else {
+            vehicle.setStatus(VehicleStatusConfig.VehicleStatus.UNAVAILABLE);
             journey.setVehicle(vehicle);
         }
 
