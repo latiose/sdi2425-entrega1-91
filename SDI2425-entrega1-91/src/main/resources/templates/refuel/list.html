@@ -49,7 +49,7 @@
         <td th:text="${refuel.station}"></td>
         <td th:text="${refuel.price}"></td>
         <td th:text="${refuel.amount}"></td>
-        <td th:text="${refuel.totalPrice}"></td>
+        <td th:text="${#numbers.formatDecimal(refuel.totalPrice, 1, 2)}"></td>
       </tr>
       </tbody>
     </table>
