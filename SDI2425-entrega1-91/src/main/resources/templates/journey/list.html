@@ -10,7 +10,7 @@
     <button type="button" id="updateButton" class="btn btn-primary" th:text="#{update.message}"></button>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var numberPage = /*[[${param.page}]]*/ null;
+        let numberPage = /*[[${param.page}]]*/ null;
         $(document).ready(function() {
             $("#updateButton").click(function() {
                 let urlUpdate = '/journey/list/update';

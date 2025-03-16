@@ -1,7 +1,6 @@
 package com.uniovi.gestor.controllers;
 
 import com.uniovi.gestor.entities.Refuel;
-import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.services.LogService;
 import com.uniovi.gestor.services.RefuelsService;
 import com.uniovi.gestor.services.VehiclesService;
@@ -43,17 +42,19 @@ public class RefuelsController {
         addRefuelFormValidator.validate(refuel, result);
         refuel.setDate(LocalDateTime.now());
         if(result.hasErrors()){
-            logService.log("PET", "PET [POST] /refuel/add | INVALID | parameters: REFUEL = " + refuel.toString());
+            logService.log("PET", "PET [POST] /refuel/add | INVALID | parameters: REFUEL = " + refuel);
             return "refuel/add";
         }
-        logService.log("PET", "PET [POST] /refuel/add | parameters: REFUEL = " + refuel.toString());
+        logService.log("PET", "PET [POST] /refuel/add | parameters: REFUEL = " + refuel);
         refuelsService.addRefuel(refuel);
         return "redirect:/refuel/list";
     }
 
     @RequestMapping("/refuel/list")
     public String getVehicleList(@RequestParam(value = "plateNumber", required = false) String plateNumber, Model model, Pageable pageable){
-        logService.log("PET", "PET [GET] /refuel/list | parameters: PAGE = " + pageable.getPageNumber());
+        logService.log("PET", "PET [GET] /refuel/list | parameters: PAGE = "
+                + pageable.getPageNumber()
+                + ", PLATE = " + plateNumber);
         if (plateNumber == null) {
             plateNumber = vehiclesService.findAllPlates().get(0);
         }

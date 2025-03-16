@@ -18,8 +18,7 @@
   </div>
   <script th:inline="javascript">
     function loadRefuelsForPlate(numberPlate, page = 0) {
-      const url = `/refuel/list?plateNumber=${numberPlate}&page=${page}`;
-      window.location.href = url;
+      window.location.href = `/refuel/list?plateNumber=${numberPlate}&page=${page}`;
     }
 
     document.getElementById('plateNumber').addEventListener('change', function() {

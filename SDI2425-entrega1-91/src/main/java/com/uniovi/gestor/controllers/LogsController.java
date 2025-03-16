@@ -1,10 +1,8 @@
 package com.uniovi.gestor.controllers;
 
 import com.uniovi.gestor.entities.Log;
-import com.uniovi.gestor.repositories.LogRepository;
 import com.uniovi.gestor.services.LogService;
 import com.uniovi.gestor.services.LogTypesService;
-import com.uniovi.gestor.services.VehiclesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,23 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class LogsController {
     private final LogService logService;
-    private final LogTypesService logsTypeService;
     private final LogTypesService logTypesService;
-    private final LogRepository logRepository;
-    private final VehiclesService vehiclesService;
 
-    public LogsController(LogService logService, LogTypesService logsTypeService, LogTypesService logTypesService, LogRepository logRepository, VehiclesService vehiclesService) {
+    public LogsController(LogService logService, LogTypesService logTypesService) {
         this.logService = logService;
-        this.logsTypeService = logsTypeService;
         this.logTypesService = logTypesService;
-        this.logRepository = logRepository;
-        this.vehiclesService = vehiclesService;
     }
 
     @RequestMapping("/logs/list")

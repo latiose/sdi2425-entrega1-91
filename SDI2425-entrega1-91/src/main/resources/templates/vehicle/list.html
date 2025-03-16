@@ -12,7 +12,7 @@ xmlns:sec="http://www.springframework.org/schema/security">
     <button type="button" id="deleteButton" class="btn btn-primary" sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{delete.message}"></button>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var numberPage = /*[[${param.page}]]*/ null;
+        let numberPage = /*[[${param.page}]]*/ null;
         $(document).ready(function() {
             $("#updateButton").click(function() {
                 let urlUpdate = '/vehicle/list/update';

@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.uniovi.gestor.entities.*;
@@ -27,17 +26,15 @@ import java.security.Principal;
 @Controller
 public class EmployeesController {
     private final EmployeesService employeesService;
-    private final SecurityService securityService;
     private final LogService logService;
     private final AddEmployeeFormValidator addEmployeeFormValidator;
     private final EditEmployeeFormValidator editEmployeeFormValidator;
     private final RolesService rolesService;
     private final ChangePasswordValidator changePasswordValidator;
 
-    public EmployeesController(EmployeesService employeesService, SecurityService securityService, LogService logService, AddEmployeeFormValidator
+    public EmployeesController(EmployeesService employeesService, LogService logService, AddEmployeeFormValidator
             addEmployeeFormValidator, EditEmployeeFormValidator editEmployeeFormValidator , RolesService rolesService, ChangePasswordValidator changePasswordValidator) {
         this.employeesService = employeesService;
-        this.securityService = securityService;
         this.logService = logService;
         this.addEmployeeFormValidator = addEmployeeFormValidator;
         this.rolesService = rolesService;
@@ -77,7 +74,7 @@ public class EmployeesController {
             );
             String logMessage2 = String.format(
                     "ALTA [POST] /employee/add | INVALID | parameters: EMPLOYEE = %s",
-                    employee.toString()
+                    employee
             );
             logService.log("PET", logMessage);
             logService.log("ALTA", logMessage2);

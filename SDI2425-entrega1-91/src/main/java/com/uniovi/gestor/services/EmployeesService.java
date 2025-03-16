@@ -28,8 +28,7 @@ public class EmployeesService {
     }
 
     public Page<Employee> getEmployees(Pageable pageable) {
-        Page<Employee> employees = employeesRepository.findAll(pageable);
-        return employees;
+        return employeesRepository.findAll(pageable);
     }
     public Employee getEmployee(Long id) {
         return employeesRepository.findById(id).get();

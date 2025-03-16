@@ -3,14 +3,11 @@ package com.uniovi.gestor.services;
 import com.uniovi.gestor.entities.Journey;
 import com.uniovi.gestor.entities.Refuel;
 import com.uniovi.gestor.repositories.RefuelsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class RefuelsService {

@@ -1,7 +1,6 @@
 package com.uniovi.gestor.util;
 
 
-import java.time.Duration;
 import java.util.List;
 
 
@@ -23,7 +22,7 @@ public class SeleniumUtils {
 	static public void textIsPresentOnPage(WebDriver driver, String text)
 	{
 		List<WebElement> list = driver.findElements(By.xpath("//*[contains(text(),'" + text + "')]"));
-		Assertions.assertTrue(list.size() > 0, "Texto " + text + " no localizado!");
+        Assertions.assertFalse(list.isEmpty(), "Texto " + text + " no localizado!");
 	}
 
 	/**

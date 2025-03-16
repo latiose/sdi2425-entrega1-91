@@ -1,6 +1,5 @@
 package com.uniovi.gestor.repositories;
 
-import com.uniovi.gestor.entities.Employee;
 import com.uniovi.gestor.entities.Journey;
 import com.uniovi.gestor.entities.Vehicle;
 import org.springframework.data.domain.Page;

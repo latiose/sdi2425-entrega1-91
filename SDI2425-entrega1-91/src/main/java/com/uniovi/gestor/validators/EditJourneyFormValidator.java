@@ -4,8 +4,6 @@ import com.uniovi.gestor.entities.Journey;
 import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.services.JourneysService;
 import com.uniovi.gestor.services.VehiclesService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
