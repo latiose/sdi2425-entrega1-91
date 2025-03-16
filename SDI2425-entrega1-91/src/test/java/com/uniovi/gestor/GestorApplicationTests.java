@@ -857,6 +857,28 @@ class GestorApplicationTests {
     }
 
     @Test
+    public void PR037() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
+
+        PO_PrivateView.goThroughNav(driver, "text","Gestión de trayectos","text","Historial de trayectos de un vehículo");
+
+        WebElement element= driver.findElement(By.id("plateNumber"));
+        Select select = new Select(element);
+        select.selectByVisibleText("5678DFG");
+
+        List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"journeysTable\"]/tbody/tr"));
+        assertEquals( 1, employeeRows.size());
+
+
+        element= driver.findElement(By.id("plateNumber"));
+        select = new Select(element);
+        select.selectByVisibleText("3141MNP");
+        employeeRows = driver.findElements(By.xpath("//*[@id=\"journeysTable\"]/tbody/tr"));
+        assertEquals( 1, employeeRows.size());
+    }
+
+    @Test
     @Order(38)
     // Mostrar listado de repostajes
     public void PR038() {
