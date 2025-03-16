@@ -137,8 +137,14 @@ public class EmployeesController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model, @RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
+    public String login(Model model, @RequestParam(value = "logout", required = false) String logout, HttpServletRequest request,
+                        Authentication authentication) {
         logService.log("PET", "PET [GET] /login");
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            return "redirect:/home";
+        }
+
         if (logout != null) {
             Object logoutAttribute = request.getSession().getAttribute("SPRING_SECURITY_LOGOUT");
 
@@ -167,8 +173,14 @@ public class EmployeesController {
     }
 
     @RequestMapping(value = "/login/error", method = RequestMethod.GET)
-    public String loginError(Model model) {
+    public String loginError(Model model, Authentication authentication) {
         logService.log("PET", "PET [GET] /login/error");
+
+        if (authentication != null && authentication.isAuthenticated() &&
+                !authentication.getName().equals("anonymousUser")) {
+            return "redirect:/home";
+        }
+
         logService.log("LOGIN-ERR", "LOGIN-ERR | DNI: "
                 + SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("error", true);
