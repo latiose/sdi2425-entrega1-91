@@ -1,5 +1,6 @@
 package com.uniovi.gestor.controllers;
 
+import com.uniovi.gestor.entities.Log;
 import com.uniovi.gestor.repositories.LogRepository;
 import com.uniovi.gestor.services.LogService;
 import com.uniovi.gestor.services.LogTypesService;
@@ -43,18 +44,19 @@ public class LogsController {
     }
 
     @RequestMapping(value="/logs/delete", method = RequestMethod.POST)
-    public String delete(@RequestBody List<Long> logIds){
-        List<Long> deletedLogIds = new ArrayList<>();
-        for(Long logId : logIds){
-            deletedLogIds.add(logService.findById(logId).getId());
+    public String delete(@RequestBody String type){
+        List<Log> logs = logService.findByType(type.split("=")[1]);
+
+        if(!logs.isEmpty()){
+            logService.log("PET", "PET [POST] /log/delete " +
+                    "| parameters: LOG TYPES (log types deleted) = " + type);
+
+            for(Log log : logs){
+                logService.delete(log.getId());
+            }
         }
 
-        logService.log("PET", "PET [POST] /log/delete " +
-                "| parameters: LOG_IDS (log ids deleted) = " + deletedLogIds.toString());
 
-        if(!deletedLogIds.isEmpty()){
-            deletedLogIds.forEach(logService::delete);
-        }
 
         return "logs/list";
     }

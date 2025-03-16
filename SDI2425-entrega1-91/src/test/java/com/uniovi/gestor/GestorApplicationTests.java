@@ -935,6 +935,74 @@ class GestorApplicationTests {
     }
 
     @Test
+    @Order(50)
+    public void PR049() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r"); // LOGIN-EX
+        PO_LoginView.logOut(driver);                                                // LOGOUT
+        PO_LoginView.fillForm(driver, "12345678Z", "admin");         // LOGIN_ERR
+        PO_LoginView.fillForm(driver, "12345678Z", "admin");         // LOGIN_ERR
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r"); // LOGING-EX
+        PO_LoginView.logOut(driver);                                                // LOUGOUT
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r"); // LOGING-EX
+
+        driver.get("http://localhost:8090/logs/list");
+
+        WebElement typeDrodown = driver.findElement(By.id("logTypeFilter"));
+        Select select = new Select(typeDrodown);
+
+
+        select.selectByVisibleText("PET");
+        List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"logsTable\"]/tbody/tr"));
+        assertFalse(employeeRows.isEmpty());
+
+        typeDrodown = driver.findElement(By.id("logTypeFilter"));
+        select = new Select(typeDrodown);
+        select.selectByVisibleText("LOGIN-EX");
+        employeeRows = driver.findElements(By.xpath("//*[@id=\"logsTable\"]/tbody/tr"));
+        assertEquals(3, employeeRows.size());
+
+
+        typeDrodown = driver.findElement(By.id("logTypeFilter"));
+        select = new Select(typeDrodown);
+        select.selectByVisibleText("LOGIN-ERR");
+        employeeRows = driver.findElements(By.xpath("//*[@id=\"logsTable\"]/tbody/tr"));
+        assertEquals(2, employeeRows.size());
+
+
+        typeDrodown = driver.findElement(By.id("logTypeFilter"));
+        select = new Select(typeDrodown);
+        select.selectByVisibleText("LOGOUT");
+        employeeRows = driver.findElements(By.xpath("//*[@id=\"logsTable\"]/tbody/tr"));
+        assertEquals(2, employeeRows.size());
+    }
+
+    @Test
+    @Order(51)
+    public void PR050() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "admin");         // LOGIN_ERR
+        PO_LoginView.fillForm(driver, "12345678Z", "admin");         // LOGIN_ERR
+
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r"); // LOGIN-EX
+
+        driver.get("http://localhost:8090/logs/list");
+
+        WebElement typeDrodown = driver.findElement(By.id("logTypeFilter"));
+        Select select = new Select(typeDrodown);
+
+        select.selectByVisibleText("LOGIN-ERR");
+        List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"logsTable\"]/tbody/tr"));
+        assertEquals(2, employeeRows.size());
+
+        List<WebElement> deleteButton = driver.findElements(By.xpath("//*[@id=\"deleteLogsBtn\"]"));
+        deleteButton.get(0).click();
+        employeeRows = driver.findElements(By.xpath("//*[@id=\"logsTable\"]/tbody/tr"));
+        assertTrue(employeeRows.isEmpty());
+
+    }
+
+    @Test
     @Order(60)
     public void PR057() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
