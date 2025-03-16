@@ -1,11 +1,7 @@
 package com.uniovi.gestor;
 
-import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.pageobjects.*;
-import com.uniovi.gestor.repositories.VehiclesRepository;
 import com.uniovi.gestor.services.InsertSampleDataService;
-import com.uniovi.gestor.services.VehiclesService;
-import org.hibernate.sql.Insert;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -16,7 +12,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -883,7 +878,7 @@ class GestorApplicationTests {
                 repsolCount++;
             }
         }
-        Assertions.assertEquals(repsolCount, 2,"Los repostajes asignados no figuran en la lista.");
+        Assertions.assertEquals(2, repsolCount,"Los repostajes asignados no figuran en la lista.");
         PO_LoginView.logOut(driver);
     }
 

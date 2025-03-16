@@ -4,7 +4,6 @@ import com.uniovi.gestor.entities.Log;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface LogRepository extends CrudRepository<Log, Long> {

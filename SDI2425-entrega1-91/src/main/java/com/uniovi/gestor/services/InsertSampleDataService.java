@@ -4,7 +4,6 @@ import javax.annotation.PostConstruct;
 import com.uniovi.gestor.VehicleStatusConfig;
 import com.uniovi.gestor.entities.Employee;
 import com.uniovi.gestor.entities.Journey;
-import com.uniovi.gestor.entities.Refuel;
 import com.uniovi.gestor.entities.Vehicle;
 import org.springframework.stereotype.Service;
 
@@ -16,17 +15,15 @@ public class InsertSampleDataService {
     private final RolesService rolesService;
     private final VehiclesService vehiclesService;
     private final JourneysService journeysService;
-    private final RefuelsService refuelsService;
 
-    private int numCars; // esto lo utilizo en los tests para saber exactamente cuántos coches hay en el sistema
+    private int numCars;
     private int numEmployees;
 
-    public InsertSampleDataService(EmployeesService employeesService, RolesService rolesService, VehiclesService vehiclesService, JourneysService journeysService, RefuelsService refuelsService) {
+    public InsertSampleDataService(EmployeesService employeesService, RolesService rolesService, VehiclesService vehiclesService, JourneysService journeysService) {
         this.employeesService = employeesService;
         this.rolesService = rolesService;
         this.vehiclesService = vehiclesService;
         this.journeysService = journeysService;
-        this.refuelsService = refuelsService;
     }
     @PostConstruct
     public void init() {
@@ -121,7 +118,7 @@ public class InsertSampleDataService {
         journey1.setEndDate(LocalDateTime.now());
         journey1.setDuration(journey1.getDuration());
         journeysService.addJourney(journey1);
-        //System.out.println(journey1.toString());
+
         Journey journey2 = new Journey(vehicle2);
         journey2.setEmployee(employee);
         journey2.setOdometerStart(78345.2);
@@ -144,7 +141,6 @@ public class InsertSampleDataService {
         journey4.setStartDate(LocalDateTime.now().minusHours(1));
         journeysService.addJourney(journey4);
 
-        // Este lo uso para probar los refuels
         employee2 = employeesService.getEmployeeByDni("10000010R");
         Vehicle vehicleEmp2 = vehiclesService.getVehicleByNumberPlate("B3545CA");
         journey4 = new Journey(vehicleEmp2);

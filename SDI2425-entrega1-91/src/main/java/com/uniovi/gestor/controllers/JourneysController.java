@@ -1,10 +1,8 @@
 package com.uniovi.gestor.controllers;
 
-import com.uniovi.gestor.entities.Employee;
 import com.uniovi.gestor.entities.Journey;
 
 
-import com.uniovi.gestor.entities.Refuel;
 import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.services.EmployeesService;
 import com.uniovi.gestor.services.JourneysService;
@@ -20,13 +18,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -173,19 +168,28 @@ public class JourneysController {
     }
 
     @RequestMapping("/journey/list/vehicle")
-    public String getVehicleList(Model model, Pageable pageable){
+    public String getVehicleList(@RequestParam(value = "plateNumber", required = false) String plateNumber,
+                                 Model model, Pageable pageable) {
         logService.log("PET", "PET [GET] /journey/list/vehicle | parameters: PAGE = "
-                + pageable.getPageNumber());
-        String numberPlate = vehiclesService.findAllPlates().get(0);
-        Page<Journey> journeys = journeysService.findByVehiclePageable(journeysService.findVehicleByNumberPlate(numberPlate), pageable);
-        model.addAttribute("plateList",vehiclesService.findAllPlates());
-        model.addAttribute("journeysList",journeys.getContent());
+                + pageable.getPageNumber() + ", PLATE = " + plateNumber);
+
+        if (plateNumber == null || plateNumber.isEmpty()) {
+            List<String> plates = vehiclesService.findAllPlates();
+            if (!plates.isEmpty()) {
+                plateNumber = plates.get(0);
+            }
+        }
+        Page<Journey> journeys = journeysService.findByVehiclePageable(
+                journeysService.findVehicleByNumberPlate(plateNumber), pageable);
+        model.addAttribute("plateList", vehiclesService.findAllPlates());
+        model.addAttribute("journeysList", journeys.getContent());
         model.addAttribute("page", journeys);
+        model.addAttribute("selectedPlate", plateNumber);
         return "vehicle/vehicleJourney";
     }
 
     @RequestMapping("/journey/list/vehicle/{plateNumber}")
-    public String getVehicleList(@PathVariable("plateNumber") String plateNumber, Model model, Pageable pageable){
+    public String getSingleVehicleList(@PathVariable("plateNumber") String plateNumber, Model model, Pageable pageable){
         logService.log("PET", "PET [GET] /journey/list/vehicle/"
                 + plateNumber + " | parameters: PLATE = "
                 + plateNumber

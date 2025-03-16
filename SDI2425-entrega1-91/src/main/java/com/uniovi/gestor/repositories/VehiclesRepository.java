@@ -1,8 +1,6 @@
 package com.uniovi.gestor.repositories;
 
 import com.uniovi.gestor.VehicleStatusConfig;
-import com.uniovi.gestor.entities.Employee;
-import com.uniovi.gestor.entities.Journey;
 import com.uniovi.gestor.entities.Vehicle;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

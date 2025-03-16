@@ -2,16 +2,11 @@ package com.uniovi.gestor.validators;
 
 import com.uniovi.gestor.entities.Journey;
 import com.uniovi.gestor.entities.Refuel;
-import com.uniovi.gestor.services.JourneysService;
 import com.uniovi.gestor.services.RefuelsService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import java.util.List;
 
 @Component
 public class AddRefuelFormValidator implements Validator {

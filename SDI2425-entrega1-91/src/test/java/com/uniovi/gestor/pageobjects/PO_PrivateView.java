@@ -1,7 +1,6 @@
 package com.uniovi.gestor.pageobjects;
 
 import com.uniovi.gestor.util.SeleniumUtils;
-import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

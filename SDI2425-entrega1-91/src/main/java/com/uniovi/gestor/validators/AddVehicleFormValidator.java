@@ -1,10 +1,7 @@
 package com.uniovi.gestor.validators;
 
 import com.uniovi.gestor.entities.Vehicle;
-import com.uniovi.gestor.repositories.VehiclesRepository;
 import com.uniovi.gestor.services.VehiclesService;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.filter.ErrorPageSecurityFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -15,7 +12,7 @@ import java.util.regex.Pattern;
 @Component
 public class AddVehicleFormValidator implements Validator {
 
-    private VehiclesService vehiclesService;
+    private final VehiclesService vehiclesService;
 
     public AddVehicleFormValidator(VehiclesService vehiclesService) {
         this.vehiclesService = vehiclesService;

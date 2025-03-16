@@ -8,9 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import java.awt.print.Pageable;
-import java.util.List;
 import java.util.regex.Pattern;
 
 @Component

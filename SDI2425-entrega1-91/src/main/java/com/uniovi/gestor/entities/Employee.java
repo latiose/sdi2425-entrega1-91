@@ -14,7 +14,7 @@ public class Employee {
     private String name;
     private String lastName;
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private Set<Journey> journeys = new HashSet<Journey>(); ;
+    private Set<Journey> journeys = new HashSet<Journey>();
     private String password;
 
     @Transient
@@ -72,6 +72,10 @@ public class Employee {
 
     public String getConfirmNewPassword() { return confirmNewPassword; }
     public void setConfirmNewPassword(String confirmNewPassword) { this.confirmNewPassword = confirmNewPassword; }
+
+    public Set<Journey> getJourneys() {
+        return journeys;
+    }
 
     @Override
     public String toString() {

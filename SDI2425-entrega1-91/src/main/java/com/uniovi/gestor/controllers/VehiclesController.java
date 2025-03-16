@@ -53,13 +53,13 @@ public class VehiclesController {
         model.addAttribute("vehicle", vehicle);
         if(result.hasErrors()){
             logService.log("PET", "PET [POST] | INVALID | /vehicle/add | parameters: VEHICLE = "
-                    + vehicle.toString());
+                    + vehicle);
             model.addAttribute("fuelTypesList", fuelTypesService.getFuelTypes());
             return "vehicle/add";
         }
         vehicle.setStatus(VehicleStatusConfig.VehicleStatus.AVAILABLE);
         logService.log("PET", "PET [POST] /vehicle/add | parameters: VEHICLE = "
-                + vehicle.toString());
+                + vehicle);
         vehiclesService.addVehicle(vehicle);
         return "redirect:/vehicle/list";
     }
@@ -107,7 +107,7 @@ public class VehiclesController {
                 });
         logService.log("PET", "PET [POST] /vehicle/list/delete " +
                 "| parameters: VEHICLE_IDS (number plates deleted) = "
-                + deletedPlates.toString());
+                + deletedPlates);
         if (!vehicleIds.isEmpty()) {
             vehicleIds.forEach(vehiclesService::deleteVehicle);
         }
