@@ -20,7 +20,7 @@
             <label class="control-label col-sm-2" for="endDate" th:text="#{journey.edit.endDate}">:</label>
             <div class="col-sm-10">
                 <input type="datetime-local" class="form-control" id="endDate" name="endDate"
-                         th:value="${#temporals.format(journey.endDate, 'yyyy-MM-dd''T''HH:mm')}" required="true"/>
+                       th:value="${#temporals.format(journey.endDate, 'yyyy-MM-dd''T''HH:mm')}" required="true"/>
                 <span class="text-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
             </div>
         </div>
@@ -28,19 +28,21 @@
             <label class="control-label col-sm-2" for="odometerStart" th:text="#{journey.edit.odometerStart}">:</label>
             <div class="col-sm-10">
                 <input type="number" class="form-control" id="odometerStart" name="odometerStart"
-                        required="true"/>
+                       value="0" required="true"/>
                 <span class="text-danger" th:if="${#fields.hasErrors('odometerStart')}" th:errors="*{odometerStart}"></span>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="odometerStart" th:text="#{journey.edit.odometerEnd}">:</label>
+            <label class="control-label col-sm-2" for="odometerEnd" th:text="#{journey.edit.odometerEnd}">:</label>
             <div class="col-sm-10">
                 <input type="number" class="form-control" id="odometerEnd" name="odometerEnd"
-                        required="true"/>
+                       value="0" required="true"/>
                 <span class="text-danger" th:if="${#fields.hasErrors('odometerEnd')}" th:errors="*{odometerEnd}"></span>
             </div>
         </div>
-        <input type="hidden" th:value="${journey.id}" name="journey" />
+        <input type="hidden" th:value="${journey.id}" name="id" />
+        <input type="hidden" th:if="${journey.vehicle != null}" th:value="${journey.vehicle.numberPlate}" name="vehicle.numberPlate" />
+        <input type="hidden" th:if="${journey.employee != null}" th:value="${journey.employee.dni}" name="employee.dni" />
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-primary" th:text="#{employees.edit.submit}"></button>

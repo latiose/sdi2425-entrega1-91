@@ -218,21 +218,26 @@ public class JourneysController {
     }
 
     @RequestMapping(value = "/journey/edit/{id}", method = RequestMethod.POST)
-    public String setEdit(@Validated Journey journey, BindingResult result, @PathVariable Long id) {
+    public String setEdit(Journey journey, BindingResult result, @PathVariable Long id, Model model) {
         logService.log("PET", "PET [POST] /journey/edit/" + id + " | parameters: ID = " + id + ", JOURNEY = " + journey.toString());
+        Journey originalJourney = journeysService.getJourney(id);
+        journey.setVehicle(originalJourney.getVehicle());
+        journey.setEmployee(originalJourney.getEmployee());
+        journey.setId(id);
         editJourneyFormValidator.validate(journey, result);
+
         if (result.hasErrors()) {
             return "journey/edit";
         }
 
-        Journey originalJourney = journeysService.getJourney(id);
-        originalJourney.setOdometerEnd(journey.getOdometerEnd());
-        originalJourney.setOdometerStart(journey.getOdometerStart());
-        originalJourney.setEndDate(journey.getEndDate());
-        originalJourney.setStartDate(journey.getStartDate());
-        journeysService.addJourney(originalJourney);
-        return "redirect:/journey/list/vehicle/" + originalJourney.getVehicle().getNumberPlate();
+        Journey updatedJourney = journeysService.getJourney(id);
+        updatedJourney.setOdometerEnd(journey.getOdometerEnd());
+        updatedJourney.setOdometerStart(journey.getOdometerStart());
+        updatedJourney.setEndDate(journey.getEndDate());
+        updatedJourney.setStartDate(journey.getStartDate());
+        journeysService.addJourney(updatedJourney);
 
+        return "redirect:/journey/list/vehicle/" + updatedJourney.getVehicle().getNumberPlate();
     }
 
 

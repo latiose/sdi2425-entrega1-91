@@ -51,8 +51,10 @@ public class EditJourneyFormValidator implements Validator {
             }
         }
 
-        if (journey.getOdometerEnd() < 0 || journey.getOdometerStart() < 0)
+        if (journey.getOdometerEnd() < 0 )
             errors.rejectValue("odometerEnd", "Error.odometer.negativo");
+        if (journey.getOdometerStart() < 0)
+            errors.rejectValue("odometerStart", "Error.odometer.negativo");
         if (journey.getOdometerEnd() < journey.getOdometerStart())
             errors.rejectValue("odometerEnd", "Error.odometer.menor");
         if(journey.getEndDate().isBefore(journey.getStartDate()))

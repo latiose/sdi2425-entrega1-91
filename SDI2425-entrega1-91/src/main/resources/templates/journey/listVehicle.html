@@ -20,7 +20,7 @@
             </thead>
             <tbody>
             <tr th:each="journey : ${journeysList}">
-                <td th:text="${journey.startDate}"></td>
+                <td th:text="${#temporals.format(journey.startDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                 <td th:text="${journey.employee.name}"></td>
                 <td th:text="${journey.duration}"></td>
                 <td th:text="${journey.odometerEnd != 0 ? journey.odometerEnd - journey.odometerStart : 0}"></td>
