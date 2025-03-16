@@ -158,7 +158,7 @@ public class InsertSampleDataService {
             Employee emp = employeesService.getEmployeeByDni(dni);
             if (emp != null) {
                 for (int j = 0; j < 10; j++) {
-                    Vehicle veh = vehiclesService.getAvailableVehicle();
+                    Vehicle veh = vehiclesService.getAvailableVehicle(j);
                     if (veh != null) {
                         Journey journey = new Journey(veh);
                         journey.setEmployee(emp);

@@ -842,13 +842,25 @@ class GestorApplicationTests {
         select.selectByVisibleText("5678DFG");
 
         List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"journeysTable\"]/tbody/tr"));
-        assertEquals( 1, employeeRows.size());
+        int numrows = employeeRows.size();
+        while(PO_PrivateView.goToNextPage(driver)){
+            employeeRows = driver.findElements(By.xpath("//*[@id=\"journeysTable\"]/tbody/tr"));
+            numrows += employeeRows.size();
+        }
+
+        assertEquals( 16, numrows);
 
         element= driver.findElement(By.id("plateNumber"));
         select = new Select(element);
         select.selectByVisibleText("3141MNP");
+
         employeeRows = driver.findElements(By.xpath("//*[@id=\"journeysTable\"]/tbody/tr"));
-        assertEquals( 1, employeeRows.size());
+        numrows = employeeRows.size();
+        while(PO_PrivateView.goToNextPage(driver)){
+            employeeRows = driver.findElements(By.xpath("//*[@id=\"journeysTable\"]/tbody/tr"));
+            numrows += employeeRows.size();
+        }
+        assertEquals( 16, numrows);
     }
 
     @Test
@@ -1216,7 +1228,7 @@ class GestorApplicationTests {
 
         WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
         submitButton.click();
-
+        PO_ListView.goToLastPage(driver);
         List<WebElement> km = driver.findElements(By.xpath("//*[@id=\"journeysTable\"]/tbody/tr/td[4]"));
         assertFalse(km.isEmpty());
         assertEquals("1.0", km.get(0).getText());

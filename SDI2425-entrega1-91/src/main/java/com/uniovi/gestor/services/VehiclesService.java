@@ -73,9 +73,9 @@ public class VehiclesService {
     public Page<Vehicle> findVehiclesByStatus(VehicleStatusConfig.VehicleStatus status, Pageable pageable) { return vehiclesRepository.findByStatus(status, pageable); }
 
 
-    public Vehicle getAvailableVehicle() {
-        List<Vehicle> vehicles = vehiclesRepository.findAvailableVehicles(PageRequest.of(0, 1));
-        return vehicles.isEmpty() ? null : vehicles.get(0);
+    public Vehicle getAvailableVehicle(int i) {
+        List<Vehicle> vehicles = vehiclesRepository.findAvailableVehicles();
+        return vehicles.isEmpty() ? null : vehicles.get(i);
     }
 
 }
