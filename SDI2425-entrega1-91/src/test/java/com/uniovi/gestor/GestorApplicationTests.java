@@ -364,7 +364,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Agregar vehículo");
 
-        PO_PrivateView.fillFormAddVehicle(driver, "1234BGD", "ASDFGHJKLQWERTYUI", "Toyota", "Corolla", "Diésel");
+        PO_PrivateView.fillFormAddVehicle(driver, "1234BGD", "0FAFP08192R123456", "Toyota", "Corolla", "Diésel");
 
         List<WebElement> result = PO_PrivateView.checkElementByKey(driver, "Error.vin.duplicate",
                 PO_Properties.getSPANISH());
@@ -377,13 +377,13 @@ class GestorApplicationTests {
     @Test
     @Order(21)
     // Listado de vehículos de la empresa
-    public void PR020() {
+    public void PR020() { // CAMBIAR ORDER
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Ver vehículos");
 
-        int numCars = insertSampleDataService.getNumCars() + 1; // el que se añade en uno de los tests anteriores
+        int numCars = insertSampleDataService.getNumCars() + 1;
 
         int totalCount = 0;
         boolean next = true;
@@ -545,7 +545,7 @@ class GestorApplicationTests {
         List<WebElement> rows = driver.findElements(By.xpath("//table[@id='refuelsTable']/tbody/tr"));
         boolean isPresent = false;
         for (WebElement row : rows) {
-            if (row.getText().contains("ELECTRICO")) {
+            if (row.getText().contains("Manolo")) {
                 isPresent = true;
                 break;
             }
@@ -758,8 +758,7 @@ class GestorApplicationTests {
 
     @Test
     @Order(39)
-    // Registrar un repostaje realizado en el vehículo que el usuario tiene asignado
-    // Repostaje válido
+    // Mostrar listado de repostajes
     public void PR038() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "10000010R","Us3r@10-PASSW");
@@ -778,8 +777,6 @@ class GestorApplicationTests {
         for (WebElement row : rows) {
             if (row.getText().contains("Repsol")) {
                 repsolCount++;
-                if(repsolCount == 2)
-                    break;
             }
         }
         Assertions.assertEquals(repsolCount, 2,"Los repostajes asignados no figuran en la lista.");
