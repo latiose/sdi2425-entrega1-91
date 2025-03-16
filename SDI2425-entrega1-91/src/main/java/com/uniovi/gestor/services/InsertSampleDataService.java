@@ -18,7 +18,8 @@ public class InsertSampleDataService {
     private final JourneysService journeysService;
     private final RefuelsService refuelsService;
 
-    private int numCars;
+    private int numCars; // esto lo utilizo en los tests para saber exactamente cuántos coches hay en el sistema
+    private int numEmployees;
 
     public InsertSampleDataService(EmployeesService employeesService, RolesService rolesService, VehiclesService vehiclesService, JourneysService journeysService, RefuelsService refuelsService) {
         this.employeesService = employeesService;
@@ -58,6 +59,7 @@ public class InsertSampleDataService {
             employee.setPassword(password);
             employee.setRole(rolesService.getRoles()[0]);
             employeesService.addEmployee(employee);
+            numEmployees++;
         }
 
         addVehicles();
@@ -101,6 +103,7 @@ public class InsertSampleDataService {
     public int getNumCars() {
         return numCars;
     }
+    public int getNumEmployees(){ return numEmployees; }
 
 
     private void createTestJourneys() {

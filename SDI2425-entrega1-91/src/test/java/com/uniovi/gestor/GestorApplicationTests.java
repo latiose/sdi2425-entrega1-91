@@ -1,5 +1,6 @@
 package com.uniovi.gestor;
 
+import com.uniovi.gestor.entities.Vehicle;
 import com.uniovi.gestor.pageobjects.*;
 import com.uniovi.gestor.repositories.VehiclesRepository;
 import com.uniovi.gestor.services.InsertSampleDataService;
@@ -15,6 +16,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -32,6 +34,7 @@ class GestorApplicationTests {
 
     @Autowired
     private InsertSampleDataService insertSampleDataService;
+
 
     public static WebDriver getDriver(String PathFirefox, String Geckodriver) {
         System.setProperty("webdriver.firefox.bin", PathFirefox);
@@ -375,9 +378,106 @@ class GestorApplicationTests {
     }
 
     @Test
+    public void PR017() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "admin");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Ver empleados");
+
+        int numEmployees = insertSampleDataService.getNumEmployees() + 1;
+
+        int totalCount = 0;
+        boolean next = true;
+        while (next) {
+            List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"employeeTable\"]/tbody/tr"));
+            totalCount += employeeRows.size();
+            next = PO_PrivateView.goToNextPage(driver);
+        }
+
+        Assertions.assertEquals(numEmployees, totalCount, "El número de empleados no coincide");
+    }
+
+    @Test
+    public void PR018() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "admin");
+
+        List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"employeeTable\"]/tbody/tr"));
+
+        WebElement secondEditLink = driver.findElement(By.xpath("(//table[@id='employeeTable']//a[contains(text(),'modificar')])[3]"));
+        secondEditLink.click();
+
+        String dni = "58435079Z";
+        String name = "Marcos";
+        String lastName = "Caraduje Martínez";
+        String role = "ROLE_ADMIN";
+
+        PO_PrivateView.filFormEditEmployee(driver, dni, name, lastName, role);
+
+        WebElement dniElement = driver.findElement(By.id("dni"));
+        Assertions.assertEquals(dni, dniElement.getText());
+
+        WebElement nameElement = driver.findElement(By.id("name"));
+        Assertions.assertEquals(name, nameElement.getText());
+
+        WebElement lastNameElement = driver.findElement(By.id("lastName"));
+        Assertions.assertEquals(lastName, lastNameElement.getText());
+
+        WebElement roleElement = driver.findElement(By.id("role"));
+        Assertions.assertEquals(role, roleElement.getText());
+
+        PO_LoginView.logOut(driver);
+
+
+        PO_LoginView.fillForm(driver, dni, "Us3r@2-PASSW");
+
+        String url = driver.getCurrentUrl();
+
+        Assertions.assertTrue(url.contains("/employee/list"));
+
+
+    }
+
+    @Test
+    public void PR019() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "12345678Z", "admin");
+
+        List<WebElement> employeeRows = driver.findElements(By.xpath("//*[@id=\"employeeTable\"]/tbody/tr"));
+
+        WebElement secondEditLink = driver.findElement(By.xpath("(//table[@id='employeeTable']//a[contains(text(),'modificar')])[3]"));
+        secondEditLink.click();
+
+        String dni = "12345678Z";
+        String name = "";
+        String lastName = "";
+        String role = "ROLE_ADMIN";
+
+        PO_PrivateView.filFormEditEmployee(driver, dni, name, lastName, role);
+
+        String checkTextDni = PO_View.getP().getString("Error.dni.duplicate", PO_Properties.getSPANISH());
+        String checkTextName = PO_View.getP().getString("Error.empty", PO_Properties.getSPANISH());
+        String checkTextLastName = PO_View.getP().getString("Error.empty", PO_Properties.getSPANISH());
+
+        List<WebElement> resultDni = PO_View.checkElementByKey(driver,  "Error.dni.duplicate" ,PO_Properties.getSPANISH());
+        assertFalse(resultDni.isEmpty());
+
+        List<WebElement> resultName = PO_View.checkElementByKey(driver,  "Error.empty", PO_Properties.getSPANISH());
+        assertFalse(resultName.isEmpty());
+
+        List<WebElement> resultLastName = PO_View.checkElementByKey(driver, "Error.empty", PO_Properties.getSPANISH());
+        assertFalse(resultLastName.isEmpty());
+
+
+
+
+
+    }
+
+    @Test
     @Order(21)
     // Listado de vehículos de la empresa
-    public void PR020() { // CAMBIAR ORDER
+    public void PR020() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
 
@@ -755,6 +855,87 @@ class GestorApplicationTests {
         assertTrue(currentUrl.contains("/journey/list"));
         PO_LoginView.logOut(driver);
     }
+
+
+    @Test
+    public void PR040(){
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000002Q","Us3r@2-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contrasena");
+
+        PO_PrivateView.fillFormChangePassword(driver, "Us3r@2-PASSW", "Ahorasoyadministrad0r?", "Ahorasoyadministrad0r?");
+
+        PO_LoginView.logOut(driver);
+
+        PO_LoginView.fillForm(driver, "10000002Q","Ahorasoyadministrad0r?");
+
+        String currentUrl = driver.getCurrentUrl();
+        assertTrue(currentUrl.contains("/journey/list"));
+    }
+
+    @Test
+    public void PR039() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000002Q", "Us3r@2-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Ver vehículos");
+
+        int numVehicles = 13; // Número de vehiculos disponibles
+
+        int totalCount = 0;
+        boolean next = true;
+        while (next) {
+            List<WebElement> vehicleRows = driver.findElements(By.xpath("//*[@id=\"vehicleTable\"]/tbody/tr"));
+            totalCount += vehicleRows.size();
+            next = PO_PrivateView.goToNextPage(driver);
+        }
+
+        Assertions.assertEquals(numVehicles, totalCount, "El número de empleados no coincide");
+    }
+
+    @Test
+    public void PR041() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000002Q", "Us3r@2-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contrasena");
+
+        PO_PrivateView.fillFormChangePassword(driver, "Ahorasoyadministrad0r", "Ahorasoyadministrad1r?", "Ahorasoyadministrad1r?");
+
+        String checkText = PO_HomeView.getP().getString("Error.password.incorrect", PO_Properties.getSPANISH());
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+    }
+
+    @Test
+    public void PR042() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000002Q", "Us3r@2-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contrasena");
+
+        PO_PrivateView.fillFormChangePassword(driver, "Us3r@2-PASSW", "contraseñadebil", "contraseñadebil");
+
+        String checkText = PO_HomeView.getP().getString("Error.password.weak", PO_Properties.getSPANISH());
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+    }
+
+    @Test
+    public void PR043() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "10000002Q", "Us3r@2-PASSW");
+
+        PO_PrivateView.goThroughNav(driver,"text","Gestión de empleados","text","Cambiar contrasena");
+
+        PO_PrivateView.fillFormChangePassword(driver, "Us3r@2-PASSW", "Ahorasoyadministrad1r?", "Ahorasoyadministrad1r");
+
+        String checkText = PO_HomeView.getP().getString("Error.password.passwordConfirm", PO_Properties.getSPANISH());
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        assertFalse(result.isEmpty());
+    }
+
 
     @Test
     @Order(39)
