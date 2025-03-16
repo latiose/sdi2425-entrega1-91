@@ -18,12 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class GestorApplicationTests {
 
@@ -478,7 +480,7 @@ class GestorApplicationTests {
 
         PO_PrivateView.goThroughNav(driver,"text","Gestión de vehículos","text","Ver vehículos");
 
-        int numCars = insertSampleDataService.getNumCars() + 1;
+        int numCars = insertSampleDataService.getNumCars();
 
         int totalCount = 0;
         boolean next = true;
@@ -575,7 +577,7 @@ class GestorApplicationTests {
     @Transactional
     public void PR026() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillForm(driver, "10000001S", "Us3r@1-PASSW");
+        PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
         PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Agregar trayecto");
 
         WebElement dropdown = driver.findElement(By.id("plateNumber"));
@@ -755,7 +757,7 @@ class GestorApplicationTests {
 
         WebElement dropdown = driver.findElement(By.id("plateNumber"));
         Select select = new Select(dropdown);
-        select.selectByValue("9202VWG");
+        select.selectByValue("9101GHJ");
 
         driver.findElement(By.cssSelector("button[type='submit']")).click();
         PO_PrivateView.goThroughNav(driver,"text","Gestión de trayectos","text","Ver trayectos");
@@ -763,7 +765,7 @@ class GestorApplicationTests {
         List<WebElement> rows = driver.findElements(By.xpath("//table[@id='journeyTable']/tbody/tr"));
 
         for (WebElement row : rows) {
-            if (row.getText().contains("9202VWG") && row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]")).isDisplayed()) {
+            if (row.getText().contains("9101GHJ") && row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]")).isDisplayed()) {
                 WebElement finishButton = row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]"));
                 finishButton.click();
                 break;
@@ -794,7 +796,7 @@ class GestorApplicationTests {
         List<WebElement> rows = driver.findElements(By.xpath("//table[@id='journeyTable']/tbody/tr"));
 
         for (WebElement row : rows) {
-            if (row.getText().contains("9202VWG") && row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]")).isDisplayed()) {
+            if (row.getText().contains("9101GHJ") && row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]")).isDisplayed()) {
                 WebElement finishButton = row.findElement(By.xpath(".//td/a[contains(text(),'Finalizar')]"));
                 finishButton.click();
                 break;
