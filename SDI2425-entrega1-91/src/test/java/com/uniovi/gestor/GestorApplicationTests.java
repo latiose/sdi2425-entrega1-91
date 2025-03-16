@@ -378,6 +378,7 @@ class GestorApplicationTests {
     }
 
     @Test
+    // TODO falla aserto, asignar orden de ejecución
     public void PR017() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
@@ -398,6 +399,7 @@ class GestorApplicationTests {
     }
 
     @Test
+    // TODO falla aserto, asignar orden de ejecución
     public void PR018() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r");
@@ -857,6 +859,7 @@ class GestorApplicationTests {
     }
 
     @Test
+    // TODO error no encuentra 5678DFG
     public void PR037() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z","@Dm1n1str@D0r");
@@ -1144,6 +1147,7 @@ class GestorApplicationTests {
 
     @Test
     @Order(49)
+    // TODO falla aserto
     public void PR049() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "@Dm1n1str@D0r"); // LOGIN-EX
@@ -1187,6 +1191,7 @@ class GestorApplicationTests {
 
     @Test
     @Order(50)
+    // TODO falla aserto
     public void PR050() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
         PO_LoginView.fillForm(driver, "12345678Z", "admin");         // LOGIN_ERR
