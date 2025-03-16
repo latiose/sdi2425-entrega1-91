@@ -62,4 +62,35 @@ public class PO_PrivateView extends PO_NavView {
 
 
 
+    static public void fillFormChangePassword(WebDriver driver, String current, String passwordp, String newpasswordp){
+        WebElement dniInput = driver.findElement(By.id("password"));
+        dniInput.clear();
+        dniInput.sendKeys(current);
+        WebElement nameInput = driver.findElement(By.id("newPassword"));
+        nameInput.clear();
+        nameInput.sendKeys(passwordp);
+        WebElement lastNameInput = driver.findElement(By.id("confirmNewPassword"));
+        lastNameInput.clear();
+        lastNameInput.sendKeys(newpasswordp);
+        driver.findElement(By.className("btn-primary")).click();
+    }
+
+    static public void filFormEditEmployee(WebDriver driver, String dnip, String namep, String lastnamep, String role){
+        WebElement dniInput = driver.findElement(By.id("dni"));
+        dniInput.clear();
+        dniInput.sendKeys(dnip);
+        WebElement nameInput = driver.findElement(By.id("name"));
+        nameInput.clear();
+        nameInput.sendKeys(namep);
+        WebElement lastNameInput = driver.findElement(By.id("lastName"));
+        lastNameInput.clear();
+        lastNameInput.sendKeys(lastnamep);
+
+        WebElement roleDropdown = driver.findElement(By.id("role"));
+        Select select = new Select(roleDropdown);
+        select.selectByVisibleText("Administrador");
+
+        driver.findElement(By.className("btn-primary")).click();
+    }
+
 }
